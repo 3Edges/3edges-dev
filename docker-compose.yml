@@ -1,0 +1,18 @@
+---
+version: "3.8"
+services:
+  prim-dataproxy:
+    image: us-docker.pkg.dev/edges-305901/gcr.io/prim-dataproxy${TAG}
+    container_name: prim-dataproxy
+    build:
+      context: .
+    ports:
+      - "4044:4044"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - DASHBOARD_URL=http://host.docker.internal:3045
+      - REDIS_HOST=host.docker.internal
+    volumes:
+      - ./etc/config:/src/etc/config
