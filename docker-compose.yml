@@ -1,8 +1,7 @@
 ---
-version: "3.8"
 services:
   prim-dataproxy:
-    image: us-docker.pkg.dev/edges-305901/gcr.io/prim-dataproxy${TAG}
+    image: babsy/3edges:dataproxy
     container_name: prim-dataproxy
     build:
       context: .
@@ -11,8 +10,149 @@ services:
     env_file:
       - .env
     environment:
-      - NODE_ENV=${NODE_ENV:-development}
+      - NODE_ENV=development
       - DASHBOARD_URL=http://host.docker.internal:3045
       - REDIS_HOST=host.docker.internal
     volumes:
       - ./etc/config:/src/etc/config
+  prim-configuration:
+    image: babsy/3edges:configuration
+    container_name: prim-configuration
+    build:
+      context: .
+    ports:
+      - "4005:4005"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=bolt://host.docker.internal:7688
+      - OIDC_URL=http://host.docker.internal:3001/oidc
+      - LOCALHOST_PROXY_AUTHORIZATION_URL=http://host.docker.internal:5055
+      - LOCALHOST_PROXY_DASHBOARD_URL=http://host.docker.internal:3045
+      - REDIS_HOST=host.docker.internal
+    volumes:
+      - ./etc/config:/src/etc/config
+  prim-idp:
+    image: babsy/3edges:idp
+    container_name: prim-idp
+    build:
+      context: .
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=bolt://host.docker.internal:7688
+      - AUTHN_QUERY_VERIFIED="MATCH (user:$SUBJECT_TYPE) WHERE (user.$NAMING_PROPERTY = '3admin@3edges.io' AND user.isVerified = true) OPTIONAL MATCH (user)-[rel:NIAM_BELONGS_TO | NIAM_ADMINISTERS]->(tenant:NiamTenant) WITH COLLECT(DISTINCT CASE WHEN user.email = '$PRIM_ADMIN_EMAIL' THEN 'Roles.SuperAdmin' WHEN type(rel) = 'NIAM_ADMINISTERS' THEN 'Roles.Admin' WHEN type(rel) = 'NIAM_BELONGS_TO' THEN 'Roles.User' END) as roles, user, '$SUBJECT_TYPE' as subtype RETURN user{ .*, roles, subtype }"
+    volumes:
+      - ./etc/config:/src/etc/config
+  prim-proxy-idp:
+    image: babsy/3edges:proxy-idp
+    container_name: prim-idp-proxy
+    build:
+      context: .
+    ports:
+      - "3007:3007"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - DB_HOST=bolt://host.docker.internal:7688
+      - AUTHN_QUERY_VERIFIED="MATCH (user:$SUBJECT_TYPE) WHERE (user.$NAMING_PROPERTY = '3admin@3edges.io') OPTIONAL MATCH (user)-[rel:NIAM_BELONGS_TO | NIAM_ADMINISTERS]->(tenant:NiamTenant) WITH COLLECT(DISTINCT CASE WHEN user.email = '$PRIM_ADMIN_EMAIL' THEN 'Roles.SuperAdmin' WHEN type(rel) = 'NIAM_ADMINISTERS' THEN 'Roles.Admin' WHEN type(rel) = 'NIAM_BELONGS_TO' THEN 'Roles.User' END) as roles, user, '$SUBJECT_TYPE' as subtype RETURN user{ .*, roles, subtype }"
+    volumes:
+      - ./etc/config:/src/etc/config
+  prim-cluster:
+    image: babsy/3edges:cluster
+    container_name: prim-cluster
+    build:
+      context: .
+    ports:
+      - "3333:3333"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=bolt://host.docker.internal:7688
+  prim-authorization:
+    image: babsy/3edges:authorization
+    container_name: prim-authorization
+    build:
+      context: .
+    ports:
+      - "5055:5055"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./etc/config:/src/etc/config
+  prim-client-ui:
+    image: babsy/3edges:ui
+    container_name: prim-client-ui
+    build:
+      context: .
+    ports:
+      - "3045:3045"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+  prim-dataloader:
+    image: babsy/3edges:dataloader
+    container_name: prim-dataloader
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - CONFIGURATION_URL=http://host.docker.internal:4005
+      - OIDC_URL=http://host.docker.internal:3001/oidc
+      - dbHost=bolt://host.docker.internal:7687
+  prim-dataloader-ui:
+    image: babsy/3edges:dataloader-ui
+    container_name: prim-dataloader-ui
+    build:
+      context: .
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_DATALOADER_URL=bolt://host.docker.internal:3000
+      - REACT_APP_UI_URL_3EDGES=bolt://host.docker.internal:3005
+      - REACT_APP_OIDC_URL=bolt://host.docker.internal:3001/oidc
+  prim-ui:
+    image: babsy/3edges:ui
+    container_name: prim-ui
+    build:
+      context: .
+    ports:
+      - "3005:3005"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_LOCALHOST_DB_HOST=bolt://host.docker.internal:7688
+      - REACT_APP_LOCALHOST_DASHBOARD=http://host.docker.internal:3045
+      - REACT_APP_LOCALHOST_PROXY=http://host.docker.internal:4044
+      - REACT_APP_LOCALHOST_AUTHZ=http://host.docker.internal:5055
+      - REACT_APP_LOCALHOST_IDP_PROXY=http://host.docker.internal:3007/oidc
+      - REACT_APP_OIDC_CLIENT_ID="3edgesUIClient"
+      - REACT_APP_OIDC_CLIENT_PWD="edgesAreThree3!"
+      - REACT_APP_OIDC_URL="http://host.docker.internal:3001/oidc"
+      - REACT_APP_OIDC_AUTH_ENDPOINT="/authorize"
+      - REACT_APP_OIDC_TOKEN_ENDPOINT="/token"
+      - REACT_APP_LOCALHOST_PROXY="http://host.docker.internal:4044"
+      - REACT_APP_LOCALHOST_AUTHZ="http://host.docker.internal:5055"
+      - REACT_APP_LOCALHOST_DB_HOST="bolt://host.docker.internal:7688"
+      - REACT_APP_LOCALHOST_DB_NAME="neo4j"
+      - REACT_APP_LOCALHOST_DB_USER="neo4j"
+      - REACT_APP_LOCALHOST_DB_PASSWORD="Welcome1"
+      - REACT_APP_LOCALHOST_DB_TYPE="neo4j"
+      - REACT_APP_LOCALHOST_DB_VERSION="v4"
