@@ -32,57 +32,86 @@ resource "kubernetes_config_map" "aws_auth" {
   }
 }
 
-# provider "helm" {
-#   kubernetes {
-#     host                   = var.aws_eks_cluster_auth_endpoint
-#     cluster_ca_certificate = base64decode(var.aws_eks_cluster_auth_certificate)
-#     token                  = var.aws_eks_cluster_auth_token
+provider "helm" {
+  kubernetes {
+    host                   = var.aws_eks_cluster_auth_endpoint
+    cluster_ca_certificate = base64decode(var.aws_eks_cluster_auth_certificate)
+    token                  = var.aws_eks_cluster_auth_token
+  }
+}
+
+resource "helm_release" "cert_manager" {
+  name             = "cert-manager"
+  repository       = "https://charts.jetstack.io"
+  chart            = "cert-manager"
+  version          = "v1.14.5"
+  namespace        = "cert-manager"
+  create_namespace = true
+
+  values = [
+    <<EOF
+    installCRDs: true
+    EOF
+  ]
+}
+
+# resource "null_resource" "cert_manager_annotate" {
+#   provisioner "local-exec" {
+#     command = <<EOF
+#       kubectl annotate crd challenges.acme.cert-manager.io meta.helm.sh/release-name=three-edges-cert-manager 2>/dev/null
+#       kubectl annotate crd challenges.acme.cert-manager.io meta.helm.sh/release-namespace=cert-manager 2>/dev/null
+#       kubectl label crd challenges.acme.cert-manager.io app.kubernetes.io/managed-by=Helm 2>/dev/null
+#       kubectl annotate crd certificaterequests.cert-manager.io meta.helm.sh/release-name=three-edges-cert-manager 2>/dev/null
+#       kubectl annotate crd certificaterequests.cert-manager.io meta.helm.sh/release-namespace=cert-manager 2>/dev/null
+#       kubectl label crd certificaterequests.cert-manager.io app.kubernetes.io/managed-by=Helm 2>/dev/null
+#       kubectl annotate crd certificates.cert-manager.io meta.helm.sh/release-name=three-edges-cert-manager 2>/dev/null
+#       kubectl annotate crd certificates.cert-manager.io meta.helm.sh/release-namespace=cert-manager 2>/dev/null
+#       kubectl label crd certificates.cert-manager.io app.kubernetes.io/managed-by=Helm 2>/dev/null
+#       kubectl annotate crd orders.cert-manager.io meta.helm.sh/release-name=three-edges-cert-manager 2>/dev/null
+#       kubectl annotate crd orders.cert-manager.io meta.helm.sh/release-namespace=cert-manager 2>/dev/null
+#       kubectl label crd orders.cert-manager.io app.kubernetes.io/managed-by=Helm 2>/dev/null
+#       EOF
 #   }
 # }
 
-# resource "helm_release" "cert_manager" {
-#   name             = "cert_manager_name"
-#   repository       = "https://charts.jetstack.io"
-#   chart            = "cert-manager"
-#   version          = "v1.14.5"
-#   namespace        = "cert-manager"
-#   create_namespace = true
+resource "helm_release" "nginx_ingress" {
+  name             = "nginx-ingress"
+  repository       = "https://kubernetes.github.io/ingress-nginx"
+  chart            = "ingress-nginx"
+  version          = "4.0.6"
+  namespace        = "ingress-nginx"
+  create_namespace = true
 
-#   set {
-#     name  = "installCRDs"
-#     value = "true"
-#   }
-# }
+  values = [
+    <<EOF
+    controller:
+      service:
+        type: LoadBalancer
+    EOF
+  ]
+}
 
+resource "null_resource" "nginx_ingress_annotate" {
+  provisioner "local-exec" {
+    command = <<EOF
+      kubectl annotate ingressclass nginx meta.helm.sh/release-name=nginx-ingress 2>/dev/null
+      kubectl annotate ingressclass nginx meta.helm.sh/release-namespace=ingress-nginx 2>/dev/null
+      kubectl label ingressclass nginx app.kubernetes.io/managed-by=Helm 2>/dev/null
+      EOF
+  }
+}
 
-# resource "helm_release" "nginx_ingress" {
-#   name       = "nginx-ingress"
-#   namespace  = "kube-system"
-#   repository = "https://kubernetes.github.io/ingress-nginx"
-#   chart      = "ingress-nginx"
-#   version    = "4.0.6"
+data "kubernetes_service" "nginx_ingress" {
+  metadata {
+    name      = "nginx-ingress-controller"
+    namespace = "kube-system"
+  }
+}
 
-#   values = [
-#     <<EOF
-# controller:
-#   service:
-#     type: LoadBalancer
-# EOF
-#   ]
-
-#   depends_on = [aws_eks_cluster.eks_cluster]
-# }
-
-# data "kubernetes_service" "nginx_ingress" {
-#   metadata {
-#     name      = "nginx-ingress-controller"
-#     namespace = "kube-system"
-#   }
-# }
-
-# output "nginx_ingress_load_balancer_hostname" {
-#   value = data.kubernetes_service.nginx_ingress.status[0].load_balancer.ingress[0].hostname
-# }
+output "nginx_ingress_load_balancer_hostname" {
+  # value = data.kubernetes_service.nginx_ingress.status[0].load_balancer.ingress[0].hostname
+  value = data.kubernetes_service.nginx_ingress.status
+}
 
 # output "nginx_ingress_load_balancer_ip" {
 #   value = data.kubernetes_service.nginx_ingress.status[0].load_balancer.ingress[0].ip
