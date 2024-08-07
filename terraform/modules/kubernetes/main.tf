@@ -1,18 +1,9 @@
 
 provider "kubernetes" {
-  host                   = aws_eks_cluster.eks_cluster.endpoint
-  cluster_ca_certificate = base64decode(aws_eks_cluster.eks_cluster.certificate_authority[0].data)
-  token                  = data.aws_eks_cluster_auth.eks_auth.token
+  host                   = var.aws_eks_cluster_auth_endpoint
+  cluster_ca_certificate = base64decode(var.aws_eks_cluster_auth_certificate)
+  token                  = var.aws_eks_cluster_auth_token
 }
-
-provider "helm" {
-  kubernetes {
-    host                   = aws_eks_cluster.eks_cluster.endpoint
-    cluster_ca_certificate = base64decode(aws_eks_cluster.eks_cluster.certificate_authority[0].data)
-    token                  = data.aws_eks_cluster_auth.eks_auth.token
-  }
-}
-
 
 resource "kubernetes_config_map" "aws_auth" {
   metadata {
@@ -41,19 +32,27 @@ resource "kubernetes_config_map" "aws_auth" {
   }
 }
 
-resource "helm_release" "cert_manager" {
-  name             = "cert_manager_name"
-  repository       = "https://charts.jetstack.io"
-  chart            = "cert-manager"
-  version          = "v1.14.5"
-  namespace        = "cert-manager"
-  create_namespace = true
+# provider "helm" {
+#   kubernetes {
+#     host                   = var.aws_eks_cluster_auth_endpoint
+#     cluster_ca_certificate = base64decode(var.aws_eks_cluster_auth_certificate)
+#     token                  = var.aws_eks_cluster_auth_token
+#   }
+# }
 
-  set {
-    name  = "installCRDs"
-    value = "true"
-  }
-}
+# resource "helm_release" "cert_manager" {
+#   name             = "cert_manager_name"
+#   repository       = "https://charts.jetstack.io"
+#   chart            = "cert-manager"
+#   version          = "v1.14.5"
+#   namespace        = "cert-manager"
+#   create_namespace = true
+
+#   set {
+#     name  = "installCRDs"
+#     value = "true"
+#   }
+# }
 
 
 # resource "helm_release" "nginx_ingress" {
@@ -111,7 +110,6 @@ resource "helm_release" "cert_manager" {
 #   arn:aws:iam::356300141247:role/gIDP_admin -> access policy: AmazonEKSClusterAdminPolicy
 # )
 
-
 # provider "http" {}
 
 # data "http" "cert_manager_yaml" {
@@ -140,8 +138,23 @@ resource "helm_release" "cert_manager" {
 #   manifest = each.value
 # }
 
-# resource "null_resource" "apply_cert_manager" {
+# resource "null_resource" "namespace_yaml" {
 #   provisioner "local-exec" {
-#     command = "bash ${path.module}/../yaml/external_yaml.sh 'https://github.com/jetstack/cert-manager/releases/download/v1.14.5/cert-manager.yaml'"
+#     command = "kubectl replace -f ${path.module}/../yaml/namespace.yaml"
 #   }
+# }
+
+# provider "http" {}
+
+# data "http" "namespace_yaml" {
+#   url = "https://raw.githubusercontent.com/3Edges/3edges-dev/dev/yaml/namespace.yaml"
+# }
+
+# locals {
+#   namespace_documents = [for doc in split("---", data.http.namespace_yaml.body) : yamldecode(doc) if doc != ""]
+# }
+
+# resource "kubernetes_manifest" "namespace" {
+#   for_each = { for i, doc in local.namespace_documents : i => doc }
+#   manifest = each.value
 # }

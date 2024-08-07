@@ -1,22 +1,22 @@
 resource "aws_eks_cluster" "eks_cluster" {
   name     = var.eks_cluster
-  role_arn = aws_iam_role.eks_role.arn
+  role_arn = var.iam_role_arn
 
   vpc_config {
-    subnet_ids = aws_subnet.eks_subnet[*].id
+    subnet_ids = var.eks_subnet[*].id
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.eks_policy,
-    aws_iam_role_policy_attachment.eks_vpc_resource_controller_policy
+    var.iam_eks_policy,
+    var.iam_eks_vpc_resource_controller_policy,
   ]
 }
 
 resource "aws_eks_node_group" "eks_node_group" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = var.eks_node_group
-  node_role_arn   = aws_iam_role.eks_node_role.arn
-  subnet_ids      = aws_subnet.eks_subnet[*].id
+  node_role_arn   = var.aws_iam_role
+  subnet_ids      = var.eks_subnet[*].id
 
   scaling_config {
     desired_size = 1
@@ -25,10 +25,10 @@ resource "aws_eks_node_group" "eks_node_group" {
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.eks_worker_node_policy,
-    aws_iam_role_policy_attachment.eks_cni_policy,
-    aws_iam_role_policy_attachment.ec2_container_registry_readonly,
-    aws_iam_role_policy_attachment.route53_full_access
+    var.eks_worker_node_policy,
+    var.eks_cni_policy,
+    var.ec2_container_registry_readonly,
+    var.route53_full_access
   ]
 }
 resource "aws_eks_addon" "vpc_cni" {
@@ -36,7 +36,10 @@ resource "aws_eks_addon" "vpc_cni" {
   addon_name    = "vpc-cni"
   addon_version = "v1.18.1-eksbuild.3"
 
-  depends_on = [aws_eks_cluster.eks_cluster]
+  depends_on = [
+    aws_eks_cluster.eks_cluster,
+    aws_eks_node_group.eks_node_group
+  ]
 }
 
 resource "aws_eks_addon" "kube_proxy" {
@@ -44,7 +47,10 @@ resource "aws_eks_addon" "kube_proxy" {
   addon_name    = "kube-proxy"
   addon_version = "v1.30.0-eksbuild.3"
 
-  depends_on = [aws_eks_cluster.eks_cluster]
+  depends_on = [
+    aws_eks_cluster.eks_cluster,
+    aws_eks_node_group.eks_node_group
+  ]
 }
 
 resource "aws_eks_addon" "eks_pod_identity" {
@@ -52,7 +58,10 @@ resource "aws_eks_addon" "eks_pod_identity" {
   addon_name    = "eks-pod-identity-agent"
   addon_version = "v1.3.0-eksbuild.1"
 
-  depends_on = [aws_eks_cluster.eks_cluster]
+  depends_on = [
+    aws_eks_cluster.eks_cluster,
+    aws_eks_node_group.eks_node_group
+  ]
 }
 
 resource "aws_eks_addon" "coredns" {
@@ -60,5 +69,8 @@ resource "aws_eks_addon" "coredns" {
   addon_name    = "coredns"
   addon_version = "v1.11.1-eksbuild.9"
 
-  depends_on = [aws_eks_cluster.eks_cluster]
+  depends_on = [
+    aws_eks_cluster.eks_cluster,
+    aws_eks_node_group.eks_node_group
+  ]
 }
