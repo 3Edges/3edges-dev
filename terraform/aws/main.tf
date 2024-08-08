@@ -3,16 +3,16 @@ provider "aws" {
 }
 
 module "iam" {
-  source = "./modules/iam"
+  source = "modulesam"
 }
 
 module "vpc" {
-  source = "./modules/vpc"
+  source = "modulespc"
 }
 
 
 module "cluster" {
-  source                                 = "./modules/cluster"
+  source                                 = "modulesluster"
   eks_subnet                             = module.vpc.eks_subnet
   iam_role_arn                           = module.iam.iam_role_arn
   aws_iam_role                           = module.iam.aws_iam_role
@@ -25,14 +25,14 @@ module "cluster" {
 }
 
 module "kubernetes" {
-  source                           = "./modules/kubernetes"
+  source                           = "modulesubernetes"
   aws_eks_cluster_auth_token       = module.cluster.aws_eks_cluster_auth_token
   aws_eks_cluster_auth_endpoint    = module.cluster.aws_eks_cluster_auth_endpoint
   aws_eks_cluster_auth_certificate = module.cluster.aws_eks_cluster_auth_certificate
 }
 
 module "null_resource" {
-  source         = "./modules/null_resource"
+  source         = "modulesull_resource"
   eks_cluster    = module.cluster.aws_eks_cluster_eks_cluster
   eks_node_group = module.cluster.aws_eks_node_group_eks_node_group
 }

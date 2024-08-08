@@ -1,0 +1,83 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: prim-ip
+  labels:
+    app: 3edges
+  name: prim-ingress
+  namespace: 3edges
+spec:
+  ingressClassName: "nginx"
+  tls:
+    - hosts:
+        - "3edges.io"
+        - "*.3edges.io"
+        - "*.qa.3edges.io"
+      secretName: "letsencrypt-wildcard-secret"
+  rules:
+    - host: 3edges.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: ui
+                port:
+                  number: 3005
+            path: /
+            pathType: Prefix
+          - backend:
+              service:
+                name: configuration
+                port:
+                  number: 4005
+            path: /graphql
+            pathType: Exact
+          - backend:
+              service:
+                name: configuration
+                port:
+                  number: 4005
+            path: /api
+            pathType: Prefix
+    - host: dataloader.3edges.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: dataloader
+                port:
+                  number: 3000
+            path: /
+            pathType: Prefix
+    - host: idp.3edges.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: idp
+                port:
+                  number: 3001
+            path: /
+            pathType: Prefix
+    - host: webloader.3edges.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: dataloader-ui
+                port:
+                  number: 3002
+            path: /
+            pathType: Prefix
+    - host: cluster.3edges.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: cluster
+                port:
+                  number: 3333
+            path: /
+            pathType: Prefix

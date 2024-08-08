@@ -1,0 +1,107 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui
+  namespace: 3edges
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+        prom: prom-3edges
+    spec:
+      containers:
+      - name: ui
+        imagePullPolicy: Always
+        image: us-docker.pkg.dev/edges-305901/gcr.io/prim-ui:latest
+        env:
+          - name: NODE_ENV
+            value: "production"
+          - name: PORT
+            value: "3005"
+          - name: REACT_APP_ACCESS_TOKEN_COOKIE_NAME
+            value: "_nid"
+          - name: REACT_APP_NONCE_COOKIE_NAME
+            value: "nnce"
+          - name: REACT_APP_ID_TOKEN_COOKIE_NAME
+            value: "primscookie"
+          - name: REACT_APP_PKEY_COOKIE_NAME
+            value: "pkey"
+          - name: REACT_APP_ENABLE_SELFREGISTRATION
+            value: "true"
+          - name: REACT_APP_JWKS_URI
+            value: "/jwks"
+          - name: REACT_APP_CAPTCHA_V2_INVISIBLE
+            value: "6LcmeBEbAAAAAO0GvPUCyIs9ow-LFUFiX6UQbU8m"
+          - name: REACT_APP_CAPTCHA_V2
+            value: "6LdfFiIbAAAAABnGUFnN3e8unsXBYVvMorbBFR4U"
+          - name: REACT_APP_OIDC_CLIENT_ID
+            value: "3edgesUIClient"
+          - name: REACT_APP_OIDC_AUTH_ENDPOINT
+            value: "/authorize"
+          - name: REACT_APP_URL_UI
+            value: "https://3edges.io"
+          - name: REACT_APP_OIDC_TOKEN_ENDPOINT
+            value: "/token"
+          - name: REACT_APP_OIDC_URL
+            value: "https://idp.3edges.io/oidc"
+          - name: REACT_APP_OIDC_CLIENT_PWD
+            valueFrom:
+              secretKeyRef:
+                key: REACT_APP_OIDC_CLIENT_PWD
+                name: prim-ui-secret
+          - name: REACT_APP_PRIM_BACKEND_URI
+            value: "https://3edges.io/graphql"
+          - name: REACT_APP_ENABLE_NEWCLUSTER
+            value: "false"
+          - name: REACT_APP_QA_PROXY
+            value: "https://tmp-random-url.qa.3edges.io"
+          - name: REACT_APP_3EDGES_PROXY
+            value: "https://tmp-random-url.3edges.io"
+          - name: REACT_APP_NEWCLUSTER_PROXY
+            value: "https://tmp-random-url.3edges.io"
+          - name: REACT_APP_LOCALHOST_DB_HOST
+            value: null
+          - name: REACT_APP_LOCALHOST_DB_NAME
+            value: null
+          - name: REACT_APP_LOCALHOST_DB_USER
+            value: null
+          - name: REACT_APP_LOCALHOST_DB_PASSWORD
+            value: null
+          - name: REACT_APP_QA_DB_HOST
+            value: null
+          - name: REACT_APP_QA_DB_NAME
+            value: null
+          - name: REACT_APP_QA_DB_USER
+            value: null
+          - name: REACT_APP_QA_DB_PASSWORD
+            value: null
+          - name: REACT_APP_LOCALHOST_IDP_PROXY
+            value: null
+          - name: REACT_APP_LOCALHOST_DASHBOARD
+            value: null
+          - name: REACT_APP_LOCALHOST_PROXY
+            value: null
+          - name: REACT_APP_LOCALHOST_AUTHZ
+            value: null
+          - name: REACT_APP_QA_IDP
+            value: "https://tmp-random-url.qa.3edges.io/oidc"
+          - name: REACT_APP_3EDGES_IDP
+            value: "https://tmp-random-url.3edges.io/oidc"
+          - name: REACT_APP_NEWCLUSTER_IDP
+            value: "https://tmp-random-url.3edges.io/oidc"
+          - name: REACT_APP_REFRESH_TOKEN_LOCAL_STORAGE_NAME
+            value: "default_nid_r"
+          - name: REACT_APP_IDLE_TIME_IN_MINUTES
+            value: "20"
+          - name: REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME
+            value: "socialProvider"
+          - name: REACT_APP_WEBLOADER_URL
+            value: "https://webloader.3edges.io"
+          - name: REACT_APP_INTERNAL_SECRET
+            value: "x-secret"
