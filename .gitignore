@@ -2,4 +2,4 @@
 terraform.*
 !terraform.tfvars
 plan.bkp
-.env
+localhost/.env
