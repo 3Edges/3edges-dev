@@ -14,7 +14,7 @@ variable "aws_region" {
 }
 
 variable "hosted_zone" {
-  default = "three-edges.io"
+  default = "abotega.com"
 }
 
 variable "arn_node_role" {

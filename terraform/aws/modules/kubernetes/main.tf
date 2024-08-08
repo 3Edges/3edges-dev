@@ -68,16 +68,6 @@ resource "helm_release" "ingress_nginx" {
     value = "nlb"
   }
 
-  set {
-    name  = "controller.service.annotations.service.beta.kubernetes.io/aws-load-balancer-name"
-    value = "ingress_nginx_load_balancer"
-  }
-
-  set {
-    name  = "controller.service.annotations.external-dns.alpha.kubernetes.io/hostname"
-    value = var.aws_route53_zone_hosted_zone_name
-  }
-
   values = [
     <<EOF
     controller:
@@ -87,14 +77,33 @@ resource "helm_release" "ingress_nginx" {
   ]
 }
 
-# resource "aws_route53_record" "cname_lb" {
-#   zone_id = var.aws_route53_zone_hosted_zone_id
-#   name    = "www.${var.aws_route53_zone_hosted_zone_name}"
-#   type    = "CNAME"
-#   ttl     = 300
+resource "aws_route53_record" "idp_lb" {
+  zone_id = var.aws_route53_zone_hosted_zone_id
+  name    = "idp.${var.aws_route53_zone_hosted_zone_name}"
+  type    = "A"
 
-#   records = [var.aws_route53_zone_hosted_zone_name]
-# }
+  alias {
+    zone_id                = data.aws_lb.nginx_load_balancer.zone_id
+    name                   = data.aws_lb.nginx_load_balancer.dns_name
+    evaluate_target_health = false
+  }
+
+  depends_on = [helm_release.ingress_nginx]
+}
+
+resource "aws_route53_record" "cluster_lb" {
+  zone_id = var.aws_route53_zone_hosted_zone_id
+  name    = "cluster.${var.aws_route53_zone_hosted_zone_name}"
+  type    = "A"
+
+  alias {
+    zone_id                = data.aws_lb.nginx_load_balancer.zone_id
+    name                   = data.aws_lb.nginx_load_balancer.dns_name
+    evaluate_target_health = false
+  }
+
+  depends_on = [helm_release.ingress_nginx]
+}
 
 resource "aws_route53_record" "ingress_nginx" {
   zone_id = var.aws_route53_zone_hosted_zone_id
