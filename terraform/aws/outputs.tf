@@ -1,14 +1,14 @@
-# output "nginx_ingress_load_balancer_zone_id" {
-#   value = module.kubernetes.nginx_ingress_load_balancer_zone_id
-# }
+output "ingress_nginx_load_balancer_zone_id" {
+  value = module.kubernetes.ingress_nginx_load_balancer_zone_id
+}
 
-# output "nginx_ingress_load_balancer_dns_name" {
-#   value = module.kubernetes.nginx_ingress_load_balancer_dns_name
-# }
+output "ingress_nginx_load_balancer_dns_name" {
+  value = module.kubernetes.ingress_nginx_load_balancer_dns_name
+}
 
-# output "nginx_ingress_load_balancer_arn" {
-#   value = module.kubernetes.nginx_ingress_load_balancer_arn
-# }
+output "ingress_nginx_load_balancer_arn" {
+  value = module.kubernetes.ingress_nginx_load_balancer_arn
+}
 
 output "load_balancer_hostname" {
   value = module.kubernetes.load_balancer_hostname

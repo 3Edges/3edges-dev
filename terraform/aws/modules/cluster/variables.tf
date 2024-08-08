@@ -1,45 +1,23 @@
-variable "eks_cluster" {
-  type    = string
-  default = "three-edges-cluster"
-}
-
-variable "eks_node_group" {
-  type    = string
-  default = "three-edges-node-group"
-}
-
-variable "iam_role_arn" {
-  type = string
-}
-
-variable "iam_eks_policy" {
-  type = string
-}
-
-variable "iam_eks_vpc_resource_controller_policy" {
-  type = string
-}
-
-variable "aws_iam_role" {
-  type = string
-}
+variable "eks_cluster" {}
 
 variable "eks_subnet" {
   type = list(any)
 }
 
-variable "eks_worker_node_policy" {
-  type = string
-}
+variable "eks_node_group" {}
 
-variable "eks_cni_policy" {
-  type = string
-}
+variable "iam_role_arn" {}
 
-variable "ec2_container_registry_readonly" {
-  type = string
-}
+variable "iam_eks_policy" {}
 
-variable "route53_full_access" {
-  type = string
-}
+variable "iam_eks_vpc_resource_controller_policy" {}
+
+variable "aws_iam_role" {}
+
+variable "eks_worker_node_policy" {}
+
+variable "eks_cni_policy" {}
+
+variable "ec2_container_registry_readonly" {}
+
+variable "route53_full_access" {}

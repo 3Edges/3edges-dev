@@ -1,4 +1,1 @@
-
-variable "hosted_zone" {
-  default = "three-edges.io"
-}
+variable "hosted_zone" {}

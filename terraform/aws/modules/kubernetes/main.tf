@@ -55,8 +55,8 @@ resource "helm_release" "cert_manager" {
   ]
 }
 
-resource "helm_release" "nginx_ingress" {
-  name             = "nginx-ingress"
+resource "helm_release" "ingress_nginx" {
+  name             = "ingress-nginx"
   repository       = "https://kubernetes.github.io/ingress-nginx"
   chart            = "ingress-nginx"
   version          = "4.0.6"
@@ -68,48 +68,47 @@ resource "helm_release" "nginx_ingress" {
     value = "nlb"
   }
 
-  # set {
-  #   name = "controller.service.annotations.service.beta.kubernetes.io/aws-load-balancer-name"
-  #   value = "nginx_ingress_load_balancer"
-  # }
+  set {
+    name  = "controller.service.annotations.service.beta.kubernetes.io/aws-load-balancer-name"
+    value = "ingress_nginx_load_balancer"
+  }
 
-  # set {
-  #   name  = "controller.service.annotations.external-dns.alpha.kubernetes.io/hostname"
-  #   value = var.aws_route53_zone_hosted_zone_name
-  # }
+  set {
+    name  = "controller.service.annotations.external-dns.alpha.kubernetes.io/hostname"
+    value = var.aws_route53_zone_hosted_zone_name
+  }
 
-  # values = [
-  #   <<EOF
-  #   controller:
-  #     service:
-  #       type: LoadBalancer
-  #   EOF
-  # ]
+  values = [
+    <<EOF
+    controller:
+      service:
+        type: LoadBalancer
+    EOF
+  ]
 }
 
-# resource "aws_route53_record" "nginx_lb" {
+# resource "aws_route53_record" "cname_lb" {
 #   zone_id = var.aws_route53_zone_hosted_zone_id
 #   name    = "www.${var.aws_route53_zone_hosted_zone_name}"
 #   type    = "CNAME"
 #   ttl     = 300
 
-#   # records = [data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].hostname]
 #   records = [var.aws_route53_zone_hosted_zone_name]
 # }
 
-# resource "aws_route53_record" "nginx_ingress" {
-#   zone_id = var.aws_route53_zone_hosted_zone_id
-#   name    = var.aws_route53_zone_hosted_zone_name
-#   type    = "A"
+resource "aws_route53_record" "ingress_nginx" {
+  zone_id = var.aws_route53_zone_hosted_zone_id
+  name    = var.aws_route53_zone_hosted_zone_name
+  type    = "A"
 
-#   alias {
-#     zone_id                = data.aws_lb.nginx_load_balancer.zone_id
-#     name                   = data.aws_lb.nginx_load_balancer.dns_name
-#     evaluate_target_health = false
-#   }
+  alias {
+    zone_id                = data.aws_lb.nginx_load_balancer.zone_id
+    name                   = data.aws_lb.nginx_load_balancer.dns_name
+    evaluate_target_health = false
+  }
 
-#   depends_on = [helm_release.nginx_ingress]
-# }
+  depends_on = [helm_release.ingress_nginx]
+}
 
 
 # Access (IAM access entries) needs to be (

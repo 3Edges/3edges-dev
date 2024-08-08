@@ -3,15 +3,23 @@ provider "aws" {
 }
 
 module "iam" {
-  source = "./modules/iam"
+  source        = "./modules/iam"
+  eks_role      = var.eks_role
+  eks_node_role = var.eks_node_role
 }
 
 module "vpc" {
-  source = "./modules/vpc"
+  source               = "./modules/vpc"
+  eks_vpc              = var.eks_vpc
+  eks_internet_gateway = var.eks_internet_gateway
+  eks_route_table      = var.eks_route_table
+  eks_security_group   = var.eks_security_group
 }
 
 module "cluster" {
   source                                 = "./modules/cluster"
+  eks_cluster                            = var.eks_cluster
+  eks_node_group                         = var.eks_node_group
   eks_subnet                             = module.vpc.eks_subnet
   iam_role_arn                           = module.iam.iam_role_arn
   aws_iam_role                           = module.iam.aws_iam_role
@@ -30,10 +38,12 @@ module "kubernetes" {
   aws_eks_cluster_auth_certificate  = module.cluster.aws_eks_cluster_auth_certificate
   aws_route53_zone_hosted_zone_id   = module.route53.aws_route53_zone_hosted_zone_id
   aws_route53_zone_hosted_zone_name = module.route53.aws_route53_zone_hosted_zone_name
+  arn_node_role                     = var.arn_node_role
 }
 
 module "route53" {
-  source = "./modules/route53"
+  source      = "./modules/route53"
+  hosted_zone = var.hosted_zone
 }
 
 module "null_resource" {

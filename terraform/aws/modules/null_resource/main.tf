@@ -12,7 +12,7 @@
 #   ]
 # }
 
-# resource "null_resource" "nginx_ingress_yaml" {
+# resource "null_resource" "ingress_nginx_yaml" {
 #   provisioner "local-exec" {
 #     command = "kubectl apply -f ${path.module}/../../../yaml/nginx-ingress.yaml"
 #   }
