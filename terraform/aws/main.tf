@@ -10,7 +10,6 @@ module "vpc" {
   source = "./modules/vpc"
 }
 
-
 module "cluster" {
   source                                 = "./modules/cluster"
   eks_subnet                             = module.vpc.eks_subnet
@@ -38,7 +37,7 @@ module "route53" {
 }
 
 module "null_resource" {
-  source         = "./modules/null_resource"
+  source         = "./modules/ull_resource"
   eks_cluster    = module.cluster.aws_eks_cluster_eks_cluster
   eks_node_group = module.cluster.aws_eks_node_group_eks_node_group
 }

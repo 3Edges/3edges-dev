@@ -1,0 +1,76 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster
+  namespace: 3edges
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cluster
+  template:
+    metadata:
+      labels:
+        app: cluster
+        prom: prom-3edges
+    spec:
+      containers:
+        - name: cluster
+          imagePullPolicy: Always
+          image: us-docker.pkg.dev/edges-305901/gcr.io/prim-cluster:latest
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "3333"
+            - name: UI_URL
+              value: "https://3edges.io"
+            - name: CLIENT_EMAIL
+              value: "911543339197-compute@developer.gserviceaccount.com"
+            - name: OIDC_URL
+              value: "https://idp.3edges.io/oidc"
+            - name: OIDC_CLIENT_ID
+              value: "3edgesConfigClient"
+            - name: OIDC_CLIENT_PWD
+              value: ""
+            - name: THREE_EDGES_CLUSTER
+              value: "three-edges"
+            - name: THREE_EDGES_LOCATION
+              value: ""
+            - name: NGINX_LB
+              value: ""
+            - name: DB_TYPE
+              value: "neo4j"
+            - name: PRIVATE_KEY
+              value: ""
+            - name: DB_VERSION
+              value: "v4"
+            - name: DB_HOST
+              value: "neo4j+s://:7687"
+            - name: DB_NAME
+              value: "threeedges"
+            - name: DB_USER
+              value: "neo4j"
+            - name: DB_PASSWORD
+              value: ""
+            - name: TOKEN_PIPELINE
+              value: ""
+            - name: SESSION_PIPELINE
+              value: ""
+            - name: CRON_PWD
+              value: ""
+            - name: CLUSTER_URL
+              value: "https://cluster.3edges.io"
+            - name: SEND_EMAIL_URL
+              value: "https://edges-305901.uw.r.appspot.com/api"
+            - name: SEND_EMAIL_SERVER
+              value: "PROD"
+            - name: SEND_EMAIL_FROM
+              value: "noreply@3edges.io"
+            - name: SEND_EMAIL_FROM_NAME
+              value: "3Edges"
+            - name: INTERNAL_SECRET
+              value: ""
+            - name: PRIM_ADMIN_EMAIL
+              value: "3admin@3edges.io"

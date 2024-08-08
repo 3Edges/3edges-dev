@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dataloader-ui
+  namespace: 3edges
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataloader-ui
+  template:
+    metadata:
+      labels:
+        app: dataloader-ui
+        prom: prom-3edges
+    spec:
+      containers:
+      - name: dataloader-ui
+        imagePullPolicy: Always
+        image: us-docker.pkg.dev/edges-305901/gcr.io/prim-dataloader-ui:latest
+        env:
+          - name: NODE_ENV
+            value: "production"
+          - name: PORT
+            value: "3002"
+          - name: REACT_APP_DATALOADER_URL
+            value: "https://dataloader.3edges.io"
+          - name: REACT_APP_UI_URL_3EDGES
+            value: "https://3edges.io"
+          - name: REACT_APP_ACCESS_TOKEN_COOKIE_NAME
+            value: "_nid"
+          - name: REACT_APP_NONCE_COOKIE_NAME
+            value: "nnce"
+          - name: REACT_APP_PKEY_COOKIE_NAME
+            value: "pkey"
+          - name: REACT_APP_ID_TOKEN_COOKIE_NAME
+            value: "primscookie"
+          - name: REACT_APP_OIDC_CLIENT_ID
+            value: "3edgesUIClient"
+          - name: REACT_APP_OIDC_URL
+            value: "https://idp.3edges.io/oidc"
+          - name: REACT_APP_JWKS_URI
+            value: "/jwks"
+          - name: REACT_APP_DOCUMENTATION_URL
+            value: "https://docs.3edges.com/space/3edgesDoc/2226389009/Bulk+Data+import"

@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dataloader-ui
+  namespace: 3edges
+spec:
+  ports:
+    - port: 3002
+  selector:
+    app: dataloader-ui
