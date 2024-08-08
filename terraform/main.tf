@@ -25,26 +25,20 @@ module "cluster" {
 }
 
 module "kubernetes" {
-  source                           = "./modules/kubernetes"
-  aws_eks_cluster_auth_token       = module.cluster.aws_eks_cluster_auth_token
-  aws_eks_cluster_auth_endpoint    = module.cluster.aws_eks_cluster_auth_endpoint
-  aws_eks_cluster_auth_certificate = module.cluster.aws_eks_cluster_auth_certificate
+  source                            = "./modules/kubernetes"
+  aws_eks_cluster_auth_token        = module.cluster.aws_eks_cluster_auth_token
+  aws_eks_cluster_auth_endpoint     = module.cluster.aws_eks_cluster_auth_endpoint
+  aws_eks_cluster_auth_certificate  = module.cluster.aws_eks_cluster_auth_certificate
+  aws_route53_zone_hosted_zone_id   = module.route53.aws_route53_zone_hosted_zone_id
+  aws_route53_zone_hosted_zone_name = module.route53.aws_route53_zone_hosted_zone_name
+}
+
+module "route53" {
+  source = "./modules/route53"
 }
 
 module "null_resource" {
   source         = "./modules/null_resource"
   eks_cluster    = module.cluster.aws_eks_cluster_eks_cluster
   eks_node_group = module.cluster.aws_eks_node_group_eks_node_group
-}
-
-resource "aws_route53_zone" "hosted_zone" {
-  name = "${var.hosted_zone}."
-}
-
-resource "aws_route53_record" "route53_cname" {
-  zone_id = aws_route53_zone.hosted_zone.id
-  name    = "www.${var.hosted_zone}"
-  type    = "CNAME"
-  ttl     = 300
-  records = ["ui.${var.hosted_zone}"]
 }

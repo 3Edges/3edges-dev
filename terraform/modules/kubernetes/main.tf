@@ -55,25 +55,6 @@ resource "helm_release" "cert_manager" {
   ]
 }
 
-# resource "null_resource" "cert_manager_annotate" {
-#   provisioner "local-exec" {
-#     command = <<EOF
-#       kubectl annotate crd challenges.acme.cert-manager.io meta.helm.sh/release-name=three-edges-cert-manager 2>/dev/null
-#       kubectl annotate crd challenges.acme.cert-manager.io meta.helm.sh/release-namespace=cert-manager 2>/dev/null
-#       kubectl label crd challenges.acme.cert-manager.io app.kubernetes.io/managed-by=Helm 2>/dev/null
-#       kubectl annotate crd certificaterequests.cert-manager.io meta.helm.sh/release-name=three-edges-cert-manager 2>/dev/null
-#       kubectl annotate crd certificaterequests.cert-manager.io meta.helm.sh/release-namespace=cert-manager 2>/dev/null
-#       kubectl label crd certificaterequests.cert-manager.io app.kubernetes.io/managed-by=Helm 2>/dev/null
-#       kubectl annotate crd certificates.cert-manager.io meta.helm.sh/release-name=three-edges-cert-manager 2>/dev/null
-#       kubectl annotate crd certificates.cert-manager.io meta.helm.sh/release-namespace=cert-manager 2>/dev/null
-#       kubectl label crd certificates.cert-manager.io app.kubernetes.io/managed-by=Helm 2>/dev/null
-#       kubectl annotate crd orders.cert-manager.io meta.helm.sh/release-name=three-edges-cert-manager 2>/dev/null
-#       kubectl annotate crd orders.cert-manager.io meta.helm.sh/release-namespace=cert-manager 2>/dev/null
-#       kubectl label crd orders.cert-manager.io app.kubernetes.io/managed-by=Helm 2>/dev/null
-#       EOF
-#   }
-# }
-
 resource "helm_release" "nginx_ingress" {
   name             = "nginx-ingress"
   repository       = "https://kubernetes.github.io/ingress-nginx"
@@ -82,51 +63,48 @@ resource "helm_release" "nginx_ingress" {
   namespace        = "ingress-nginx"
   create_namespace = true
 
-  values = [
-    <<EOF
-    controller:
-      service:
-        type: LoadBalancer
-    EOF
-  ]
-}
-
-resource "null_resource" "nginx_ingress_annotate" {
-  provisioner "local-exec" {
-    command = <<EOF
-      kubectl annotate ingressclass nginx meta.helm.sh/release-name=nginx-ingress 2>/dev/null
-      kubectl annotate ingressclass nginx meta.helm.sh/release-namespace=ingress-nginx 2>/dev/null
-      kubectl label ingressclass nginx app.kubernetes.io/managed-by=Helm 2>/dev/null
-      EOF
+  set {
+    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
+    value = "nlb"
   }
+
+  # set {
+  #   name = "controller.service.annotations.service.beta.kubernetes.io/aws-load-balancer-name"
+  #   value = "nginx_ingress_load_balancer"
+  # }
+
+  # set {
+  #   name  = "controller.service.annotations.external-dns.alpha.kubernetes.io/hostname"
+  #   value = var.aws_route53_zone_hosted_zone_name
+  # }
+
+  # values = [
+  #   <<EOF
+  #   controller:
+  #     service:
+  #       type: LoadBalancer
+  #   EOF
+  # ]
 }
-
-data "kubernetes_service" "nginx_ingress" {
-  metadata {
-    name      = "nginx-ingress-controller"
-    namespace = "kube-system"
-  }
-}
-
-output "nginx_ingress_load_balancer_hostname" {
-  # value = data.kubernetes_service.nginx_ingress.status[0].load_balancer.ingress[0].hostname
-  value = data.kubernetes_service.nginx_ingress.status
-}
-
-# output "nginx_ingress_load_balancer_ip" {
-#   value = data.kubernetes_service.nginx_ingress.status[0].load_balancer.ingress[0].ip
-# }
-
-
 
 # resource "aws_route53_record" "nginx_lb" {
-#   zone_id = aws_route53_zone.hosted_zone.id
-#   name    = aws_route53_zone.hosted_zone.name
+#   zone_id = var.aws_route53_zone_hosted_zone_id
+#   name    = "www.${var.aws_route53_zone_hosted_zone_name}"
+#   type    = "CNAME"
+#   ttl     = 300
+
+#   # records = [data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].hostname]
+#   records = [var.aws_route53_zone_hosted_zone_name]
+# }
+
+# resource "aws_route53_record" "nginx_ingress" {
+#   zone_id = var.aws_route53_zone_hosted_zone_id
+#   name    = var.aws_route53_zone_hosted_zone_name
 #   type    = "A"
 
 #   alias {
-#     name                   = data.aws_lb.nginx_ingress_lb[0].dns_name
-#     zone_id                = data.aws_lb.nginx_ingress_lb[0].zone_id
+#     zone_id                = data.aws_lb.nginx_load_balancer.zone_id
+#     name                   = data.aws_lb.nginx_load_balancer.dns_name
 #     evaluate_target_health = false
 #   }
 
@@ -138,52 +116,3 @@ output "nginx_ingress_load_balancer_hostname" {
 #   arn:aws:iam::356300141247:role/eks-node-role,
 #   arn:aws:iam::356300141247:role/gIDP_admin -> access policy: AmazonEKSClusterAdminPolicy
 # )
-
-# provider "http" {}
-
-# data "http" "cert_manager_yaml" {
-#   url = "https://github.com/jetstack/cert-manager/releases/download/v1.14.5/cert-manager.yaml"
-# }
-
-# locals {
-#   cert_manager_documents = [for doc in split("---", data.http.cert_manager_yaml.body) : yamldecode(doc) if doc != ""]
-# }
-
-# resource "kubernetes_manifest" "cert_manager" {
-#   for_each = { for i, doc in local.cert_manager_documents : i => doc }
-#   manifest = each.value
-# }
-
-# data "http" "ingress_nginx_yaml" {
-#   url = "https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/aws/deploy.yaml"
-# }
-
-# locals {
-#   ingress_nginx_documents = [for doc in split("---", data.http.ingress_nginx_yaml.body) : yamldecode(doc) if doc != ""]
-# }
-
-# resource "kubernetes_manifest" "ingress_nginx" {
-#   for_each = { for i, doc in local.ingress_nginx_documents : i => doc }
-#   manifest = each.value
-# }
-
-# resource "null_resource" "namespace_yaml" {
-#   provisioner "local-exec" {
-#     command = "kubectl replace -f ${path.module}/../yaml/namespace.yaml"
-#   }
-# }
-
-# provider "http" {}
-
-# data "http" "namespace_yaml" {
-#   url = "https://raw.githubusercontent.com/3Edges/3edges-dev/dev/yaml/namespace.yaml"
-# }
-
-# locals {
-#   namespace_documents = [for doc in split("---", data.http.namespace_yaml.body) : yamldecode(doc) if doc != ""]
-# }
-
-# resource "kubernetes_manifest" "namespace" {
-#   for_each = { for i, doc in local.namespace_documents : i => doc }
-#   manifest = each.value
-# }

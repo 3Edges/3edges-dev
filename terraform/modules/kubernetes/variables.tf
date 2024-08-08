@@ -14,3 +14,11 @@ variable "aws_eks_cluster_auth_endpoint" {
 variable "aws_eks_cluster_auth_certificate" {
   type = string
 }
+
+variable "aws_route53_zone_hosted_zone_id" {
+  type = string
+}
+
+variable "aws_route53_zone_hosted_zone_name" {
+  type = string
+}

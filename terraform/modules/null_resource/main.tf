@@ -1,5 +1,5 @@
 
-provider "local" {}
+# provider "local" {}
 
 # resource "null_resource" "namespace_yaml" {
 #   provisioner "local-exec" {
