@@ -52,3 +52,7 @@ variable "eks_route_table" {
 variable "eks_security_group" {
   default = "three-edges-eks-security-group"
 }
+
+variable "letsencrypt_email" {
+  default = "letsencrypt@server.com"
+}

@@ -7,17 +7,17 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: abotega@3edges.com
+    email: ${letsencrypt_email}
     privateKeySecretRef:
       name: cluster-issuer-3edges
     solvers:
       - selector:
           dnsZones:
-            - "3edges.co"
-            - "*.3edges.co"
+            - "${hosted_zone}"
+            - "*.${hosted_zone}"
         dns01:
           route53:
-            region: ca-west-1
+            region: ${aws_region}
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -30,5 +30,5 @@ spec:
     name: cluster-issuer-3edges
     kind: ClusterIssuer
   dnsNames:
-    - "3edges.co"
-    - "*.3edges.co"
+    - "${hosted_zone}"
+    - "*.${hosted_zone}"

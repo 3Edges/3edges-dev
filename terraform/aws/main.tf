@@ -39,15 +39,12 @@ module "kubernetes" {
   aws_route53_zone_hosted_zone_id   = module.route53.aws_route53_zone_hosted_zone_id
   aws_route53_zone_hosted_zone_name = module.route53.aws_route53_zone_hosted_zone_name
   arn_node_role                     = var.arn_node_role
+  letsencrypt_email                 = var.letsencrypt_email
+  aws_region                        = var.aws_region
+  hosted_zone                       = var.hosted_zone
 }
 
 module "route53" {
   source      = "./modules/route53"
   hosted_zone = var.hosted_zone
-}
-
-module "null_resource" {
-  source         = "./modules/null_resource"
-  eks_cluster    = module.cluster.aws_eks_cluster_eks_cluster
-  eks_node_group = module.cluster.aws_eks_node_group_eks_node_group
 }

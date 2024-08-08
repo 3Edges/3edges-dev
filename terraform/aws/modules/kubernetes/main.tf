@@ -124,3 +124,24 @@ resource "aws_route53_record" "ingress_nginx" {
 #   arn:aws:iam::356300141247:role/eks-node-role,
 #   arn:aws:iam::356300141247:role/gIDP_admin -> access policy: AmazonEKSClusterAdminPolicy
 # )
+
+
+resource "kubernetes_manifest" "namespace" {
+  manifest = yamldecode(file("${path.module}/../../../../k8s/3edges/namespace.yaml"))
+}
+
+data "template_file" "certificate" {
+  template = file("${path.module}/../../../../k8s/3edges/certificate.yaml")
+
+  vars = {
+    letsencrypt_email = var.letsencrypt_email
+    aws_region        = var.aws_region
+    hosted_zone       = var.hosted_zone
+  }
+}
+
+resource "null_resource" "certificate" {
+  provisioner "local-exec" {
+    command = "echo '${data.template_file.certificate.rendered}' | kubectl apply -f -"
+  }
+}
