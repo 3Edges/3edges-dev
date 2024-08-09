@@ -13,3 +13,7 @@ output "ingress_nginx_load_balancer_arn" {
 output "load_balancer_hostname" {
   value = local.load_balancer_hostname
 }
+
+output "k8s_namespace" {
+  value = kubernetes_namespace.namespace.metadata[0].name
+}

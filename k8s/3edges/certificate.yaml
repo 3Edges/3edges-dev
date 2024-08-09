@@ -1,25 +1,5 @@
 ---
 apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: cluster-issuer-3edges
-  namespace: 3edges
-spec:
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
-    email: ${letsencrypt_email}
-    privateKeySecretRef:
-      name: cluster-issuer-3edges
-    solvers:
-      - selector:
-          dnsZones:
-            - "${hosted_zone}"
-            - "*.${hosted_zone}"
-        dns01:
-          route53:
-            region: ${aws_region}
----
-apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: letsencrypt-wildcard

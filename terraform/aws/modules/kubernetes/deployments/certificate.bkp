@@ -1,0 +1,59 @@
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+}
+
+resource "kubernetes_manifest" "cluster_issuer_3edges" {
+  manifest = {
+    apiVersion = "cert-manager.io/v1"
+    kind       = "ClusterIssuer"
+    metadata = {
+      name = "cluster-issuer-3edges"
+    }
+    spec = {
+      acme = {
+        email = "letsencrypt@${var.hosted_zone}"
+        privateKeySecretRef = {
+          name = "cluster-issuer-3edges"
+        }
+        server = "https://acme-v02.api.letsencrypt.org/directory"
+        solvers = [
+          {
+            dns01 = {
+              route53 = {
+                region = var.aws_region
+              }
+            }
+            selector = {
+              dnsZones = [
+                var.hosted_zone,
+                "*.${var.hosted_zone}"
+              ]
+            }
+          },
+        ]
+      }
+    }
+  }
+}
+
+resource "kubernetes_manifest" "letsencrypt_wildcard" {
+  manifest = {
+    apiVersion = "cert-manager.io/v1"
+    kind       = "Certificate"
+    metadata = {
+      name      = "letsencrypt-wildcard"
+      namespace = "3edges"
+    }
+    spec = {
+      dnsNames = [
+        var.hosted_zone,
+        "*.${var.hosted_zone}",
+      ]
+      issuerRef = {
+        kind = "ClusterIssuer"
+        name = "cluster-issuer-3edges"
+      }
+      secretName = "letsencrypt-wildcard-secret"
+    }
+  }
+}

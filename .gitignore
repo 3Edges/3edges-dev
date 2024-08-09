@@ -3,3 +3,5 @@ terraform.*
 !terraform.tfvars
 plan.bkp
 localhost/.env
+.vscode
+.git

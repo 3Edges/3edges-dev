@@ -1,0 +1,30 @@
+resource "kubernetes_ingress" "my_ingress" {
+  wait_for_load_balancer = true
+
+  metadata {
+    name      = "my-ingress"
+    namespace = "3edges"
+  }
+
+  spec {
+    rule {
+      host = "abotega.com"
+      http {
+        path {
+          path = "/"
+          backend {
+            service_name = kubernetes_service.my_service.metadata[0].name
+            service_port = 80
+          }
+        }
+      }
+    }
+
+    tls {
+      hosts       = ["abotega.com", "*.abotega.com"]
+      secret_name = "letsencrypt-wildcard-secret"
+    }
+  }
+
+  depends_on = [var.k8s_namespace]
+}

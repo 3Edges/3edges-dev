@@ -44,15 +44,14 @@ resource "helm_release" "cert_manager" {
   name             = "cert-manager"
   repository       = "https://charts.jetstack.io"
   chart            = "cert-manager"
-  version          = "v1.14.5"
+  version          = "v1.12.3"
   namespace        = "cert-manager"
   create_namespace = true
 
-  values = [
-    <<EOF
-    installCRDs: true
-    EOF
-  ]
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
 }
 
 resource "helm_release" "ingress_nginx" {
@@ -68,13 +67,10 @@ resource "helm_release" "ingress_nginx" {
     value = "nlb"
   }
 
-  values = [
-    <<EOF
-    controller:
-      service:
-        type: LoadBalancer
-    EOF
-  ]
+  set {
+    name  = "controller.service.type"
+    value = "LoadBalancer"
+  }
 }
 
 resource "aws_route53_record" "idp_lb" {
@@ -119,29 +115,27 @@ resource "aws_route53_record" "ingress_nginx" {
   depends_on = [helm_release.ingress_nginx]
 }
 
+# resource "kubernetes_manifest" "namespace" {
+#   manifest = yamldecode(file("${path.module}/../../../../k8s/3edges/namespace.yaml"))
+# }
 
-# Access (IAM access entries) needs to be (
-#   arn:aws:iam::356300141247:role/eks-node-role,
-#   arn:aws:iam::356300141247:role/gIDP_admin -> access policy: AmazonEKSClusterAdminPolicy
-# )
-
-
-resource "kubernetes_manifest" "namespace" {
-  manifest = yamldecode(file("${path.module}/../../../../k8s/3edges/namespace.yaml"))
-}
-
-data "template_file" "certificate" {
-  template = file("${path.module}/../../../../k8s/3edges/certificate.yaml")
-
-  vars = {
-    letsencrypt_email = var.letsencrypt_email
-    aws_region        = var.aws_region
-    hosted_zone       = var.hosted_zone
+resource "kubernetes_namespace" "namespace" {
+  metadata {
+    name = "3edges"
   }
 }
 
-resource "null_resource" "certificate" {
-  provisioner "local-exec" {
-    command = "echo '${data.template_file.certificate.rendered}' | kubectl apply -f -"
-  }
-}
+# data "template_file" "certificate" {
+#   template = file("${path.module}/../../../../k8s/3edges/certificate.yaml")
+
+#   vars = {
+#     aws_region  = var.aws_region
+#     hosted_zone = var.hosted_zone
+#   }
+# }
+
+# resource "null_resource" "certificate" {
+#   provisioner "local-exec" {
+#     command = "echo '${data.template_file.certificate.rendered}' | kubectl apply -f -"
+#   }
+# }
