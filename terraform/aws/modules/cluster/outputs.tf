@@ -34,3 +34,7 @@ output "aws_eks_cluster_eks_cluster_name" {
 output "aws_eks_node_group_eks_node_group" {
   value = aws_eks_node_group.eks_node_group
 }
+
+output "aws_eks_cluster_eks_cluster_identity" {
+  value = aws_eks_cluster.eks_cluster.identity
+}

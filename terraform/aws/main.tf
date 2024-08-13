@@ -32,17 +32,18 @@ module "cluster" {
 }
 
 module "kubernetes" {
-  source                            = "./modules/kubernetes"
-  aws_eks_cluster_auth_token        = module.cluster.aws_eks_cluster_auth_token
-  aws_eks_cluster_auth_endpoint     = module.cluster.aws_eks_cluster_auth_endpoint
-  aws_eks_cluster_auth_certificate  = module.cluster.aws_eks_cluster_auth_certificate
-  aws_eks_cluster_eks_cluster_id    = module.cluster.aws_eks_cluster_eks_cluster_id
-  aws_eks_cluster_eks_cluster_name  = module.cluster.aws_eks_cluster_eks_cluster_name
-  aws_route53_zone_hosted_zone_id   = module.route53.aws_route53_zone_hosted_zone_id
-  aws_route53_zone_hosted_zone_name = module.route53.aws_route53_zone_hosted_zone_name
-  arn_node_role                     = var.arn_node_role
-  aws_region                        = var.aws_region
-  hosted_zone                       = var.hosted_zone
+  source                               = "./modules/kubernetes"
+  aws_eks_cluster_auth_token           = module.cluster.aws_eks_cluster_auth_token
+  aws_eks_cluster_auth_endpoint        = module.cluster.aws_eks_cluster_auth_endpoint
+  aws_eks_cluster_auth_certificate     = module.cluster.aws_eks_cluster_auth_certificate
+  aws_eks_cluster_eks_cluster_id       = module.cluster.aws_eks_cluster_eks_cluster_id
+  aws_eks_cluster_eks_cluster_name     = module.cluster.aws_eks_cluster_eks_cluster_name
+  aws_eks_cluster_eks_cluster_identity = module.cluster.aws_eks_cluster_eks_cluster_identity
+  aws_route53_zone_hosted_zone_id      = module.route53.aws_route53_zone_hosted_zone_id
+  aws_route53_zone_hosted_zone_name    = module.route53.aws_route53_zone_hosted_zone_name
+  aws_region                           = var.aws_region
+  hosted_zone                          = var.hosted_zone
+  eks_node_role                        = var.eks_node_role
 }
 
 module "route53" {

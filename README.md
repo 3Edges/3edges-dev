@@ -5,7 +5,7 @@
 
 2) You must change those properties before start:
 
-        terraform\terraform.tfvars
+        terraform\variables.tf
 
 3) Command lines inside "terraform" directory:
 

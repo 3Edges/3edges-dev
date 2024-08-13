@@ -27,5 +27,5 @@ output "extract_oidc_provider_id" {
 }
 
 output "aws_eks_cluster_identity_issuer" {
-  value = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
+  value = var.aws_eks_cluster_eks_cluster_identity[0].oidc[0].issuer
 }

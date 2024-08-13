@@ -17,10 +17,6 @@ variable "hosted_zone" {
   default = "abotega.com"
 }
 
-variable "arn_node_role" {
-  default = "arn:aws:iam::356300141247:role/three-edges-eks-node-role"
-}
-
 variable "eks_role" {
   default = "three-edges-eks-role"
 }

@@ -61,26 +61,3 @@ resource "aws_iam_role_policy_attachment" "route53_full_access" {
   role       = aws_iam_role.eks_node_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
 }
-
-resource "aws_iam_policy" "acm_policy" {
-  name        = "ACMPolicy"
-  description = "Policy to allow ACM certificate requests"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "acm:DeleteCertificate",
-          "acm:ListTagsForCertificate",
-          "acm:RequestCertificate",
-          "acm:ListCertificates",
-          "acm:DescribeCertificate",
-          "acm:GetCertificate"
-        ]
-        Resource = "*"
-      }
-    ]
-  })
-}

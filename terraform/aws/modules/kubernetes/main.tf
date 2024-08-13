@@ -13,15 +13,15 @@ resource "kubernetes_config_map" "aws_auth" {
 
   data = {
     mapRoles = jsonencode([
+      # {
+      #   rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/gIDP_admin"
+      #   username = "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/gIDP_admin/{{SessionName}}"
+      #   groups = [
+      #     "system:masters"
+      #   ]
+      # },
       {
-        rolearn  = "arn:aws:iam::356300141247:role/gIDP_admin"
-        username = "arn:aws:sts::356300141247:assumed-role/gIDP_admin/{{SessionName}}"
-        groups = [
-          "system:masters"
-        ]
-      },
-      {
-        rolearn  = var.arn_node_role
+        rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.eks_node_role}"
         username = "system:node:{{EC2PrivateDNSName}}"
         groups = [
           "system:nodes",
@@ -40,12 +40,8 @@ provider "helm" {
   }
 }
 
-data "aws_eks_cluster" "eks_cluster" {
-  name = var.aws_eks_cluster_eks_cluster_name
-}
-
 locals {
-  oidc_issuer = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
+  oidc_issuer = var.aws_eks_cluster_eks_cluster_identity[0].oidc[0].issuer
 }
 
 locals {
