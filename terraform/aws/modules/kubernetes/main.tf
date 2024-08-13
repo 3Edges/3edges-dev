@@ -121,7 +121,7 @@ module "deployments" {
   certificate_arn                   = aws_acm_certificate.acm_certificate.arn
   hosted_zone                       = var.hosted_zone
   aws_region                        = var.aws_region
-  aws_route53_zone_selected_zone_id = data.aws_route53_zone.selected_zone.zone_id
+  aws_route53_zone_hosted_zone_id = var.aws_route53_zone_hosted_zone_id
 }
 
 resource "aws_acm_certificate" "acm_certificate" {
@@ -138,7 +138,7 @@ resource "aws_route53_record" "cert_validation" {
       name    = dvo.resource_record_name
       type    = dvo.resource_record_type
       record  = dvo.resource_record_value
-      zone_id = data.aws_route53_zone.selected_zone.zone_id
+      zone_id = var.aws_route53_zone_hosted_zone_id
     }
   }
 
