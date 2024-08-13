@@ -21,3 +21,15 @@ output "aws_route53_zone_hosted_zone_id" {
 output "aws_route53_zone_hosted_zone_name" {
   value = module.route53.aws_route53_zone_hosted_zone_name
 }
+
+output "aws_caller_identity_account_id" {
+  value = module.kubernetes.aws_caller_identity_account_id
+}
+
+output "extract_oidc_provider_id" {
+  value = module.kubernetes.extract_oidc_provider_id
+}
+
+output "aws_eks_cluster_identity_issuer" {
+  value = module.kubernetes.aws_eks_cluster_identity_issuer
+}

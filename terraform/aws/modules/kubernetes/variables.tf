@@ -1,5 +1,9 @@
 variable "arn_node_role" {}
 
+variable "aws_eks_cluster_eks_cluster_id" {}
+
+variable "aws_eks_cluster_eks_cluster_name" {}
+
 variable "aws_eks_cluster_auth_token" {}
 
 variable "aws_eks_cluster_auth_endpoint" {}

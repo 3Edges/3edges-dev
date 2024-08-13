@@ -1,21 +1,41 @@
-# resource "kubernetes_service" "my_service" {
-#   metadata {
-#     name      = "my-service"
-#     namespace = "3edges"
-#   }
+resource "kubernetes_service" "my_frontend_service" {
+  metadata {
+    name      = "frontend"
+    namespace = "3edges"
+  }
 
-#   spec {
-#     selector = {
-#       app = kubernetes_pod.my_pod.metadata[0].name
-#     }
+  spec {
+    selector = {
+      app = kubernetes_deployment.my_frontend_pod.metadata[0].name
+    }
 
-#     port {
-#       port        = 80
-#       target_port = 80
-#     }
+    port {
+      port = 80
+    }
 
-#     type = "ClusterIP"
-#   }
+    type = "ClusterIP"
+  }
 
-#   depends_on = [var.k8s_namespace]
-# }
+  depends_on = [var.k8s_namespace]
+}
+
+resource "kubernetes_service" "my_backend_service" {
+  metadata {
+    name      = "backend"
+    namespace = "3edges"
+  }
+
+  spec {
+    selector = {
+      app = kubernetes_deployment.my_backend_pod.metadata[0].name
+    }
+
+    port {
+      port = 3001
+    }
+
+    type = "ClusterIP"
+  }
+
+  depends_on = [var.k8s_namespace]
+}

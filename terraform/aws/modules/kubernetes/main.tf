@@ -40,18 +40,16 @@ provider "helm" {
   }
 }
 
-resource "helm_release" "cert_manager" {
-  name             = "cert-manager"
-  repository       = "https://charts.jetstack.io"
-  chart            = "cert-manager"
-  version          = "v1.12.3"
-  namespace        = "cert-manager"
-  create_namespace = true
+data "aws_eks_cluster" "eks_cluster" {
+  name = var.aws_eks_cluster_eks_cluster_name
+}
 
-  set {
-    name  = "installCRDs"
-    value = "true"
-  }
+locals {
+  oidc_issuer = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
+}
+
+locals {
+  split_oidc_issuer = split("id/", local.oidc_issuer)
 }
 
 resource "helm_release" "ingress_nginx" {
@@ -115,27 +113,42 @@ resource "aws_route53_record" "ingress_nginx" {
   depends_on = [helm_release.ingress_nginx]
 }
 
-# resource "kubernetes_manifest" "namespace" {
-#   manifest = yamldecode(file("${path.module}/../../../../k8s/3edges/namespace.yaml"))
-# }
-
 resource "kubernetes_namespace" "namespace" {
   metadata {
     name = "3edges"
   }
 }
 
-# data "template_file" "certificate" {
-#   template = file("${path.module}/../../../../k8s/3edges/certificate.yaml")
+module "deployments" {
+  source                            = "./deployments"
+  k8s_namespace                     = kubernetes_namespace.namespace
+  certificate_arn                   = aws_acm_certificate.acm_certificate.arn
+  hosted_zone                       = var.hosted_zone
+  aws_region                        = var.aws_region
+  aws_route53_zone_selected_zone_id = data.aws_route53_zone.selected_zone.zone_id
+}
 
-#   vars = {
-#     aws_region  = var.aws_region
-#     hosted_zone = var.hosted_zone
-#   }
-# }
+resource "aws_acm_certificate" "acm_certificate" {
+  domain_name       = "*.${var.hosted_zone}"
+  validation_method = "DNS"
 
-# resource "null_resource" "certificate" {
-#   provisioner "local-exec" {
-#     command = "echo '${data.template_file.certificate.rendered}' | kubectl apply -f -"
-#   }
-# }
+  subject_alternative_names = []
+}
+
+resource "aws_route53_record" "cert_validation" {
+  for_each = {
+    for dvo in aws_acm_certificate.acm_certificate.domain_validation_options :
+    dvo.domain_name => {
+      name    = dvo.resource_record_name
+      type    = dvo.resource_record_type
+      record  = dvo.resource_record_value
+      zone_id = data.aws_route53_zone.selected_zone.zone_id
+    }
+  }
+
+  name    = each.value.name
+  type    = each.value.type
+  zone_id = each.value.zone_id
+  records = [each.value.record]
+  ttl     = 60
+}

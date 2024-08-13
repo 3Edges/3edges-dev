@@ -16,3 +16,10 @@ locals {
 data "aws_lb" "nginx_load_balancer" {
   name = local.split_hostname[0]
 }
+
+data "aws_route53_zone" "selected_zone" {
+  name         = "${var.hosted_zone}."
+  private_zone = false
+}
+
+data "aws_caller_identity" "current" {}
