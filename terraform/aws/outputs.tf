@@ -34,10 +34,6 @@ output "aws_eks_cluster_identity_issuer" {
   value = module.kubernetes.aws_eks_cluster_identity_issuer
 }
 
-# output "aws_acm_certificate_acm_certificate_arn" {
-#   value = module.kubernetes.aws_acm_certificate_acm_certificate_arn
-# }
-
 output "hosted_zone" {
   value = var.hosted_zone
 }

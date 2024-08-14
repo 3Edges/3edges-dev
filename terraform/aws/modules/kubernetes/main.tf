@@ -119,36 +119,10 @@ module "deployments" {
   source        = "./deployments"
   k8s_namespace = kubernetes_namespace.namespace
   cert_manager  = helm_release.cert_manager.name
-  # certificate_arn                   = aws_acm_certificate.acm_certificate.arn
   hosted_zone                     = var.hosted_zone
   aws_region                      = var.aws_region
   aws_route53_zone_hosted_zone_id = var.aws_route53_zone_hosted_zone_id
 }
-
-# resource "aws_acm_certificate" "acm_certificate" {
-#   domain_name       = "*.${var.hosted_zone}"
-#   validation_method = "DNS"
-
-#   subject_alternative_names = [var.hosted_zone]
-# }
-
-# resource "aws_route53_record" "cert_validation" {
-#   for_each = {
-#     for dvo in aws_acm_certificate.acm_certificate.domain_validation_options :
-#     dvo.domain_name => {
-#       name    = dvo.resource_record_name
-#       type    = dvo.resource_record_type
-#       record  = dvo.resource_record_value
-#       zone_id = var.aws_route53_zone_hosted_zone_id
-#     }
-#   }
-
-#   name    = each.value.name
-#   type    = each.value.type
-#   zone_id = each.value.zone_id
-#   records = [each.value.record]
-#   ttl     = 60
-# }
 
 resource "helm_release" "cert_manager" {
   name       = "cert-manager"
