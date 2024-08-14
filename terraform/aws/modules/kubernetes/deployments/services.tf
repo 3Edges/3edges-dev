@@ -1,7 +1,7 @@
 resource "kubernetes_service" "my_frontend_service" {
   metadata {
     name      = "frontend"
-    namespace = "3edges"
+    namespace = var.k8s_namespace
   }
 
   spec {
@@ -22,7 +22,7 @@ resource "kubernetes_service" "my_frontend_service" {
 resource "kubernetes_service" "my_backend_service" {
   metadata {
     name      = "backend"
-    namespace = "3edges"
+    namespace = var.k8s_namespace
   }
 
   spec {

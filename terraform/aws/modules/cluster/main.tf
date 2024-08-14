@@ -48,6 +48,7 @@ resource "aws_eks_addon" "kube_proxy" {
   addon_version = "v1.30.0-eksbuild.3"
 
   depends_on = [
+    aws_eks_addon.vpc_cni,
     aws_eks_cluster.eks_cluster,
     aws_eks_node_group.eks_node_group
   ]
@@ -59,6 +60,7 @@ resource "aws_eks_addon" "eks_pod_identity" {
   addon_version = "v1.3.0-eksbuild.1"
 
   depends_on = [
+    aws_eks_addon.kube_proxy,
     aws_eks_cluster.eks_cluster,
     aws_eks_node_group.eks_node_group
   ]
@@ -70,6 +72,7 @@ resource "aws_eks_addon" "coredns" {
   addon_version = "v1.11.1-eksbuild.9"
 
   depends_on = [
+    aws_eks_addon.eks_pod_identity,
     aws_eks_cluster.eks_cluster,
     aws_eks_node_group.eks_node_group
   ]

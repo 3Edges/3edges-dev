@@ -1,16 +1,16 @@
-resource "kubernetes_manifest" "my_cluster_issuer" {
+resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
   manifest = {
     apiVersion = "cert-manager.io/v1"
     kind       = "ClusterIssuer"
     metadata = {
-      name = "my-cluster-issuer"
+      name = "cert-manager-cluster-issuer"
     }
     spec = {
       acme = {
         server = "https://acme-v02.api.letsencrypt.org/directory"
         email  = "letsencrypt@${var.hosted_zone}"
         privateKeySecretRef = {
-          name = "my-cluster-issuer"
+          name = "cert-manager-cluster-issuer"
         }
         solvers = [
           {
@@ -32,21 +32,25 @@ resource "kubernetes_manifest" "my_cluster_issuer" {
   depends_on = [var.cert_manager]
 }
 
-resource "kubernetes_manifest" "my_certificate" {
+resource "kubernetes_manifest" "letsencrypt_wildcard" {
   manifest = {
     apiVersion = "cert-manager.io/v1"
     kind       = "Certificate"
+
     metadata = {
-      name      = "my-certificate"
-      namespace = "3edges"
+      name      = "letsencrypt-wildcard"
+      namespace = var.k8s_namespace
     }
+
     spec = {
-      secretName = "certificate-tls"
       issuerRef = {
-        name = "my-cluster-issuer"
         kind = "ClusterIssuer"
+        name = "cert-manager-cluster-issuer"
       }
-      dnsNames = [var.hosted_zone, "*.${var.hosted_zone}"]
+      secretName = "letsencrypt-wildcard-secret"
+      dnsNames   = [var.hosted_zone, "*.${var.hosted_zone}"]
     }
   }
+
+  depends_on = [kubernetes_manifest.cert_manager_cluster_issuer]
 }

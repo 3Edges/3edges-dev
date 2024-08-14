@@ -18,4 +18,6 @@ variable "hosted_zone" {}
 
 variable "eks_node_role" {}
 
-variable "aws_eks_cluster_eks_cluster_identity" {}
+variable "aws_caller_identity_id" {}
+
+variable "aws_eks_node_group_eks_node_group" {}

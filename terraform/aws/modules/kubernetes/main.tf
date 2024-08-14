@@ -14,14 +14,14 @@ resource "kubernetes_config_map" "aws_auth" {
   data = {
     mapRoles = jsonencode([
       {
-        rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/gIDP_admin"
+        rolearn  = "arn:aws:iam::${var.aws_caller_identity_id}:role/gIDP_admin"
         username = "gIDP_admin"
         groups = [
           "system:masters"
         ]
       },
       {
-        rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.eks_node_role}"
+        rolearn  = "arn:aws:iam::${var.aws_caller_identity_id}:role/${var.eks_node_role}"
         username = "system:node:{{EC2PrivateDNSName}}"
         groups = [
           "system:nodes",
@@ -40,21 +40,30 @@ provider "helm" {
   }
 }
 
-locals {
-  oidc_issuer = var.aws_eks_cluster_eks_cluster_identity[0].oidc[0].issuer
+resource "kubernetes_namespace" "namespace" {
+  metadata {
+    name = "3edges"
+  }
 }
 
-locals {
-  split_oidc_issuer = split("id/", local.oidc_issuer)
+resource "kubernetes_namespace" "cert_manager_namespace" {
+  metadata {
+    name = "cert-manager"
+  }
+}
+
+resource "kubernetes_namespace" "ingress_nginx_namespace" {
+  metadata {
+    name = "ingress-nginx"
+  }
 }
 
 resource "helm_release" "ingress_nginx" {
-  name             = "ingress-nginx"
-  repository       = "https://kubernetes.github.io/ingress-nginx"
-  chart            = "ingress-nginx"
-  version          = "4.11.1"
-  namespace        = "ingress-nginx"
-  create_namespace = true
+  name       = "ingress-nginx"
+  chart      = "ingress-nginx"
+  namespace  = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  version    = "4.11.1"
 
   set {
     name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
@@ -62,9 +71,16 @@ resource "helm_release" "ingress_nginx" {
   }
 
   set {
+    name  = "controller.admissionWebhooks.enabled"
+    value = "false"
+  }
+
+  set {
     name  = "controller.service.type"
     value = "LoadBalancer"
   }
+
+  depends_on = [kubernetes_namespace.ingress_nginx_namespace, var.aws_eks_node_group_eks_node_group]
 }
 
 resource "aws_route53_record" "idp_lb" {
@@ -109,19 +125,61 @@ resource "aws_route53_record" "ingress_nginx" {
   depends_on = [helm_release.ingress_nginx]
 }
 
-resource "kubernetes_namespace" "namespace" {
-  metadata {
-    name = "3edges"
-  }
+resource "aws_iam_role" "cert_manager_role" {
+  name = "cert-manager-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = "arn:aws:iam::${var.aws_caller_identity_id}:oidc-provider/oidc.eks.${var.aws_region}.amazonaws.com/id/${local.split_hostname[1]}"
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "oidc.eks.${var.aws_region}.amazonaws.com/id/${local.split_hostname[1]}:sub" = "system:serviceaccount:cert-manager:cert-manager"
+          }
+        }
+      }
+    ]
+  })
 }
 
-module "deployments" {
-  source                          = "./deployments"
-  k8s_namespace                   = kubernetes_namespace.namespace
-  cert_manager                    = helm_release.cert_manager.name
-  hosted_zone                     = var.hosted_zone
-  aws_region                      = var.aws_region
-  aws_route53_zone_hosted_zone_id = var.aws_route53_zone_hosted_zone_id
+resource "aws_iam_role_policy_attachment" "cert_manager_policy_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
+  role       = aws_iam_role.cert_manager_role.name
+}
+
+resource "aws_iam_role_policy" "cert_manager_policy" {
+  name = "cert-manager-policy"
+  role = aws_iam_role.cert_manager_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "route53:ChangeResourceRecordSets",
+          "route53:ListResourceRecordSets",
+          "route53:ListHostedZones"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "kubernetes_service_account" "cert_manager" {
+  metadata {
+    name = "cert-manager"
+
+    annotations = {
+      "eks.amazonaws.com/role-arn" = aws_iam_role.cert_manager_role.arn
+    }
+  }
 }
 
 resource "helm_release" "cert_manager" {
@@ -141,72 +199,19 @@ resource "helm_release" "cert_manager" {
     value = "false"
   }
 
-  set {
-    name  = "serviceAccount.name"
-    value = "cert-manager"
-  }
-
-  set {
-    name  = "rbac.create"
-    value = "false"
-  }
-
-  create_namespace = true
+  depends_on = [
+    kubernetes_namespace.cert_manager_namespace,
+    helm_release.ingress_nginx
+  ]
 }
 
-resource "aws_iam_role" "cert_manager_role" {
-  name = "cert-manager-role"
+module "deployments" {
+  source                          = "./deployments"
+  k8s_namespace                   = kubernetes_namespace.namespace.metadata[0].name
+  cert_manager                    = helm_release.cert_manager.name
+  hosted_zone                     = var.hosted_zone
+  aws_region                      = var.aws_region
+  aws_route53_zone_hosted_zone_id = var.aws_route53_zone_hosted_zone_id
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          Federated = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.ca-west-1.amazonaws.com/id/${local.split_oidc_issuer[1]}"
-        },
-        Action = "sts:AssumeRoleWithWebIdentity",
-        Condition = {
-          StringEquals = {
-            "oidc.eks.ca-west-1.amazonaws.com/id/${local.split_oidc_issuer[1]}:sub" = "system:serviceaccount:cert-manager:cert-manager"
-          }
-        }
-      }
-    ]
-  })
-}
-
-
-resource "aws_iam_role_policy_attachment" "cert_manager_policy_attachment" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
-  role       = aws_iam_role.cert_manager_role.name
-}
-
-resource "kubernetes_service_account" "cert_manager" {
-  metadata {
-    name      = "cert-manager"
-    namespace = "cert-manager"
-    annotations = {
-      "eks.amazonaws.com/role-arn" = aws_iam_role.cert_manager_role.arn
-    }
-  }
-}
-
-resource "aws_iam_role_policy" "cert_manager_policy" {
-  name = "cert-manager-policy"
-  role = aws_iam_role.cert_manager_role.id
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "route53:ChangeResourceRecordSets",
-          "route53:ListResourceRecordSets",
-          "route53:ListHostedZones"
-        ],
-        Resource = "*"
-      }
-    ]
-  })
+  depends_on = [helm_release.cert_manager]
 }
