@@ -4,7 +4,7 @@ resource "kubernetes_ingress_v1" "my_ingress" {
     namespace = "3edges"
 
     annotations = {
-      "cert-manager.io/cluster-issuer"           = "my-cluster-issuer"
+      "cert-manager.io/cluster-issuer" = "my-cluster-issuer"
     }
   }
 

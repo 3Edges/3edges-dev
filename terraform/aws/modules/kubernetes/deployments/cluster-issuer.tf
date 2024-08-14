@@ -29,7 +29,7 @@ resource "kubernetes_manifest" "my_cluster_issuer" {
     }
   }
 
-  depends_on = [ var.cert_manager ]
+  depends_on = [var.cert_manager]
 }
 
 resource "kubernetes_manifest" "my_certificate" {

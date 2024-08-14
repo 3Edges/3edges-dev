@@ -116,9 +116,9 @@ resource "kubernetes_namespace" "namespace" {
 }
 
 module "deployments" {
-  source        = "./deployments"
-  k8s_namespace = kubernetes_namespace.namespace
-  cert_manager  = helm_release.cert_manager.name
+  source                          = "./deployments"
+  k8s_namespace                   = kubernetes_namespace.namespace
+  cert_manager                    = helm_release.cert_manager.name
   hosted_zone                     = var.hosted_zone
   aws_region                      = var.aws_region
   aws_route53_zone_hosted_zone_id = var.aws_route53_zone_hosted_zone_id
@@ -179,7 +179,7 @@ resource "aws_iam_role" "cert_manager_role" {
 
 resource "aws_iam_role_policy_attachment" "cert_manager_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
-  role     = aws_iam_role.cert_manager_role.name
+  role       = aws_iam_role.cert_manager_role.name
 }
 
 resource "kubernetes_service_account" "cert_manager" {
@@ -193,8 +193,8 @@ resource "kubernetes_service_account" "cert_manager" {
 }
 
 resource "aws_iam_role_policy" "cert_manager_policy" {
-  name   = "cert-manager-policy"
-  role   = aws_iam_role.cert_manager_role.id
+  name = "cert-manager-policy"
+  role = aws_iam_role.cert_manager_role.id
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
