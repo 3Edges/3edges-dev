@@ -13,13 +13,13 @@ resource "kubernetes_config_map" "aws_auth" {
 
   data = {
     mapRoles = jsonencode([
-      # {
-      #   rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/gIDP_admin"
-      #   username = "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/gIDP_admin/{{SessionName}}"
-      #   groups = [
-      #     "system:masters"
-      #   ]
-      # },
+      {
+        rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/gIDP_admin"
+        username = "gIDP_admin"
+        groups = [
+          "system:masters"
+        ]
+      },
       {
         rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.eks_node_role}"
         username = "system:node:{{EC2PrivateDNSName}}"
@@ -52,7 +52,7 @@ resource "helm_release" "ingress_nginx" {
   name             = "ingress-nginx"
   repository       = "https://kubernetes.github.io/ingress-nginx"
   chart            = "ingress-nginx"
-  version          = "4.0.6"
+  version          = "4.11.1"
   namespace        = "ingress-nginx"
   create_namespace = true
 
@@ -116,35 +116,123 @@ resource "kubernetes_namespace" "namespace" {
 }
 
 module "deployments" {
-  source                            = "./deployments"
-  k8s_namespace                     = kubernetes_namespace.namespace
-  certificate_arn                   = aws_acm_certificate.acm_certificate.arn
-  hosted_zone                       = var.hosted_zone
-  aws_region                        = var.aws_region
+  source        = "./deployments"
+  k8s_namespace = kubernetes_namespace.namespace
+  cert_manager  = helm_release.cert_manager.name
+  # certificate_arn                   = aws_acm_certificate.acm_certificate.arn
+  hosted_zone                     = var.hosted_zone
+  aws_region                      = var.aws_region
   aws_route53_zone_hosted_zone_id = var.aws_route53_zone_hosted_zone_id
 }
 
-resource "aws_acm_certificate" "acm_certificate" {
-  domain_name       = "*.${var.hosted_zone}"
-  validation_method = "DNS"
+# resource "aws_acm_certificate" "acm_certificate" {
+#   domain_name       = "*.${var.hosted_zone}"
+#   validation_method = "DNS"
 
-  subject_alternative_names = []
-}
+#   subject_alternative_names = [var.hosted_zone]
+# }
 
-resource "aws_route53_record" "cert_validation" {
-  for_each = {
-    for dvo in aws_acm_certificate.acm_certificate.domain_validation_options :
-    dvo.domain_name => {
-      name    = dvo.resource_record_name
-      type    = dvo.resource_record_type
-      record  = dvo.resource_record_value
-      zone_id = var.aws_route53_zone_hosted_zone_id
-    }
+# resource "aws_route53_record" "cert_validation" {
+#   for_each = {
+#     for dvo in aws_acm_certificate.acm_certificate.domain_validation_options :
+#     dvo.domain_name => {
+#       name    = dvo.resource_record_name
+#       type    = dvo.resource_record_type
+#       record  = dvo.resource_record_value
+#       zone_id = var.aws_route53_zone_hosted_zone_id
+#     }
+#   }
+
+#   name    = each.value.name
+#   type    = each.value.type
+#   zone_id = each.value.zone_id
+#   records = [each.value.record]
+#   ttl     = 60
+# }
+
+resource "helm_release" "cert_manager" {
+  name       = "cert-manager"
+  namespace  = "cert-manager"
+  chart      = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  version    = "v1.12.3"
+
+  set {
+    name  = "installCRDs"
+    value = "true"
   }
 
-  name    = each.value.name
-  type    = each.value.type
-  zone_id = each.value.zone_id
-  records = [each.value.record]
-  ttl     = 60
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = "cert-manager"
+  }
+
+  set {
+    name  = "rbac.create"
+    value = "false"
+  }
+
+  create_namespace = true
+}
+
+resource "aws_iam_role" "cert_manager_role" {
+  name = "cert-manager-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.ca-west-1.amazonaws.com/id/${local.split_oidc_issuer[1]}"
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "oidc.eks.ca-west-1.amazonaws.com/id/${local.split_oidc_issuer[1]}:sub" = "system:serviceaccount:cert-manager:cert-manager"
+          }
+        }
+      }
+    ]
+  })
+}
+
+
+resource "aws_iam_role_policy_attachment" "cert_manager_policy_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
+  role     = aws_iam_role.cert_manager_role.name
+}
+
+resource "kubernetes_service_account" "cert_manager" {
+  metadata {
+    name      = "cert-manager"
+    namespace = "cert-manager"
+    annotations = {
+      "eks.amazonaws.com/role-arn" = aws_iam_role.cert_manager_role.arn
+    }
+  }
+}
+
+resource "aws_iam_role_policy" "cert_manager_policy" {
+  name   = "cert-manager-policy"
+  role   = aws_iam_role.cert_manager_role.id
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "route53:ChangeResourceRecordSets",
+          "route53:ListResourceRecordSets",
+          "route53:ListHostedZones"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
 }

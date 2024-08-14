@@ -29,3 +29,7 @@ output "extract_oidc_provider_id" {
 output "aws_eks_cluster_identity_issuer" {
   value = var.aws_eks_cluster_eks_cluster_identity[0].oidc[0].issuer
 }
+
+# output "aws_acm_certificate_acm_certificate_arn" {
+#   value = aws_acm_certificate.acm_certificate.arn
+# }

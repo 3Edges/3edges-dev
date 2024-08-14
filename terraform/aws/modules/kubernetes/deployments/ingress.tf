@@ -1,13 +1,15 @@
 resource "kubernetes_ingress_v1" "my_ingress" {
   metadata {
-    name      = "abotega-ingress"
+    name      = "my-ingress"
     namespace = "3edges"
 
     annotations = {
-      "nginx.ingress.kubernetes.io/ssl-redirect" : "true"
-      "alb.ingress.kubernetes.io/scheme" : "internet-facing"
-      "alb.ingress.kubernetes.io/certificate-arn" : var.certificate_arn
-      "alb.ingress.kubernetes.io/ssl-redirect" : "443"
+      # "alb.ingress.kubernetes.io/scheme" : "internet-facing"
+      # "alb.ingress.kubernetes.io/certificate-arn" : var.certificate_arn
+      # "alb.ingress.kubernetes.io/certificate-arn" : "arn:aws:acm:ca-west-1:356300141247:certificate/a41ecddb-d3e4-4df7-a5db-0fe40ba5e187"
+      # "alb.ingress.kubernetes.io/ssl-redirect" : "443"
+      # "nginx.ingress.kubernetes.io/ssl-redirect" : "true"
+      "cert-manager.io/cluster-issuer"           = "my-cluster-issuer"
     }
   }
 
@@ -15,12 +17,12 @@ resource "kubernetes_ingress_v1" "my_ingress" {
     ingress_class_name = "nginx"
 
     tls {
-      hosts       = ["abotega.com", "*.abotega.com"]
-      secret_name = "letsencrypt-wildcard-secret"
+      hosts       = [var.hosted_zone, "*.${var.hosted_zone}"]
+      secret_name = "certificate-tls"
     }
 
     rule {
-      host = "abotega.com"
+      host = var.hosted_zone
       http {
         path {
           path      = "/"
@@ -38,7 +40,7 @@ resource "kubernetes_ingress_v1" "my_ingress" {
     }
 
     rule {
-      host = "cluster.abotega.com"
+      host = "cluster.${var.hosted_zone}"
       http {
         path {
           path      = "/"
@@ -57,4 +59,5 @@ resource "kubernetes_ingress_v1" "my_ingress" {
   }
 
   depends_on = [var.k8s_namespace]
+  # depends_on = [var.k8s_namespace, var.certificate_arn]
 }
