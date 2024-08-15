@@ -6,6 +6,12 @@ resource "aws_eks_cluster" "eks_cluster" {
     subnet_ids = var.eks_subnet[*].id
   }
 
+  timeouts {
+    create = "1h"
+    update = "1h"
+    delete = "1h"
+  }
+
   depends_on = [
     var.iam_eks_policy,
     var.iam_eks_vpc_resource_controller_policy,
@@ -22,6 +28,12 @@ resource "aws_eks_node_group" "eks_node_group" {
     desired_size = 1
     min_size     = 1
     max_size     = 3
+  }
+
+  timeouts {
+    create = "1h"
+    update = "1h"
+    delete = "1h"
   }
 
   depends_on = [

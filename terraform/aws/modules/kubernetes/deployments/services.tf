@@ -1,6 +1,6 @@
 resource "kubernetes_service" "my_frontend_service" {
   metadata {
-    name      = "frontend-srv"
+    name      = "frontend"
     namespace = "3edges"
   }
 
@@ -14,12 +14,14 @@ resource "kubernetes_service" "my_frontend_service" {
     }
   }
 
-  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
+  depends_on = [
+    # var.cert_manager,
+  var.ingress_nginx, var.kubernetes_namespace_namespace]
 }
 
 resource "kubernetes_service" "my_backend_service" {
   metadata {
-    name      = "backend-srv"
+    name      = "backend"
     namespace = "3edges"
   }
 
@@ -33,5 +35,7 @@ resource "kubernetes_service" "my_backend_service" {
     }
   }
 
-  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
+  depends_on = [
+    # var.cert_manager,
+  var.ingress_nginx, var.kubernetes_namespace_namespace]
 }

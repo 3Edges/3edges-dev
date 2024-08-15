@@ -1,1 +1,0 @@
-variable "hosted_zone" {}

@@ -35,7 +35,9 @@ resource "kubernetes_deployment" "my_frontend_pod" {
     }
   }
 
-  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
+  depends_on = [
+    # var.cert_manager,
+  var.ingress_nginx, var.kubernetes_namespace_namespace]
 }
 
 resource "kubernetes_deployment" "my_backend_pod" {
@@ -85,5 +87,7 @@ resource "kubernetes_deployment" "my_backend_pod" {
     }
   }
 
-  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
+  depends_on = [
+    # var.cert_manager,
+  var.ingress_nginx, var.kubernetes_namespace_namespace]
 }

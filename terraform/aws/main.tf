@@ -36,13 +36,6 @@ module "cluster" {
   depends_on = [module.vpc]
 }
 
-module "route53" {
-  source      = "./modules/route53"
-  hosted_zone = var.hosted_zone
-
-  depends_on = [module.cluster]
-}
-
 module "kubernetes" {
   source                            = "./modules/kubernetes"
   aws_eks_cluster_auth_token        = module.cluster.aws_eks_cluster_auth_token
@@ -51,8 +44,6 @@ module "kubernetes" {
   aws_eks_cluster_auth_certificate  = module.cluster.aws_eks_cluster_auth_certificate
   aws_eks_cluster_eks_cluster_id    = module.cluster.aws_eks_cluster_eks_cluster_id
   aws_eks_cluster_eks_cluster_name  = module.cluster.aws_eks_cluster_eks_cluster_name
-  aws_route53_zone_hosted_zone_id   = module.route53.aws_route53_zone_hosted_zone_id
-  aws_route53_zone_hosted_zone_name = module.route53.aws_route53_zone_hosted_zone_name
   aws_region                        = var.aws_region
   hosted_zone                       = var.hosted_zone
   eks_node_role                     = var.eks_node_role
