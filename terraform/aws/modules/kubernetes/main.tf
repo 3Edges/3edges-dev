@@ -46,24 +46,13 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 
-resource "kubernetes_namespace" "cert_manager_namespace" {
-  metadata {
-    name = "cert-manager"
-  }
-}
-
-resource "kubernetes_namespace" "ingress_nginx_namespace" {
-  metadata {
-    name = "ingress-nginx"
-  }
-}
-
 resource "helm_release" "ingress_nginx" {
-  name       = "ingress-nginx"
-  chart      = "ingress-nginx"
-  namespace  = "ingress-nginx"
-  repository = "https://kubernetes.github.io/ingress-nginx"
-  version    = "4.11.1"
+  name             = "ingress-nginx"
+  chart            = "ingress-nginx"
+  namespace        = "ingress-nginx"
+  repository       = "https://kubernetes.github.io/ingress-nginx"
+  version          = "4.11.1"
+  create_namespace = true
 
   set {
     name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
@@ -80,7 +69,7 @@ resource "helm_release" "ingress_nginx" {
     value = "LoadBalancer"
   }
 
-  depends_on = [kubernetes_namespace.ingress_nginx_namespace, var.aws_eks_node_group_eks_node_group]
+  depends_on = [var.aws_eks_node_group_eks_node_group]
 }
 
 resource "aws_route53_record" "idp_lb" {
@@ -93,6 +82,16 @@ resource "aws_route53_record" "idp_lb" {
     name                   = data.aws_lb.nginx_load_balancer.dns_name
     evaluate_target_health = false
   }
+
+  depends_on = [helm_release.ingress_nginx]
+}
+
+resource "aws_route53_record" "route53_wildcard_cname" {
+  zone_id = var.aws_route53_zone_hosted_zone_id
+  name    = "*.${var.hosted_zone}"
+  type    = "CNAME"
+  ttl     = 300
+  records = [data.aws_lb.nginx_load_balancer.dns_name]
 
   depends_on = [helm_release.ingress_nginx]
 }
@@ -183,11 +182,12 @@ resource "kubernetes_service_account" "cert_manager" {
 }
 
 resource "helm_release" "cert_manager" {
-  name       = "cert-manager"
-  namespace  = "cert-manager"
-  chart      = "cert-manager"
-  repository = "https://charts.jetstack.io"
-  version    = "v1.12.3"
+  name             = "cert-manager"
+  namespace        = "cert-manager"
+  chart            = "cert-manager"
+  repository       = "https://charts.jetstack.io"
+  version          = "v1.12.3"
+  create_namespace = true
 
   set {
     name  = "installCRDs"
@@ -199,19 +199,19 @@ resource "helm_release" "cert_manager" {
     value = "false"
   }
 
-  depends_on = [
-    kubernetes_namespace.cert_manager_namespace,
-    helm_release.ingress_nginx
-  ]
+  depends_on = [helm_release.ingress_nginx]
 }
 
 module "deployments" {
   source                          = "./deployments"
-  k8s_namespace                   = kubernetes_namespace.namespace.metadata[0].name
   cert_manager                    = helm_release.cert_manager.name
+  ingress_nginx                   = helm_release.ingress_nginx
   hosted_zone                     = var.hosted_zone
   aws_region                      = var.aws_region
   aws_route53_zone_hosted_zone_id = var.aws_route53_zone_hosted_zone_id
+  kubernetes_namespace_namespace  = kubernetes_namespace.namespace
 
-  depends_on = [helm_release.cert_manager]
+  providers = {
+    kubernetes = kubernetes
+  }
 }

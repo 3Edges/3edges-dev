@@ -1,7 +1,7 @@
 resource "kubernetes_deployment" "my_frontend_pod" {
   metadata {
-    name      = "frontend"
-    namespace = var.k8s_namespace
+    name      = "frontend-pod"
+    namespace = "3edges"
   }
 
   spec {
@@ -35,13 +35,13 @@ resource "kubernetes_deployment" "my_frontend_pod" {
     }
   }
 
-  depends_on = [var.k8s_namespace]
+  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
 }
 
 resource "kubernetes_deployment" "my_backend_pod" {
   metadata {
-    name      = "backend"
-    namespace = var.k8s_namespace
+    name      = "backend-pod"
+    namespace = "3edges"
   }
 
   spec {
@@ -85,5 +85,5 @@ resource "kubernetes_deployment" "my_backend_pod" {
     }
   }
 
-  depends_on = [var.k8s_namespace]
+  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
 }

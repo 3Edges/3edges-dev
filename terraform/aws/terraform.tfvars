@@ -11,6 +11,6 @@
 
 aws_region = "ca-west-1"
 
-hosted_zone = "abotega.com"
+hosted_zone = "abotega.ca"
 
 eks_cluster = "three-edges-cluster"

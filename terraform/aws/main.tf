@@ -44,17 +44,17 @@ module "route53" {
 }
 
 module "kubernetes" {
-  source                               = "./modules/kubernetes"
-  aws_eks_cluster_auth_token           = module.cluster.aws_eks_cluster_auth_token
-  aws_eks_cluster_auth_endpoint        = module.cluster.aws_eks_cluster_auth_endpoint
-  aws_eks_node_group_eks_node_group    = module.cluster.aws_eks_node_group_eks_node_group
-  aws_eks_cluster_auth_certificate     = module.cluster.aws_eks_cluster_auth_certificate
-  aws_eks_cluster_eks_cluster_id       = module.cluster.aws_eks_cluster_eks_cluster_id
-  aws_eks_cluster_eks_cluster_name     = module.cluster.aws_eks_cluster_eks_cluster_name
-  aws_route53_zone_hosted_zone_id      = module.route53.aws_route53_zone_hosted_zone_id
-  aws_route53_zone_hosted_zone_name    = module.route53.aws_route53_zone_hosted_zone_name
-  aws_region                           = var.aws_region
-  hosted_zone                          = var.hosted_zone
-  eks_node_role                        = var.eks_node_role
-  aws_caller_identity_id               = data.aws_caller_identity.current.account_id
+  source                            = "./modules/kubernetes"
+  aws_eks_cluster_auth_token        = module.cluster.aws_eks_cluster_auth_token
+  aws_eks_cluster_auth_endpoint     = module.cluster.aws_eks_cluster_auth_endpoint
+  aws_eks_node_group_eks_node_group = module.cluster.aws_eks_node_group_eks_node_group
+  aws_eks_cluster_auth_certificate  = module.cluster.aws_eks_cluster_auth_certificate
+  aws_eks_cluster_eks_cluster_id    = module.cluster.aws_eks_cluster_eks_cluster_id
+  aws_eks_cluster_eks_cluster_name  = module.cluster.aws_eks_cluster_eks_cluster_name
+  aws_route53_zone_hosted_zone_id   = module.route53.aws_route53_zone_hosted_zone_id
+  aws_route53_zone_hosted_zone_name = module.route53.aws_route53_zone_hosted_zone_name
+  aws_region                        = var.aws_region
+  hosted_zone                       = var.hosted_zone
+  eks_node_role                     = var.eks_node_role
+  aws_caller_identity_id            = data.aws_caller_identity.current.account_id
 }

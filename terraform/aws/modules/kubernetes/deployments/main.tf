@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = ">= 2.31.0"
+    }
+  }
+}
+
 resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
   manifest = {
     apiVersion = "cert-manager.io/v1"
@@ -29,7 +38,7 @@ resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
     }
   }
 
-  depends_on = [var.cert_manager]
+  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
 }
 
 resource "kubernetes_manifest" "letsencrypt_wildcard" {
@@ -39,7 +48,7 @@ resource "kubernetes_manifest" "letsencrypt_wildcard" {
 
     metadata = {
       name      = "letsencrypt-wildcard"
-      namespace = var.k8s_namespace
+      namespace = "3edges"
     }
 
     spec = {
