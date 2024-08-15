@@ -12,7 +12,7 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
     ingress_class_name = "nginx"
 
     # tls {
-    #   hosts       = [var.hosted_zone, "*.${var.hosted_zone}"]
+    #   hosts       = ["*.${var.hosted_zone}"]
     #   secret_name = "letsencrypt-wildcard-secret"
     # }
 
@@ -51,28 +51,8 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
         }
       }
     }
-    rule {
-      host = "app.${var.hosted_zone}"
-      http {
-        path {
-          path      = "/"
-          path_type = "Prefix"
-          backend {
-            service {
-              name = "frontend"
-              port {
-                number = 80
-              }
-            }
-          }
-        }
-      }
-    }
 
   }
 
-  depends_on = [
-    # var.cert_manager,
-    var.ingress_nginx,
-  var.kubernetes_namespace_namespace]
+  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
 }

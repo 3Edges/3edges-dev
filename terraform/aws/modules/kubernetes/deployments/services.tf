@@ -14,9 +14,7 @@ resource "kubernetes_service" "my_frontend_service" {
     }
   }
 
-  depends_on = [
-    # var.cert_manager,
-  var.ingress_nginx, var.kubernetes_namespace_namespace]
+  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
 }
 
 resource "kubernetes_service" "my_backend_service" {
@@ -35,7 +33,5 @@ resource "kubernetes_service" "my_backend_service" {
     }
   }
 
-  depends_on = [
-    # var.cert_manager,
-  var.ingress_nginx, var.kubernetes_namespace_namespace]
+  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
 }
