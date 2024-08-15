@@ -9,3 +9,7 @@ variable "cert_manager" {}
 variable "ingress_nginx" {}
 
 variable "kubernetes_namespace_namespace" {}
+
+variable "aws_access_key_id" {}
+
+variable "aws_secret_access_key" {}

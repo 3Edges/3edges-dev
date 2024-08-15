@@ -18,7 +18,6 @@ variable "eks_node_role" {
   default = "three-edges-eks-node-role"
 }
 
-
 variable "eks_node_group" {
   default = "three-edges-node-group"
 }
@@ -37,4 +36,12 @@ variable "eks_route_table" {
 
 variable "eks_security_group" {
   default = "three-edges-eks-security-group"
+}
+
+variable "aws_access_key_id" {
+  default = "AKIAVF....VTEBX5T"
+}
+
+variable "aws_secret_access_key" {
+  default = "RTjPEFDCZi....gZkDYjlYCEtS"
 }

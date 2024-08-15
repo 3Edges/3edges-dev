@@ -27,11 +27,6 @@ resource "kubernetes_config_map" "aws_auth" {
           "system:nodes",
           "system:bootstrappers"
         ]
-      },
-      {
-        rolearn  = aws_iam_role.cert_manager_role.arn
-        username = "cert-manager"
-        groups   = ["system:masters"]
       }
     ])
   }
@@ -88,33 +83,6 @@ resource "aws_route53_zone" "hosted_zone" {
   name = "${var.hosted_zone}."
 }
 
-resource "aws_iam_role" "cert_manager_role" {
-  name = "cert-manager-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          Federated = "arn:aws:iam::${var.aws_caller_identity_id}:oidc-provider/oidc.eks.${var.aws_region}.amazonaws.com/id/${local.split_hostname[1]}"
-        },
-        Action = "sts:AssumeRoleWithWebIdentity",
-        Condition = {
-          StringEquals = {
-            "oidc.eks.${var.aws_region}.amazonaws.com/id/${local.split_hostname[1]}:sub" = "system:serviceaccount:cert-manager:cert-manager"
-          }
-        }
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "cert_manager_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
-  role       = aws_iam_role.cert_manager_role.name
-}
-
 resource "aws_route53_record" "route53_wildcard_cname" {
   zone_id = aws_route53_zone.hosted_zone.id
   name    = "*.${var.hosted_zone}"
@@ -139,14 +107,6 @@ resource "aws_route53_record" "ingress_nginx" {
   depends_on = [helm_release.ingress_nginx]
 }
 
-data "template_file" "cert_manager_values" {
-  template = file("${path.module}/values.yaml")
-
-  vars = {
-    role_arn = aws_iam_role.cert_manager_role.arn
-  }
-}
-
 resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   namespace  = "cert-manager"
@@ -160,13 +120,6 @@ resource "helm_release" "cert_manager" {
     value = "true"
   }
 
-  set {
-    name  = "extraArgs[0]"
-    value = "--v=5"
-  }
-
-  values = [data.template_file.cert_manager_values.rendered]
-
   depends_on = [helm_release.ingress_nginx, kubernetes_namespace.cert_manager_namespace]
 }
 
@@ -176,6 +129,8 @@ module "deployments" {
   ingress_nginx                   = helm_release.ingress_nginx
   hosted_zone                     = var.hosted_zone
   aws_region                      = var.aws_region
+  aws_access_key_id               = var.aws_access_key_id
+  aws_secret_access_key           = var.aws_secret_access_key
   aws_route53_zone_hosted_zone_id = aws_route53_zone.hosted_zone.id
   kubernetes_namespace_namespace  = kubernetes_namespace.namespace
 

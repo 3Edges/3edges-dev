@@ -3,18 +3,18 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
     name      = "three-edges-ingress"
     namespace = "3edges"
 
-    # annotations = {
-    #   "cert-manager.io/cluster-issuer" = "cert-manager-cluster-issuer"
-    # }
+    annotations = {
+      "cert-manager.io/cluster-issuer" = "cert-manager-cluster-issuer"
+    }
   }
 
   spec {
     ingress_class_name = "nginx"
 
-    # tls {
-    #   hosts       = ["*.${var.hosted_zone}"]
-    #   secret_name = "letsencrypt-wildcard-secret"
-    # }
+    tls {
+      hosts       = ["*.${var.hosted_zone}"]
+      secret_name = "letsencrypt-wildcard-secret"
+    }
 
     rule {
       host = var.hosted_zone

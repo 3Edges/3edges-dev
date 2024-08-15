@@ -7,6 +7,19 @@ terraform {
   }
 }
 
+resource "kubernetes_secret" "aws_credentials" {
+  metadata {
+    name      = "aws-credentials"
+    namespace = "cert-manager"
+  }
+
+  data = {
+    aws_access_key_id     = base64encode(var.aws_access_key_id)
+    aws_secret_access_key = base64encode(var.aws_secret_access_key)
+  }
+}
+
+
 resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
   manifest = {
     apiVersion = "cert-manager.io/v1"
@@ -27,6 +40,14 @@ resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
               route53 = {
                 region       = var.aws_region
                 hostedZoneID = var.aws_route53_zone_hosted_zone_id
+                accessKeyIDSecretRef = {
+                  name = kubernetes_secret.aws_credentials.metadata[0].name
+                  key  = "aws_access_key_id"
+                }
+                secretAccessKeySecretRef = {
+                  name = kubernetes_secret.aws_credentials.metadata[0].name
+                  key  = "aws_secret_access_key"
+                }
               }
             },
             selector = {

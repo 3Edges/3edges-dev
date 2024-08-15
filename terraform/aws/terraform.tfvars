@@ -11,6 +11,10 @@
 
 aws_region = "ca-west-1"
 
-hosted_zone = "abotega.ca"
+hosted_zone = "3edges.co"
 
 eks_cluster = "three-edges-cluster"
+
+aws_access_key_id = "AKIAVF...VTEBX5T"
+
+aws_secret_access_key = "RTjPEFDCZiiOhl....SgZkDY/jlYCEtS"

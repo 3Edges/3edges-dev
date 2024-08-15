@@ -17,3 +17,7 @@ variable "eks_node_role" {}
 variable "aws_caller_identity_id" {}
 
 variable "aws_eks_node_group_eks_node_group" {}
+
+variable "aws_access_key_id" {}
+
+variable "aws_secret_access_key" {}

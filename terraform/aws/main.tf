@@ -48,4 +48,6 @@ module "kubernetes" {
   hosted_zone                       = var.hosted_zone
   eks_node_role                     = var.eks_node_role
   aws_caller_identity_id            = data.aws_caller_identity.current.account_id
+  aws_access_key_id                 = var.aws_access_key_id
+  aws_secret_access_key             = var.aws_secret_access_key
 }
