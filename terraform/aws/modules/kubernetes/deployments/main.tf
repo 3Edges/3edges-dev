@@ -51,7 +51,7 @@ resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
               }
             },
             selector = {
-              dnsZones = ["*.${var.hosted_zone}"]
+              dnsZones = [var.hosted_zone, "*.${var.hosted_zone}"]
             }
           }
         ]
@@ -78,7 +78,7 @@ resource "kubernetes_manifest" "letsencrypt_wildcard" {
         name = "cert-manager-cluster-issuer"
       }
       secretName = "letsencrypt-wildcard-secret"
-      dnsNames   = ["*.${var.hosted_zone}"]
+      dnsNames   = [var.hosted_zone, "*.${var.hosted_zone}"]
     }
   }
 
