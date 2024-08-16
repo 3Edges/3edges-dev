@@ -56,15 +56,15 @@ resource "kubernetes_deployment" "deployment_configuration" {
     template {
       metadata {
         labels = {
-          app  = "configuration"
-          prom = "prom-3edges"
+          app = "configuration"
         }
       }
 
       spec {
         container {
-          name              = "configuration"
-          image             = "babsy/3edges:configuration"
+          name = "configuration"
+          # image             = "babsy/3edges:configuration"
+          image             = "abotega/prim-configuration:hub"
           image_pull_policy = "Always"
 
           env_from {
@@ -86,236 +86,231 @@ resource "kubernetes_deployment" "deployment_configuration" {
   depends_on = [kubernetes_config_map.configuration_config, kubernetes_secret.configuration_secrets, var.kubernetes_namespace_namespace]
 }
 
-resource "kubernetes_deployment" "deployment_dataloader_ui" {
-  metadata {
-    name      = "dataloader-ui"
-    namespace = "3edges"
-  }
+# resource "kubernetes_deployment" "deployment_dataloader_ui" {
+#   metadata {
+#     name      = "dataloader-ui"
+#     namespace = "3edges"
+#   }
 
-  spec {
-    replicas = 1
+#   spec {
+#     replicas = 1
 
-    selector {
-      match_labels = {
-        app = "dataloader-ui"
-      }
-    }
+#     selector {
+#       match_labels = {
+#         app = "dataloader-ui"
+#       }
+#     }
 
-    template {
-      metadata {
-        labels = {
-          app  = "dataloader-ui"
-          prom = "prom-3edges"
-        }
-      }
+#     template {
+#       metadata {
+#         labels = {
+#           app  = "dataloader-ui"
+#         }
+#       }
 
-      spec {
-        container {
-          name              = "dataloader-ui"
-          image             = "babsy/3edges:dataloader-ui"
-          image_pull_policy = "Always"
+#       spec {
+#         container {
+#           name              = "dataloader-ui"
+#           image             = "babsy/3edges:dataloader-ui"
+#           image_pull_policy = "Always"
 
-          env_from {
-            config_map_ref {
-              name = kubernetes_config_map.dataloader_ui_config.metadata[0].name
-            }
-          }
-        }
-      }
-    }
-  }
+#           env_from {
+#             config_map_ref {
+#               name = kubernetes_config_map.dataloader_ui_config.metadata[0].name
+#             }
+#           }
+#         }
+#       }
+#     }
+#   }
 
-  depends_on = [kubernetes_config_map.dataloader_ui_config, var.kubernetes_namespace_namespace]
-}
+#   depends_on = [kubernetes_config_map.dataloader_ui_config, var.kubernetes_namespace_namespace]
+# }
 
-resource "kubernetes_deployment" "deployment_cluster" {
-  metadata {
-    name      = "cluster"
-    namespace = "3edges"
-  }
+# resource "kubernetes_deployment" "deployment_cluster" {
+#   metadata {
+#     name      = "cluster"
+#     namespace = "3edges"
+#   }
 
-  spec {
-    replicas = 1
+#   spec {
+#     replicas = 1
 
-    selector {
-      match_labels = {
-        app = "cluster"
-      }
-    }
+#     selector {
+#       match_labels = {
+#         app = "cluster"
+#       }
+#     }
 
-    template {
-      metadata {
-        labels = {
-          app  = "cluster"
-          prom = "prom-3edges"
-        }
-      }
+#     template {
+#       metadata {
+#         labels = {
+#           app  = "cluster"
+#         }
+#       }
 
-      spec {
-        container {
-          name              = "cluster"
-          image             = "babsy/3edges:cluster"
-          image_pull_policy = "Always"
+#       spec {
+#         container {
+#           name              = "cluster"
+#           image             = "babsy/3edges:cluster"
+#           image_pull_policy = "Always"
 
-          env_from {
-            config_map_ref {
-              name = kubernetes_config_map.cluster_config.metadata[0].name
-            }
-          }
+#           env_from {
+#             config_map_ref {
+#               name = kubernetes_config_map.cluster_config.metadata[0].name
+#             }
+#           }
 
-          env_from {
-            secret_ref {
-              name = kubernetes_secret.cluster_secrets.metadata[0].name
-            }
-          }
-        }
-      }
-    }
-  }
+#           env_from {
+#             secret_ref {
+#               name = kubernetes_secret.cluster_secrets.metadata[0].name
+#             }
+#           }
+#         }
+#       }
+#     }
+#   }
 
-  depends_on = [kubernetes_config_map.cluster_config, kubernetes_secret.cluster_secrets, var.kubernetes_namespace_namespace]
-}
+#   depends_on = [kubernetes_config_map.cluster_config, kubernetes_secret.cluster_secrets, var.kubernetes_namespace_namespace]
+# }
 
-resource "kubernetes_deployment" "deployment_dataloader" {
-  metadata {
-    name      = "dataloader"
-    namespace = "3edges"
-  }
+# resource "kubernetes_deployment" "deployment_dataloader" {
+#   metadata {
+#     name      = "dataloader"
+#     namespace = "3edges"
+#   }
 
-  spec {
-    replicas = 1
+#   spec {
+#     replicas = 1
 
-    selector {
-      match_labels = {
-        app = "dataloader"
-      }
-    }
+#     selector {
+#       match_labels = {
+#         app = "dataloader"
+#       }
+#     }
 
-    template {
-      metadata {
-        labels = {
-          app  = "dataloader"
-          prom = "prom-3edges"
-        }
-      }
+#     template {
+#       metadata {
+#         labels = {
+#           app  = "dataloader"
+#         }
+#       }
 
-      spec {
-        container {
-          name              = "dataloader"
-          image             = "babsy/3edges:dataloader"
-          image_pull_policy = "Always"
+#       spec {
+#         container {
+#           name              = "dataloader"
+#           image             = "babsy/3edges:dataloader"
+#           image_pull_policy = "Always"
 
-          env_from {
-            config_map_ref {
-              name = kubernetes_config_map.dataloader_config.metadata[0].name
-            }
-          }
+#           env_from {
+#             config_map_ref {
+#               name = kubernetes_config_map.dataloader_config.metadata[0].name
+#             }
+#           }
 
-          env_from {
-            secret_ref {
-              name = kubernetes_secret.dataloader_secrets.metadata[0].name
-            }
-          }
-        }
-      }
-    }
-  }
+#           env_from {
+#             secret_ref {
+#               name = kubernetes_secret.dataloader_secrets.metadata[0].name
+#             }
+#           }
+#         }
+#       }
+#     }
+#   }
 
-  depends_on = [kubernetes_config_map.dataloader_config, kubernetes_secret.dataloader_secrets, var.kubernetes_namespace_namespace]
-}
+#   depends_on = [kubernetes_config_map.dataloader_config, kubernetes_secret.dataloader_secrets, var.kubernetes_namespace_namespace]
+# }
 
-resource "kubernetes_deployment" "deployment_idp" {
-  metadata {
-    name      = "idp"
-    namespace = "3edges"
-  }
+# resource "kubernetes_deployment" "deployment_idp" {
+#   metadata {
+#     name      = "idp"
+#     namespace = "3edges"
+#   }
 
-  spec {
-    replicas = 1
+#   spec {
+#     replicas = 1
 
-    selector {
-      match_labels = {
-        app = "idp"
-      }
-    }
+#     selector {
+#       match_labels = {
+#         app = "idp"
+#       }
+#     }
 
-    template {
-      metadata {
-        labels = {
-          app  = "idp"
-          prom = "prom-3edges"
-        }
-      }
+#     template {
+#       metadata {
+#         labels = {
+#           app  = "idp"
+#         }
+#       }
 
-      spec {
-        container {
-          name              = "idp"
-          image             = "babsy/3edges:idp"
-          image_pull_policy = "Always"
+#       spec {
+#         container {
+#           name              = "idp"
+#           image             = "babsy/3edges:idp"
+#           image_pull_policy = "Always"
 
-          env_from {
-            config_map_ref {
-              name = kubernetes_config_map.idp_config.metadata[0].name
-            }
-          }
+#           env_from {
+#             config_map_ref {
+#               name = kubernetes_config_map.idp_config.metadata[0].name
+#             }
+#           }
 
-          env_from {
-            secret_ref {
-              name = kubernetes_secret.idp_secrets.metadata[0].name
-            }
-          }
-        }
-      }
-    }
-  }
+#           env_from {
+#             secret_ref {
+#               name = kubernetes_secret.idp_secrets.metadata[0].name
+#             }
+#           }
+#         }
+#       }
+#     }
+#   }
 
-  depends_on = [kubernetes_config_map.idp_config, kubernetes_secret.idp_secrets, var.kubernetes_namespace_namespace]
-}
+#   depends_on = [kubernetes_config_map.idp_config, kubernetes_secret.idp_secrets, var.kubernetes_namespace_namespace]
+# }
 
-resource "kubernetes_deployment" "deployment_ui" {
-  metadata {
-    name      = "ui"
-    namespace = "3edges"
-  }
+# resource "kubernetes_deployment" "deployment_ui" {
+#   metadata {
+#     name      = "ui"
+#     namespace = "3edges"
+#   }
 
-  spec {
-    replicas = 1
+#   spec {
+#     replicas = 1
 
-    selector {
-      match_labels = {
-        app = "ui"
-      }
-    }
+#     selector {
+#       match_labels = {
+#         app = "ui"
+#       }
+#     }
 
-    template {
-      metadata {
-        labels = {
-          app  = "ui"
-          prom = "prom-3edges"
-        }
-      }
+#     template {
+#       metadata {
+#         labels = {
+#           app = "ui"
+#         }
+#       }
 
-      spec {
-        container {
-          name              = "ui"
-          image             = "babsy/3edges:ui"
-          image_pull_policy = "Always"
+#       spec {
+#         container {
+#           name              = "ui"
+#           image             = "babsy/3edges:ui"
+#           image_pull_policy = "Always"
 
-          env_from {
-            config_map_ref {
-              name = kubernetes_config_map.ui_config.metadata[0].name
-            }
-          }
+#           env_from {
+#             config_map_ref {
+#               name = kubernetes_config_map.ui_config.metadata[0].name
+#             }
+#           }
 
-          env_from {
-            secret_ref {
-              name = kubernetes_secret.ui_secrets.metadata[0].name
-            }
-          }
-        }
-      }
-    }
-  }
+#           env_from {
+#             secret_ref {
+#               name = kubernetes_secret.ui_secrets.metadata[0].name
+#             }
+#           }
+#         }
+#       }
+#     }
+#   }
 
-  depends_on = [kubernetes_config_map.ui_config, kubernetes_secret.ui_secrets, var.kubernetes_namespace_namespace]
-}
+#   depends_on = [kubernetes_config_map.ui_config, kubernetes_secret.ui_secrets, var.kubernetes_namespace_namespace]
+# }

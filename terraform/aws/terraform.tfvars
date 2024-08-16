@@ -15,6 +15,6 @@ hosted_zone = "abotega.ca"
 
 eks_cluster = "three-edges-cluster"
 
-aws_access_key_id = "AKIAVF.....7UNI2P6GS"
+aws_access_key_id = "AKIAVF....I2P6GS"
 
-aws_secret_access_key = "2bhPAK3V674m....k+w99fwxzkcUuQZd"
+aws_secret_access_key = "2bhPAK3V674mU.....EQmc0k+w99fwxzkcUuQZd"

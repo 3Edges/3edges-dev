@@ -17,24 +17,6 @@ resource "kubernetes_service" "my_frontend_service" {
   depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
 }
 
-resource "kubernetes_service" "service_3edges_cluster" {
-  metadata {
-    name      = "cluster"
-    namespace = "3edges"
-  }
-
-  spec {
-    port {
-      port = 3333
-    }
-    selector = {
-      app = "cluster"
-    }
-  }
-
-  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
-}
-
 resource "kubernetes_service" "service_3edges_configuration" {
   metadata {
     name      = "configuration"
@@ -47,6 +29,24 @@ resource "kubernetes_service" "service_3edges_configuration" {
     }
     selector = {
       app = "configuration"
+    }
+  }
+
+  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
+}
+
+resource "kubernetes_service" "service_3edges_cluster" {
+  metadata {
+    name      = "cluster"
+    namespace = "3edges"
+  }
+
+  spec {
+    port {
+      port = 3333
+    }
+    selector = {
+      app = "cluster"
     }
   }
 
