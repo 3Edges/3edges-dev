@@ -5,14 +5,14 @@ resource "kubernetes_secret" "configuration_secrets" {
   }
 
   data = {
-    TOKEN_PIPELINE      = var.config_secret_TOKEN_PIPELINE
-    NEO4J_PASSWORD_TEST = var.config_secret_NEO4J_PASSWORD_TEST
-    SESSION_PIPELINE    = var.config_secret_SESSION_PIPELINE
-    DB_PASSWORD         = var.config_secret_DB_PASSWORD
-    PRIM_ADMIN_PASS     = var.config_secret_PRIM_ADMIN_PASS
-    PRIM_JWT_SECRET     = var.config_secret_PRIM_JWT_SECRET
-    OIDC_CLIENT_PWD     = var.config_secret_OIDC_CLIENT_PWD
-    INTERNAL_SECRET     = var.config_secret_INTERNAL_SECRET
+    TOKEN_PIPELINE      = var.configuration_config_secret_TOKEN_PIPELINE
+    NEO4J_PASSWORD_TEST = var.configuration_config_secret_NEO4J_PASSWORD_TEST
+    SESSION_PIPELINE    = var.configuration_config_secret_SESSION_PIPELINE
+    DB_PASSWORD         = var.configuration_config_secret_DB_PASSWORD
+    PRIM_ADMIN_PASS     = var.configuration_config_secret_PRIM_ADMIN_PASS
+    PRIM_JWT_SECRET     = var.configuration_config_secret_PRIM_JWT_SECRET
+    OIDC_CLIENT_PWD     = var.configuration_config_secret_OIDC_CLIENT_PWD
+    INTERNAL_SECRET     = var.configuration_config_secret_INTERNAL_SECRET
   }
 
 
@@ -26,8 +26,8 @@ resource "kubernetes_secret" "dataloader_secrets" {
   }
 
   data = {
-    dbPass          = var.dl_secret_dbPass
-    OIDC_CLIENT_PWD = var.dl_secret_OIDC_CLIENT_PWD
+    dbPass          = var.dataloader_secret_dbPass
+    OIDC_CLIENT_PWD = var.dataloader_secret_OIDC_CLIENT_PWD
   }
   
 

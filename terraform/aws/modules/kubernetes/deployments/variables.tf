@@ -21,204 +21,204 @@ variable "exclude_cluster_issuer" {}
 variable "exclude_certificate" {}
 
 # This section of following variables are for kubernetes/deployments/configmap : configuration_config
-variable "config_NODE_ENV" {}
+variable "configuration_config_NODE_ENV" {}
 
-variable "config_SERVER_PORT" {}
+variable "configuration_config_SERVER_PORT" {}
 
-variable "config_ENABLE_INTROSPECTION" {}
+variable "configuration_config_ENABLE_INTROSPECTION" {}
 
-variable "config_ENABLE_PLAYGROUND" {}
+variable "configuration_config_ENABLE_PLAYGROUND" {}
 
-variable "config_REACT_APP_OTP_VALIDITY" {}
+variable "configuration_config_REACT_APP_OTP_VALIDITY" {}
 
-variable "config_SEND_EMAIL_FROM" {}
+variable "configuration_config_SEND_EMAIL_FROM" {}
 
-variable "config_SEND_EMAIL_FROM_NAME" {}
+variable "configuration_config_SEND_EMAIL_FROM_NAME" {}
 
-variable "config_SEND_EMAIL_URL" {}
+variable "configuration_config_SEND_EMAIL_URL" {}
 
-variable "config_NEO4J_POOL_SIZE" {}
+variable "configuration_config_NEO4J_POOL_SIZE" {}
 
-variable "config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS" {}
+variable "configuration_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS" {}
 
-variable "config_NEO4J_MAX_CONNECTION_LIFETIME" {}
+variable "configuration_config_NEO4J_MAX_CONNECTION_LIFETIME" {}
 
-variable "config_NEO4J_CONNECTION_TIMEOUT" {}
+variable "configuration_config_NEO4J_CONNECTION_TIMEOUT" {}
 
-variable "config_RESET_ADMIN_USER" {}
+variable "configuration_config_RESET_ADMIN_USER" {}
 
-variable "config_PRIM_ADMIN_EMAIL" {}
+variable "configuration_config_PRIM_ADMIN_EMAIL" {}
 
-variable "config_NEO4J_URL_TEST" {}
+variable "configuration_config_NEO4J_URL_TEST" {}
 
-variable "config_PRIM_CONFIG_NEO4J_DB_TEST" {}
+variable "configuration_config_PRIM_CONFIG_NEO4J_DB_TEST" {}
 
-variable "config_PRIM_SERVER_HTTP_CORS_ORIGIN" {}
+variable "configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN" {}
 
-variable "config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN" {}
+variable "configuration_config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN" {}
 
-variable "config_DB_TYPE" {}
+variable "configuration_config_DB_TYPE" {}
 
-variable "config_DB_VERSION" {}
+variable "configuration_config_DB_VERSION" {}
 
-variable "config_DB_HOST" {}
+variable "configuration_config_DB_HOST" {}
 
-variable "config_DB_NAME" {}
+variable "configuration_config_DB_NAME" {}
 
-variable "config_DB_USER" {}
+variable "configuration_config_DB_USER" {}
 
-variable "config_CLUSTER_URL" {}
+variable "configuration_config_CLUSTER_URL" {}
 
-variable "config_COOKIE_NNCE" {}
+variable "configuration_config_COOKIE_NNCE" {}
 
-variable "config_COOKIE_PRIMSCOOKIE" {}
+variable "configuration_config_COOKIE_PRIMSCOOKIE" {}
 
-variable "config_COOKIE_PKEY" {}
+variable "configuration_config_COOKIE_PKEY" {}
 
-variable "config_REDIS_HOST" {}
+variable "configuration_config_REDIS_HOST" {}
 
-variable "config_REDIS_PORT" {}
+variable "configuration_config_REDIS_PORT" {}
 
-variable "config_REDIS_TIMEOUT_GET_APISERVER_STATUS" {}
+variable "configuration_config_REDIS_TIMEOUT_GET_APISERVER_STATUS" {}
 
-variable "config_LOCALHOST_PROXY_DASHBOARD_URL" {}
+variable "configuration_config_LOCALHOST_PROXY_DASHBOARD_URL" {}
 
-variable "config_LOCALHOST_PROXY_IDP_URL" {}
+variable "configuration_config_LOCALHOST_PROXY_IDP_URL" {}
 
-variable "config_LOCALHOST_PROXY_AUTHORIZATION_URL" {}
+variable "configuration_config_LOCALHOST_PROXY_AUTHORIZATION_URL" {}
 
-variable "config_AUTHZ_POD_PORT" {}
+variable "configuration_config_AUTHZ_POD_PORT" {}
 
-variable "config_DASHBOARD_POD_PORT" {}
+variable "configuration_config_DASHBOARD_POD_PORT" {}
 
-variable "config_IDP_POD_PORT" {}
+variable "configuration_config_IDP_POD_PORT" {}
 
-variable "config_PROXY_POD_PORT" {}
+variable "configuration_config_PROXY_POD_PORT" {}
 
-variable "config_DEFAULT_CONTENT_SECURITY_POLICY_API_DASHBOARD" {}
+variable "configuration_config_DEFAULT_CONTENT_SECURITY_POLICY_API_DASHBOARD" {}
 
-variable "config_MAX_SHUTDOWN" {}
+variable "configuration_config_MAX_SHUTDOWN" {}
 
-variable "config_MAX_REDEPLOY" {}
+variable "configuration_config_MAX_REDEPLOY" {}
 
-variable "config_SEND_EMAIL_SERVER" {}
+variable "configuration_config_SEND_EMAIL_SERVER" {}
 
-variable "config_COST_LIMIT_ENABLED" {}
+variable "configuration_config_COST_LIMIT_ENABLED" {}
 
-variable "config_COST_LIMIT_MAXCOST" {}
+variable "configuration_config_COST_LIMIT_MAXCOST" {}
 
-variable "config_COST_LIMIT_OBJECTCOST" {}
+variable "configuration_config_COST_LIMIT_OBJECTCOST" {}
 
-variable "config_COST_LIMIT_SCALARCOST" {}
+variable "configuration_config_COST_LIMIT_SCALARCOST" {}
 
-variable "config_COST_LIMIT_DEPTHCOSTFACTOR" {}
+variable "configuration_config_COST_LIMIT_DEPTHCOSTFACTOR" {}
 
-variable "config_COST_LIMIT_IGNOREINTROSPECTION" {}
+variable "configuration_config_COST_LIMIT_IGNOREINTROSPECTION" {}
 
-variable "config_COST_LIMIT_N" {}
+variable "configuration_config_COST_LIMIT_N" {}
 
-variable "config_MAX_ALIASES_ENABLED" {}
+variable "configuration_config_MAX_ALIASES_ENABLED" {}
 
-variable "config_MAX_ALIASES_N" {}
+variable "configuration_config_MAX_ALIASES_N" {}
 
-variable "config_MAX_DIRECTIVES_N" {}
+variable "configuration_config_MAX_DIRECTIVES_N" {}
 
-variable "config_MAX_DEPTH_N" {}
+variable "configuration_config_MAX_DEPTH_N" {}
 
-variable "config_MAX_TOKENS_N" {}
+variable "configuration_config_MAX_TOKENS_N" {}
 
-variable "config_PRIM_SERVER_HTTP_CORS_ORIGIN_IDP" {}
+variable "configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN_IDP" {}
 
-variable "config_MAX_CHARACTERS_N" {}
+variable "configuration_config_MAX_CHARACTERS_N" {}
 
-variable "config_PROCESS_TIMEOUT_N" {}
+variable "configuration_config_PROCESS_TIMEOUT_N" {}
 
-variable "config_UI_PROCESS_TIMEOUT_N" {}
+variable "configuration_config_UI_PROCESS_TIMEOUT_N" {}
 
-variable "config_DB_RECORDS_BATCH_SIZE" {}
+variable "configuration_config_DB_RECORDS_BATCH_SIZE" {}
 
-variable "config_QUERY_COMPLEXITY_LIMIT" {}
+variable "configuration_config_QUERY_COMPLEXITY_LIMIT" {}
 
-variable "config_DEFAULT_CONTENT_SECURITY_POLICY" {}
+variable "configuration_config_DEFAULT_CONTENT_SECURITY_POLICY" {}
 
-variable "config_UI_URL" {}
+variable "configuration_config_UI_URL" {}
 
-variable "config_OIDC_URL" {}
+variable "configuration_config_OIDC_URL" {}
 
-variable "config_OIDC_CLIENT_ID" {}
+variable "configuration_config_OIDC_CLIENT_ID" {}
 
-variable "config_secret_TOKEN_PIPELINE" {}
+variable "configuration_config_secret_TOKEN_PIPELINE" {}
 
-variable "config_secret_NEO4J_PASSWORD_TEST" {}
+variable "configuration_config_secret_NEO4J_PASSWORD_TEST" {}
 
-variable "config_secret_SESSION_PIPELINE" {}
+variable "configuration_config_secret_SESSION_PIPELINE" {}
 
-variable "config_secret_DB_PASSWORD" {}
+variable "configuration_config_secret_DB_PASSWORD" {}
 
-variable "config_secret_PRIM_ADMIN_PASS" {}
+variable "configuration_config_secret_PRIM_ADMIN_PASS" {}
 
-variable "config_secret_PRIM_JWT_SECRET" {}
+variable "configuration_config_secret_PRIM_JWT_SECRET" {}
 
-variable "config_secret_OIDC_CLIENT_PWD" {}
+variable "configuration_config_secret_OIDC_CLIENT_PWD" {}
 
-variable "config_secret_INTERNAL_SECRET" {}
+variable "configuration_config_secret_INTERNAL_SECRET" {}
 
 # This section of following variables are for kubernetes/deployments/configmap : dataloader_ui_config
-variable "dl_ui_config_NODE_ENV" {}
+variable "dataloader_ui_config_NODE_ENV" {}
 
-variable "dl_ui_config_PORT" {}
+variable "dataloader_ui_config_PORT" {}
 
-variable "dl_ui_config_REACT_APP_DATALOADER_URL" {}
+variable "dataloader_ui_config_REACT_APP_DATALOADER_URL" {}
 
-variable "dl_ui_config_REACT_APP_UI_URL_3EDGES" {}
+variable "dataloader_ui_config_REACT_APP_UI_URL_3EDGES" {}
 
-variable "dl_ui_config_REACT_APP_ACCESS_TOKEN_COOKIE_NAME" {}
+variable "dataloader_ui_config_REACT_APP_ACCESS_TOKEN_COOKIE_NAME" {}
 
-variable "dl_ui_config_REACT_APP_NONCE_COOKIE_NAME" {}
+variable "dataloader_ui_config_REACT_APP_NONCE_COOKIE_NAME" {}
 
-variable "dl_ui_config_REACT_APP_PKEY_COOKIE_NAME" {}
+variable "dataloader_ui_config_REACT_APP_PKEY_COOKIE_NAME" {}
 
-variable "dl_ui_config_REACT_APP_ID_TOKEN_COOKIE_NAME" {}
+variable "dataloader_ui_config_REACT_APP_ID_TOKEN_COOKIE_NAME" {}
 
-variable "dl_ui_config_REACT_APP_OIDC_CLIENT_ID" {}
+variable "dataloader_ui_config_REACT_APP_OIDC_CLIENT_ID" {}
 
-variable "dl_ui_config_REACT_APP_OIDC_URL" {}
+variable "dataloader_ui_config_REACT_APP_OIDC_URL" {}
 
-variable "dl_ui_config_REACT_APP_JWKS_URI" {}
+variable "dataloader_ui_config_REACT_APP_JWKS_URI" {}
 
-variable "dl_ui_config_REACT_APP_DOCUMENTATION_URL" {}
+variable "dataloader_ui_config_REACT_APP_DOCUMENTATION_URL" {}
 
 # This section of following variables are for kubernetes/deployments/secrets : dataloader_secrets
-variable "dl_secret_dbPass" {}
+variable "dataloader_secret_dbPass" {}
 
-variable "dl_secret_OIDC_CLIENT_PWD" {}
+variable "dataloader_secret_OIDC_CLIENT_PWD" {}
 
 # This section of following variables are for kubernetes/deployments/configmap : dataloader_config
-variable "dl_config_NODE_ENV" {}
+variable "dataloader_config_NODE_ENV" {}
 
-variable "dl_config_CORS_ORIGIN" {}
+variable "dataloader_config_CORS_ORIGIN" {}
 
-variable "dl_config_PORT" {}
+variable "dataloader_config_PORT" {}
 
-variable "dl_config_NEO4J_POOL_SIZE" {}
+variable "dataloader_config_NEO4J_POOL_SIZE" {}
 
-variable "dl_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS" {}
+variable "dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS" {}
 
-variable "dl_config_NEO4J_MAX_CONNECTION_LIFETIME" {}
+variable "dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME" {}
 
-variable "dl_config_NEO4J_CONNECTION_TIMEOUT" {}
+variable "dataloader_config_NEO4J_CONNECTION_TIMEOUT" {}
 
-variable "dl_config_dbName" {}
+variable "dataloader_config_dbName" {}
 
-variable "dl_config_dbUser" {}
+variable "dataloader_config_dbUser" {}
 
-variable "dl_config_dbHost" {}
+variable "dataloader_config_dbHost" {}
 
-variable "dl_config_OIDC_URL" {}
+variable "dataloader_config_OIDC_URL" {}
 
-variable "dl_config_OIDC_CLIENT_ID" {}
+variable "dataloader_config_OIDC_CLIENT_ID" {}
 
-variable "dl_config_CONFIGURATION_URL" {}
+variable "dataloader_config_CONFIGURATION_URL" {}
 
 # This section of following variables are for kubernetes/deployments/configmap : cluster_config
 variable "cluster_config_NODE_ENV" {}
