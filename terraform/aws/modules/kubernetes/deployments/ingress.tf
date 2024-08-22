@@ -65,77 +65,77 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
       }
     }
 
-    # rule {
-    #   host = "dataloader.${var.hosted_zone}"
-    #   http {
-    #     path {
-    #       path      = "/"
-    #       path_type = "Prefix"
-    #       backend {
-    #         service {
-    #           name = "dataloader"
-    #           port {
-    #             number = 3000
-    #           }
-    #         }
-    #       }
-    #     }
-    #   }
-    # }
+    rule {
+      host = "dataloader.${var.hosted_zone}"
+      http {
+        path {
+          path      = "/"
+          path_type = "Prefix"
+          backend {
+            service {
+              name = "dataloader"
+              port {
+                number = 3000
+              }
+            }
+          }
+        }
+      }
+    }
 
-    # rule {
-    #   host = "idp.${var.hosted_zone}"
-    #   http {
-    #     path {
-    #       path      = "/"
-    #       path_type = "Prefix"
-    #       backend {
-    #         service {
-    #           name = "idp"
-    #           port {
-    #             number = 3001
-    #           }
-    #         }
-    #       }
-    #     }
-    #   }
-    # }
+    rule {
+      host = "idp.${var.hosted_zone}"
+      http {
+        path {
+          path      = "/"
+          path_type = "Prefix"
+          backend {
+            service {
+              name = "idp"
+              port {
+                number = 3001
+              }
+            }
+          }
+        }
+      }
+    }
 
-    # rule {
-    #   host = "webloader.${var.hosted_zone}"
-    #   http {
-    #     path {
-    #       path      = "/"
-    #       path_type = "Prefix"
-    #       backend {
-    #         service {
-    #           name = "dataloader-ui"
-    #           port {
-    #             number = 3002
-    #           }
-    #         }
-    #       }
-    #     }
-    #   }
-    # }
+    rule {
+      host = "webloader.${var.hosted_zone}"
+      http {
+        path {
+          path      = "/"
+          path_type = "Prefix"
+          backend {
+            service {
+              name = "dataloader-ui"
+              port {
+                number = 3002
+              }
+            }
+          }
+        }
+      }
+    }
 
-    # rule {
-    #   host = "cluster.${var.hosted_zone}"
-    #   http {
-    #     path {
-    #       path      = "/"
-    #       path_type = "Prefix"
-    #       backend {
-    #         service {
-    #           name = "cluster"
-    #           port {
-    #             number = 3333
-    #           }
-    #         }
-    #       }
-    #     }
-    #   }
-    # }
+    rule {
+      host = "cluster.${var.hosted_zone}"
+      http {
+        path {
+          path      = "/"
+          path_type = "Prefix"
+          backend {
+            service {
+              name = "cluster"
+              port {
+                number = 3333
+              }
+            }
+          }
+        }
+      }
+    }
 
   }
 

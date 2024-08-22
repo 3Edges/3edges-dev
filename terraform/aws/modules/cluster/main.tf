@@ -30,6 +30,10 @@ resource "aws_eks_node_group" "eks_node_group" {
     max_size     = 3
   }
 
+  # since t3.medium only supports 17 maximum pods and we have > 17 pods (including startup pods)
+  # t3.large supports 35 max pods
+  instance_types = ["t3.large"]
+
   timeouts {
     create = "1h"
     update = "1h"
