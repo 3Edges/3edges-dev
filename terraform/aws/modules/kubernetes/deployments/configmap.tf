@@ -1,0 +1,240 @@
+resource "kubernetes_config_map" "configuration_config" {
+  metadata {
+    name      = "configuration-config"
+    namespace = "3edges"
+  }
+
+  data = {
+    NODE_ENV                                      = "production"
+    SERVER_PORT                                   = "4005"
+    ENABLE_INTROSPECTION                          = "true"
+    ENABLE_PLAYGROUND                             = "true"
+    REACT_APP_OTP_VALIDITY                        = "2880"
+    SEND_EMAIL_FROM                               = "noreply@abotega.ca"
+    SEND_EMAIL_FROM_NAME                          = "3Edges"
+    SEND_EMAIL_URL                                = "https://edges-305901.uw.r.appspot.com/api"
+    NEO4J_POOL_SIZE                               = "300"
+    NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS       = "60000"
+    NEO4J_MAX_CONNECTION_LIFETIME                 = "3600000"
+    NEO4J_CONNECTION_TIMEOUT                      = "30000"
+    RESET_ADMIN_USER                              = "true"
+    PRIM_ADMIN_EMAIL                              = "3admin@abotega.ca"
+    NEO4J_URL_TEST                                = "neo4j+s://9d49f282.databases.neo4j.io"
+    PRIM_CONFIG_NEO4J_DB_TEST                     = "neo4j"
+    PRIM_SERVER_HTTP_CORS_ORIGIN                  = "https://abotega.ca"
+    PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN          = "https://abotega.ca"
+    DB_TYPE                                       = "neo4j"
+    DB_VERSION                                    = "v5"
+    DB_HOST                                       = "neo4j+s://ae61ebf7.databases.neo4j.io"
+    DB_NAME                                       = "neo4j"
+    DB_USER                                       = "neo4j"
+    CLUSTER_URL                                   = "https://cluster.abotega.ca/api"
+    COOKIE_NNCE                                   = "nnce"
+    COOKIE_PRIMSCOOKIE                            = "primscookie"
+    COOKIE_PKEY                                   = "pkey"
+    REDIS_HOST                                    = "redis-headless"
+    REDIS_PORT                                    = "6379"
+    REDIS_TIMEOUT_GET_APISERVER_STATUS            = "30"
+    LOCALHOST_PROXY_DASHBOARD_URL                 = ""
+    LOCALHOST_PROXY_IDP_URL                       = ""
+    LOCALHOST_PROXY_AUTHORIZATION_URL             = ""
+    AUTHZ_POD_PORT                                = "5055"
+    DASHBOARD_POD_PORT                            = "3045"
+    IDP_POD_PORT                                  = "3001"
+    PROXY_POD_PORT                                = "4044"
+    DEFAULT_CONTENT_SECURITY_POLICY_API_DASHBOARD = "default-src 'self' *.abotega.ca https://auth-qa.credivera.com https://vc-qa.credivera.io https://ipv4.icanhazip.com https://api.ipify.com; script-src 'self' http://conoret.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://www.google.com/recaptcha/ 'unsafe-inline' 'unsafe-eval'; img-src 'self' www.gstatic.com/recaptcha data:; font-src 'self' https://fonts.gstatic.com; frame-src 'self' *.recaptcha.net recaptcha.net https://www.google.com/recaptcha/ https://recaptcha.google.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline';"
+    MAX_SHUTDOWN                                  = "20"
+    MAX_REDEPLOY                                  = "5"
+    SEND_EMAIL_SERVER                             = "PROD"
+    COST_LIMIT_ENABLED                            = "true"
+    COST_LIMIT_MAXCOST                            = "300000"
+    COST_LIMIT_OBJECTCOST                         = "5"
+    COST_LIMIT_SCALARCOST                         = "5"
+    COST_LIMIT_DEPTHCOSTFACTOR                    = "2"
+    COST_LIMIT_IGNOREINTROSPECTION                = "true"
+    COST_LIMIT_N                                  = "20"
+    MAX_ALIASES_ENABLED                           = "true"
+    MAX_ALIASES_N                                 = "20"
+    MAX_DIRECTIVES_N                              = "20"
+    MAX_DEPTH_N                                   = "8"
+    MAX_TOKENS_N                                  = "250"
+    PRIM_SERVER_HTTP_CORS_ORIGIN_IDP              = "https://idp.abotega.ca"
+    MAX_CHARACTERS_N                              = "15000"
+    PROCESS_TIMEOUT_N                             = "10000"
+    UI_PROCESS_TIMEOUT_N                          = "100000"
+    DB_RECORDS_BATCH_SIZE                         = "10"
+    QUERY_COMPLEXITY_LIMIT                        = "140000"
+    DEFAULT_CONTENT_SECURITY_POLICY               = "default-src 'self' *.abotega.ca https://embeddable-sandbox.cdn.apollographql.com/ https://auth-qa.credivera.com https://vc-qa.credivera.io https://ipv4.icanhazip.com https://api.ipify.com https://apollo-server-landing-page.cdn.apollographql.com; script-src 'self' https://embeddable-sandbox.cdn.apollographql.com/ http://conoret.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://www.google.com/recaptcha/ https://apollo-server-landing-page.cdn.apollographql.com/ 'unsafe-inline' 'unsafe-eval'; img-src 'self' https://apollo-server-landing-page.cdn.apollographql.com data:; frame-src 'self' https://sandbox.embed.apollographql.com/ *.recaptcha.net recaptcha.net https://www.google.com/recaptcha/ https://recaptcha.google.com https://apollo-server-landing-page.cdn.apollographql.com; style-src 'self' https://fonts.googleapis.com https://apollo-server-landing-page.cdn.apollographql.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://apollo-server-landing-page.cdn.apollographql.com;"
+    UI_URL                                        = "https://abotega.ca"
+    OIDC_URL                                      = "https://idp.abotega.ca/oidc"
+    OIDC_CLIENT_ID                                = "3edgesConfigClient"
+  }
+}
+
+# resource "kubernetes_config_map" "dataloader_ui_config" {
+#   metadata {
+#     name      = "dataloader-ui-config"
+#     namespace = "3edges"
+#   }
+
+#   data = {
+#     NODE_ENV                           = "production"
+#     PORT                               = "3002"
+#     REACT_APP_DATALOADER_URL           = "https://dataloader.abotega.ca"
+#     REACT_APP_UI_URL_3EDGES            = "https://abotega.ca"
+#     REACT_APP_ACCESS_TOKEN_COOKIE_NAME = "_nid"
+#     REACT_APP_NONCE_COOKIE_NAME        = "nnce"
+#     REACT_APP_PKEY_COOKIE_NAME         = "pkey"
+#     REACT_APP_ID_TOKEN_COOKIE_NAME     = "primscookie"
+#     REACT_APP_OIDC_CLIENT_ID           = "3edgesUIClient"
+#     REACT_APP_OIDC_URL                 = "https://idp.abotega.ca/oidc"
+#     REACT_APP_JWKS_URI                 = "/jwks"
+#     REACT_APP_DOCUMENTATION_URL        = "https://docs.3edges.com/space/3edgesDoc/2226389009/Bulk+Data+import"
+#   }
+# }
+
+# resource "kubernetes_config_map" "cluster_config" {
+#   metadata {
+#     name      = "cluster-config"
+#     namespace = "3edges"
+#   }
+
+#   data = {
+#     NODE_ENV             = "production"
+#     PORT                 = "3333"
+#     UI_URL               = "https://abotega.ca"
+#     CLIENT_EMAIL         = "911543339197-compute@developer.gserviceaccount.com"
+#     OIDC_URL             = "https://idp.abotega.ca/oidc"
+#     OIDC_CLIENT_ID       = "3edgesConfigClient"
+#     THREE_EDGES_CLUSTER  = "three-edges-cluster"
+#     THREE_EDGES_LOCATION = "ca-west-1"
+#     NGINX_LB             = "a716352115c504c3da290874d20eaab2-3e3aa36aacbd9350.elb.ca-west-1.amazonaws.com"
+#     DB_TYPE              = "neo4j"
+#     DB_VERSION           = "v5"
+#     DB_HOST              = "neo4j+s://ae61ebf7.databases.neo4j.io"
+#     DB_NAME              = "neo4j"
+#     DB_USER              = "neo4j"
+#     CLUSTER_URL          = "https://cluster.abotega.ca"
+#     SEND_EMAIL_URL       = "https://edges-305901.uw.r.appspot.com/api"
+#     SEND_EMAIL_SERVER    = "PROD"
+#     SEND_EMAIL_FROM      = "noreply@abotega.ca"
+#     SEND_EMAIL_FROM_NAME = "3Edges"
+#     PRIM_ADMIN_EMAIL     = "3admin@abotega.ca"
+#   }
+# }
+
+# resource "kubernetes_config_map" "dataloader_config" {
+#   metadata {
+#     name      = "dataloader-config"
+#     namespace = "3edges"
+#   }
+
+#   data = {
+#     NODE_ENV                                = "production"
+#     CORS_ORIGIN                             = "*"
+#     PORT                                    = "3000"
+#     NEO4J_POOL_SIZE                         = "300"
+#     NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS = "60000"
+#     NEO4J_MAX_CONNECTION_LIFETIME           = "3600000"
+#     NEO4J_CONNECTION_TIMEOUT                = "30000"
+#     dbName                                  = "neo4j"
+#     dbUser                                  = "neo4j"
+#     dbHost                                  = "neo4j+s://ae61ebf7.databases.neo4j.io"
+#     OIDC_URL                                = "https://idp.abotega.ca/oidc"
+#     OIDC_CLIENT_ID                          = "3edgesDataloaderClient"
+#     CONFIGURATION_URL                       = "https://abotega.ca"
+#   }
+# }
+
+# resource "kubernetes_config_map" "idp_config" {
+#   metadata {
+#     name      = "idp-config"
+#     namespace = "3edges"
+#   }
+
+#   data = {
+#     NODE_ENV                              = "production"
+#     OIDC_PORT                             = "3001"
+#     SERVER_HTTP_CORS_ORIGIN               = "*"
+#     SERVER_HTTP_STRICT_TRANSPORT_SECURITY = "15552000"
+#     SERVER_HTTP_X_FRAME_OPTIONS           = "sameorigin"
+#     PRIM_ADMIN_EMAIL                      = "3admin@abotega.ca"
+#     CHECK_VERIFIED                        = "true"
+#     NAMING_PROPERTY                       = "email"
+#     SUBJECT_TYPE                          = "NiamUser"
+#     AUTHN_QUERY                           = "MATCH (user:$SUBJECT_TYPE) WHERE (user.$NAMING_PROPERTY = $username) OPTIONAL MATCH (user)-[rel: NIAM_BELONGS_TO | NIAM_ADMINISTERS]->(tenant:NiamTenant) WITH COLLECT(DISTINCT CASE WHEN user.email = '$PRIM_ADMIN_EMAIL' THEN 'Roles.SuperAdmin' WHEN type(rel) = 'NIAM_ADMINISTERS' THEN 'Roles.Admin' WHEN type(rel) = 'NIAM_BELONGS_TO' THEN 'Roles.User' END) as roles, user, '$SUBJECT_TYPE' as subtype RETURN user{ .*, roles, subtype }"
+#     AUTHN_QUERY_VERIFIED                  = "MATCH (user:$SUBJECT_TYPE) WHERE (user.$NAMING_PROPERTY = $username AND user.isVerified = true) OPTIONAL MATCH (user)-[rel: NIAM_BELONGS_TO | NIAM_ADMINISTERS]->(tenant:NiamTenant) WITH COLLECT(DISTINCT CASE WHEN user.email = '$PRIM_ADMIN_EMAIL' THEN 'Roles.SuperAdmin' WHEN type(rel) = 'NIAM_ADMINISTERS' THEN 'Roles.Admin' WHEN type(rel) = 'NIAM_BELONGS_TO' THEN 'Roles.User' END) as roles, user, '$SUBJECT_TYPE' as subtype RETURN user{ .*, roles, subtype }"
+#     SOCIAL_URL                            = "https://social.abotega.ca"
+#     CLAIMS_ARRAY                          = "_id,address,company,country,createDateTime,email,ip,isVerified,mobilePhone,name,roles,subtype,subscriptionLevel"
+#     OIDC_ACCESS_TOKEN_EXPIRE              = "24"
+#     CONTENT_SECURITY_POLICY               = "default-src 'self' https://abotega.ca https://abotega.ca/graphql https://idp.abotega.ca http://idp.abotega.ca https://3edges.com https://accounts.google.com https://www.google.com https://accounts.google.com/gsi/; frame-src 'self' https://www.google.com https://accounts.google.com/gsi/; base-uri 'self'; block-all-mixed-content; font-src 'self' https: data:; frame-ancestors 'self'; img-src 'self' data:; object-src 'none'; connect-src 'self' https://accounts.google.com/gsi/; script-src 'self' https://www.google.com https://accounts.google.com/gsi/client 'unsafe-inline'; script-src-elem 'self' https://accounts.google.com https://accounts.google.com/gsi/client 'unsafe-inline'; script-src-attr 'none'; style-src 'self' https://accounts.google.com/gsi/style https: 'unsafe-inline';"
+#     ALLOW_HTTP_REDIRECTS                  = "true"
+#     PRIM_UI_URL                           = "https://abotega.ca"
+#     OIDC_AUTHORIZE_ENDPOINT               = "/authorize"
+#     OIDC_TOKEN_ENDPOINT                   = "/token"
+#     OIDC_TOKEN_INTROSPECTION_ENDPOINT     = "/token/introspection"
+#     OIDC_ME_ENDPOINT                      = "/me"
+#     PROM_METRICS_PREFIX                   = "ui_idp_"
+#     PROM_ENABLE_DEFAULT_METRICS           = "false"
+#     IS_IDP_PROXY                          = "false"
+#     OIDC_REGISTRATION_URI                 = "/reg"
+#     NiamSvcAcc_Client_id                  = "NiamSvcAcctClient"
+#     NiamSvcAcc_username                   = "NiamSvcAcct"
+#     OIDC_URL                              = "https://idp.abotega.ca/oidc"
+#     DB_TYPE                               = "neo4j"
+#     DB_VERSION                            = "v5"
+#     DB_HOST                               = "neo4j+s://ae61ebf7.databases.neo4j.io"
+#     DB_NAME                               = "neo4j"
+#     DB_USER                               = "neo4j"
+#     ACCESS_TOKEN_TYPE                     = "opaque"
+#     CONSENT_PAGE                          = "false"
+#     OIDC_URL_3EDGES                       = "https://idp.abotega.ca/oidc"
+#     CLIENT_ID_3EDGES                      = "3edgesConfigClient"
+#     COOKIE_NNCE                           = "nnce"
+#     COOKIE_PRIMSCOOKIE                    = "primscookie"
+#     COOKIE_NID                            = "_nid"
+#     COOKIE_PKEY                           = "pkey"
+#     SOCIAL_GOOGLE_CLIENT_ID               = "911543339197-u736geahkepncd33u75f8kqqm4hk0250.apps.googleusercontent.com"
+#     SOCIAL_GOOGLE_OIDC_URL                = "https://accounts.google.com"
+#     SOCIAL_GOOGLE_JWKS_URI                = "https://www.googleapis.com/oauth2/v3/certs"
+#     PRIM_UI_CLIENT_ID                     = "3edgesUIClient"
+#     OIDC_REFRESH_TOKEN_EXPIRE             = "24"
+#     CONFIG_URL                            = "https://abotega.ca/graphql"
+#     DB_RECORDS_BATCH_SIZE                 = "100"
+#     REDIS_HOST                            = "redis-headless"
+#     REDIS_PORT                            = "6379"
+#   }
+# }
+
+# resource "kubernetes_config_map" "ui_config" {
+#   metadata {
+#     name      = "ui-config"
+#     namespace = "3edges"
+#   }
+
+#   data = {
+#     NODE_ENV                                     = "production"
+#     PORT                                         = "3005"
+#     REACT_APP_ACCESS_TOKEN_COOKIE_NAME           = "_nid"
+#     REACT_APP_NONCE_COOKIE_NAME                  = "nnce"
+#     REACT_APP_ID_TOKEN_COOKIE_NAME               = "primscookie"
+#     REACT_APP_PKEY_COOKIE_NAME                   = "pkey"
+#     REACT_APP_ENABLE_SELFREGISTRATION            = "true"
+#     REACT_APP_JWKS_URI                           = "/jwks"
+#     REACT_APP_OIDC_CLIENT_ID                     = "3edgesUIClient"
+#     REACT_APP_OIDC_AUTH_ENDPOINT                 = "/authorize"
+#     REACT_APP_URL_UI                             = "https://abotega.ca"
+#     REACT_APP_OIDC_TOKEN_ENDPOINT                = "/token"
+#     REACT_APP_OIDC_URL                           = "https://idp.abotega.ca/oidc"
+#     REACT_APP_PRIM_BACKEND_URI                   = "https://abotega.ca/graphql"
+#     REACT_APP_ENABLE_NEWCLUSTER                  = "false"
+#     REACT_APP_3EDGES_PROXY                       = "https://tmp-random-url.abotega.ca"
+#     REACT_APP_NEWCLUSTER_PROXY                   = "https://tmp-random-url.abotega.ca"
+#     REACT_APP_3EDGES_IDP                         = "https://tmp-random-url.abotega.ca/oidc"
+#     REACT_APP_NEWCLUSTER_IDP                     = "https://tmp-random-url.abotega.ca/oidc"
+#     REACT_APP_REFRESH_TOKEN_LOCAL_STORAGE_NAME   = "default_nid_r"
+#     REACT_APP_IDLE_TIME_IN_MINUTES               = "20"
+#     REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME = "socialProvider"
+#     REACT_APP_WEBLOADER_URL                      = "https://webloader.abotega.ca"
+#   }
+# }

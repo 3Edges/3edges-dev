@@ -5,3 +5,4 @@ plan.bkp
 localhost/.env
 .vscode
 .git
+/tmp

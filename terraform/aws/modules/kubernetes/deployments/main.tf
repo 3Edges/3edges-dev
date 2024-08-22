@@ -14,8 +14,8 @@ resource "kubernetes_secret" "aws_credentials" {
   }
 
   data = {
-    aws_access_key_id     = base64encode(var.aws_access_key_id)
-    aws_secret_access_key = base64encode(var.aws_secret_access_key)
+    aws_access_key_id     = var.aws_access_key_id
+    aws_secret_access_key = var.aws_secret_access_key
   }
 }
 
@@ -51,7 +51,7 @@ resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
               }
             },
             selector = {
-              dnsZones = ["*.${var.hosted_zone}"]
+              dnsZones = [var.hosted_zone, "*.${var.hosted_zone}"]
             }
           }
         ]
@@ -78,7 +78,7 @@ resource "kubernetes_manifest" "letsencrypt_wildcard" {
         name = "cert-manager-cluster-issuer"
       }
       secretName = "letsencrypt-wildcard-secret"
-      dnsNames   = ["*.${var.hosted_zone}"]
+      dnsNames   = [var.hosted_zone, "*.${var.hosted_zone}"]
     }
   }
 

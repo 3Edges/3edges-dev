@@ -7,7 +7,7 @@
 
         terraform\terraform.tfvars
 
-3) Command lines inside "terraform" directory:
+3) Command lines inside "terraform/aws" directory:
 
     - To start the project
 
