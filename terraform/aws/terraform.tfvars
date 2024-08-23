@@ -9,12 +9,12 @@
 # copyright 3edges, August 2024         #
 #########################################
 
-aws_region = "ca-west-1"
+aws_region = ""
 
-hosted_zone = "abotega.ca"
+hosted_zone = ""
 
-eks_cluster = "three-edges-cluster"
+eks_cluster = ""
 
-aws_access_key_id = "AKIAVF....I2P6GS"
+aws_access_key_id = ""
 
-aws_secret_access_key = "2bhPAK3V674mU.....EQmc0k+w99fwxzkcUuQZd"
+aws_secret_access_key = ""
