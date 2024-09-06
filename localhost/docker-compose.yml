@@ -27,23 +27,23 @@ services:
     volumes:
       - ./etc/config:/src/etc/config
       - ./etc/log:/src/etc/log/
-#  prim-idp:
-#    image: babsy/3edges:idp
-#    container_name: prim-idp
-#    build:
-#      context: ..
-#    ports:
-#      - "3001:3001"
-#    env_file:
-#      - ./.env
-#    environment:
-#      - NODE_ENV=development
-#      - OIDC_PORT=3001
-#      - AUTHN_QUERY_VERIFIED=MATCH (user:$SUBJECT_TYPE) WHERE (user.$NAMING_PROPERTY = '3admin@3edges.io' AND user.isVerified = true) OPTIONAL MATCH (user)-[rel:NIAM_BELONGS_TO | NIAM_ADMINISTERS]->(tenant:NiamTenant) WITH COLLECT(DISTINCT CASE WHEN user.email = '$PRIM_ADMIN_EMAIL' THEN 'Roles.SuperAdmin' WHEN type(rel) = 'NIAM_ADMINISTERS' THEN 'Roles.Admin' WHEN type(rel) = 'NIAM_BELONGS_TO' THEN 'Roles.User' END) as roles, user, '$SUBJECT_TYPE' as subtype RETURN user{ .*, roles, subtype }
-#      - AUTHN_QUERY=MATCH (user:$SUBJECT_TYPE) WHERE (user.$NAMING_PROPERTY = $username) OPTIONAL MATCH (user)-[rel:NIAM_BELONGS_TO | NIAM_ADMINISTERS]->(tenant:NiamTenant) WITH COLLECT(DISTINCT CASE WHEN user.email = '$PRIM_ADMIN_EMAIL' THEN 'Roles.SuperAdmin' WHEN type(rel) = 'NIAM_ADMINISTERS' THEN 'Roles.Admin' WHEN type(rel) = 'NIAM_BELONGS_TO' THEN 'Roles.User' END) as roles, user, '$SUBJECT_TYPE' as subtype RETURN user{ .*, roles, subtype }
-#      - IS_IDP_PROXY=false
-#    volumes:
-#      - ./etc/config:/src/etc/config
+  prim-idp:
+    image: babsy/3edges:idp
+    container_name: prim-idp
+    build:
+      context: ..
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=development
+      - OIDC_PORT=3001
+      - AUTHN_QUERY_VERIFIED=MATCH (user:$SUBJECT_TYPE) WHERE (user.$NAMING_PROPERTY = '3admin@3edges.io' AND user.isVerified = true) OPTIONAL MATCH (user)-[rel:NIAM_BELONGS_TO | NIAM_ADMINISTERS]->(tenant:NiamTenant) WITH COLLECT(DISTINCT CASE WHEN user.email = '$PRIM_ADMIN_EMAIL' THEN 'Roles.SuperAdmin' WHEN type(rel) = 'NIAM_ADMINISTERS' THEN 'Roles.Admin' WHEN type(rel) = 'NIAM_BELONGS_TO' THEN 'Roles.User' END) as roles, user, '$SUBJECT_TYPE' as subtype RETURN user{ .*, roles, subtype }
+      - AUTHN_QUERY=MATCH (user:$SUBJECT_TYPE) WHERE (user.$NAMING_PROPERTY = $username) OPTIONAL MATCH (user)-[rel:NIAM_BELONGS_TO | NIAM_ADMINISTERS]->(tenant:NiamTenant) WITH COLLECT(DISTINCT CASE WHEN user.email = '$PRIM_ADMIN_EMAIL' THEN 'Roles.SuperAdmin' WHEN type(rel) = 'NIAM_ADMINISTERS' THEN 'Roles.Admin' WHEN type(rel) = 'NIAM_BELONGS_TO' THEN 'Roles.User' END) as roles, user, '$SUBJECT_TYPE' as subtype RETURN user{ .*, roles, subtype }
+      - IS_IDP_PROXY=false
+    volumes:
+      - ./etc/config:/src/etc/config
   prim-proxy-idp:
     image: babsy/3edges:proxy-idp
     container_name: prim-idp-proxy
