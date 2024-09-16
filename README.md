@@ -106,7 +106,7 @@ Make sure you have installed terraform, aws cli and git client on your terraform
 
 ## Configure AWS CLI
 
-*Use the access key and secret key generated in the previous step to configure the AWS CLI
+Use the access key and secret key generated in the previous step to configure the AWS CLI
 
 ```
 # aws configure  
