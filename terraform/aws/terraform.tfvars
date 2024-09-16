@@ -9,34 +9,50 @@
 # copyright 3edges, August 2024         #
 #########################################
 
-aws_region = ""
+# The AWS region where resources will be deployed (e.g., ca-west-1)
+aws_region = "your-aws-region"
 
-aws_access_key_id = ""
+# The AWS access key ID for authentication
+aws_access_key_id = "your-aws-access-key-id"
 
-aws_secret_access_key = ""
+# The AWS secret access key for authentication
+aws_secret_access_key = "your-aws-secret-access-key"
 
-hosted_zone = ""
+# The Domain name for the 3Edges Deployment
+hosted_zone = "your-domain"
 
-eks_cluster = ""
+# The name of the EKS cluster
+eks_cluster = "your-eks-cluster-name"
 
-shared_config_SEND_EMAIL_FROM = ""
+# Name of the three edges cluster
+cluster_config_config_CLUSTER = "cluster-name"
 
-shared_config_SEND_EMAIL_FROM_NAME = ""
+# Email address from which emails are sent
+shared_config_SEND_EMAIL_FROM = "noreply@your-domain.com"
 
-shared_config_PRIM_ADMIN_EMAIL = ""
+# Name displayed as the sender in emails
+shared_config_SEND_EMAIL_FROM_NAME = "Your-email-Name"
 
-three_edges_DB_HOST = ""
+# Neo4j database (eg., neo4j+s://<db>)
+three_edges_DB_HOST = "your-database-host"
 
-three_edges_DB_NAME = ""
+# Database name
+three_edges_DB_NAME = "your-database-name"
 
-three_edges_DB_USER = ""
+# Database user
+three_edges_DB_USER = "your-database-user"
 
-three_edges_DB_TYPE = ""
+# Database type (eg., neo4j)
+three_edges_DB_TYPE = "your-database-type"
 
-three_edges_DB_VERSION = ""
+# Database version (eg., v5)
+three_edges_DB_VERSION = "your-database-version"
 
-three_edges_secret_DB_PASSWORD = ""
+# Database password
+three_edges_secret_DB_PASSWORD = "your-database-password"
 
-configuration_config_secret_PRIM_ADMIN_PASS = ""
+# Primary admin email address
+shared_config_PRIM_ADMIN_EMAIL = "admin@your-domain.com"
 
-cluster_config_config_CLUSTER = ""
+# Primary admin password
+configuration_config_secret_PRIM_ADMIN_PASS = "your-admin-password"

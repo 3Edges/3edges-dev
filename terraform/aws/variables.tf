@@ -1,60 +1,75 @@
 variable "aws_region" {
-  default = ""
+  description = "The AWS region where resources will be deployed (e.g., us-east-1)."
+  default     = ""
 }
 
 variable "hosted_zone" {
-  default = ""
+  description = "The Route 53 hosted zone ID for DNS management."
+  default     = ""
 }
 
 variable "eks_cluster" {
-  default = "three-edges-cluster"
+  description = "The name of the EKS cluster to be used."
+  default     = "three-edges-cluster"
 }
 
 variable "eks_role" {
-  default = "three-edges-eks-role"
+  description = "The IAM role associated with the EKS cluster."
+  default     = "three-edges-eks-role"
 }
 
 variable "eks_node_role" {
-  default = "three-edges-eks-node-role"
+  description = "The IAM role for the EKS node group."
+  default     = "three-edges-eks-node-role"
 }
 
 variable "eks_node_group" {
-  default = "three-edges-node-group"
+  description = "The name of the EKS node group."
+  default     = "three-edges-node-group"
 }
 
 variable "eks_vpc" {
-  default = "three-edges-eks-vpc"
+  description = "The VPC associated with the EKS cluster."
+  default     = "three-edges-eks-vpc"
 }
 
 variable "eks_internet_gateway" {
-  default = "three-edges-eks-igw"
+  description = "The internet gateway associated with the EKS cluster."
+  default     = "three-edges-eks-igw"
 }
 
 variable "eks_route_table" {
-  default = "three-edges-eks-route-table"
+  description = "The route table associated with the EKS cluster."
+  default     = "three-edges-eks-route-table"
 }
 
 variable "eks_security_group" {
-  default = "three-edges-eks-security-group"
+  description = "The security group associated with the EKS cluster."
+  default     = "three-edges-eks-security-group"
 }
 
 variable "aws_access_key_id" {
-  default = ""
+  description = "The AWS access key ID for authentication."
+  default     = ""
 }
 
 variable "aws_secret_access_key" {
-  default = ""
+  description = "The AWS secret access key for authentication."
+  default     = ""
 }
 
 variable "exclude_cluster_issuer" {
-  type    = bool
-  default = false
+  description = "Flag to exclude the creation of the ClusterIssuer for cert-manager (true/false)."
+  type        = bool
+  default     = false
 }
 
 variable "exclude_certificate" {
-  type    = bool
-  default = false
+  description = "Flag to exclude the creation of certificates (true/false)."
+  type        = bool
+  default     = false
 }
+
 
 # This section of following variables are for shared / common values
 variable "shared_secret_OIDC_CLIENT_PWD" {
