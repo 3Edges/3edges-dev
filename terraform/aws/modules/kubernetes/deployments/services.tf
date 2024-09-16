@@ -97,7 +97,8 @@ resource "kubernetes_service" "service_3edges_idp" {
 
   spec {
     port {
-      port = 3001
+      port = 3007
+      target_port = 3007
     }
     selector = {
       app = "idp"

@@ -63,7 +63,6 @@ resource "kubernetes_deployment" "deployment_configuration" {
       spec {
         container {
           name = "configuration"
-          # image             = "babsy/3edges:configuration"
           image             = "abotega/prim-configuration:hub"
           image_pull_policy = "Always"
 
@@ -111,7 +110,6 @@ resource "kubernetes_deployment" "deployment_dataloader_ui" {
       spec {
         container {
           name              = "dataloader-ui"
-          # image             = "babsy/3edges:dataloader-ui"
           image             = "abotega/prim-dataloader-ui:hub"
           image_pull_policy = "Always"
 
@@ -153,7 +151,6 @@ resource "kubernetes_deployment" "deployment_dataloader" {
       spec {
         container {
           name              = "dataloader"
-          # image             = "babsy/3edges:dataloader"
           image             = "abotega/prim-dataloader:hub"
           image_pull_policy = "Always"
 
@@ -201,7 +198,6 @@ resource "kubernetes_deployment" "deployment_cluster" {
       spec {
         container {
           name              = "cluster"
-          # image             = "babsy/3edges:cluster"
           image             = "abotega/prim-cluster:hub"
           image_pull_policy = "Always"
 
@@ -250,7 +246,6 @@ resource "kubernetes_deployment" "deployment_idp" {
       spec {
         container {
           name              = "idp"
-          # image             = "babsy/3edges:idp"
           image             = "abotega/prim-idp:hub"
           image_pull_policy = "Always"
 
@@ -298,7 +293,6 @@ resource "kubernetes_deployment" "deployment_ui" {
       spec {
         container {
           name              = "ui"
-          # image             = "babsy/3edges:ui"
           image             = "abotega/prim-ui:hub"
           image_pull_policy = "Always"
 

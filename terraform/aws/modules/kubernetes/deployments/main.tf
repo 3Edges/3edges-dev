@@ -60,7 +60,14 @@ resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
       }
     }
   }
-depends_on = [var.aws_eks_cluster_auth_endpoint, var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
+depends_on = [
+  var.aws_eks_cluster_auth_endpoint, 
+  var.cert_manager, 
+  var.ingress_nginx, 
+  var.kubernetes_namespace_namespace
+  
+
+  ]
   
 }
 

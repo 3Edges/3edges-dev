@@ -1,41 +1,41 @@
 variable "aws_region" {
-  default = "ca-west-1"
+  default = ""
 }
 
 variable "hosted_zone" {
-  default = "vanquisher.tech"
+  default = ""
 }
 
 variable "eks_cluster" {
-  default = "three-edges-cluster-praj"
+  default = "three-edges-cluster"
 }
 
 variable "eks_role" {
-  default = "three-edges-eks-role-praj"
+  default = "three-edges-eks-role"
 }
 
 variable "eks_node_role" {
-  default = "three-edges-eks-node-role-praj"
+  default = "three-edges-eks-node-role"
 }
 
 variable "eks_node_group" {
-  default = "three-edges-node-group-praj"
+  default = "three-edges-node-group"
 }
 
 variable "eks_vpc" {
-  default = "three-edges-eks-vpc-praj"
+  default = "three-edges-eks-vpc"
 }
 
 variable "eks_internet_gateway" {
-  default = "three-edges-eks-igw-praj"
+  default = "three-edges-eks-igw"
 }
 
 variable "eks_route_table" {
-  default = "three-edges-eks-route-table-praj"
+  default = "three-edges-eks-route-table"
 }
 
 variable "eks_security_group" {
-  default = "three-edges-eks-security-group-praj"
+  default = "three-edges-eks-security-group"
 }
 
 variable "aws_access_key_id" {
@@ -55,6 +55,68 @@ variable "exclude_certificate" {
   type    = bool
   default = false
 }
+
+# This section of following variables are for shared / common values
+variable "shared_secret_OIDC_CLIENT_PWD" {
+  description = "OIDC client password"
+  type        = string
+  default     = "g3ize7GxYFPT"
+}
+
+variable "shared_secret_INTERNAL_SECRET" {
+  description = "Internal secret key"
+  type        = string
+  default     = "MRDIuSYR6wqg0ha9"
+}
+
+variable "shared_config_PRIM_ADMIN_EMAIL" {
+  type        = string
+  description = "Primary admin email address"
+}
+
+variable "shared_config_SEND_EMAIL_FROM" {
+  type        = string
+  description = "Email address from which emails are sent"
+}
+
+variable "shared_config_SEND_EMAIL_FROM_NAME" {
+  type        = string
+  description = "Name displayed as the sender in emails"
+}
+
+
+# This section is for DB (idp, configuration) will be addressed as three_edges_<DB>
+
+variable "three_edges_DB_TYPE" {
+  type        = string
+  description = "Type of database used"
+}
+
+variable "three_edges_DB_VERSION" {
+  type        = string
+  description = "Version of the database"
+}
+
+variable "three_edges_DB_HOST" {
+  type        = string
+  description = "Host of the database"
+}
+
+variable "three_edges_DB_NAME" {
+  type        = string
+  description = "Name of the database"
+}
+
+variable "three_edges_DB_USER" {
+  type        = string
+  description = "Database username"
+}
+
+variable "three_edges_secret_DB_PASSWORD" {
+  description = "Database password"
+  type        = string
+}
+
 
 # This section of following variables are for kubernetes/deployments/configmap : configuration_config
 variable "configuration_config_NODE_ENV" {
@@ -85,18 +147,6 @@ variable "configuration_config_REACT_APP_OTP_VALIDITY" {
   type        = string
   description = "OTP validity period in minutes"
   default     = "2880"
-}
-
-variable "configuration_config_SEND_EMAIL_FROM" {
-  type        = string
-  description = "Email address from which emails are sent"
-  default     = "noreply@abotega.ca"
-}
-
-variable "configuration_config_SEND_EMAIL_FROM_NAME" {
-  type        = string
-  description = "Name displayed as the sender in emails"
-  default     = "3Edges"
 }
 
 variable "configuration_config_SEND_EMAIL_URL" {
@@ -135,70 +185,34 @@ variable "configuration_config_RESET_ADMIN_USER" {
   default     = "true"
 }
 
-variable "configuration_config_PRIM_ADMIN_EMAIL" {
-  type        = string
-  description = "Primary admin email address"
-  default     = "3admin@abotega.ca"
-}
-
 variable "configuration_config_NEO4J_URL_TEST" {
   type        = string
   description = "URL of the Neo4j test database"
-  default     = "neo4j+s://9d49f282.databases.neo4j.io"
+  default     = ""
 }
 
 variable "configuration_config_PRIM_CONFIG_NEO4J_DB_TEST" {
   type        = string
   description = "Neo4j test database name"
-  default     = "neo4j"
+  default     = ""
 }
 
 variable "configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN" {
   type        = string
   description = "CORS origin for the primary server"
-  default     = "https://abotega.ca"
+  default     = ""
 }
 
 variable "configuration_config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN" {
   type        = string
   description = "Default CORS origin for the primary server"
-  default     = "https://abotega.ca"
-}
-
-variable "configuration_config_DB_TYPE" {
-  type        = string
-  description = "Type of database used"
-  default     = "neo4j"
-}
-
-variable "configuration_config_DB_VERSION" {
-  type        = string
-  description = "Version of the database"
-  default     = "v5"
-}
-
-variable "configuration_config_DB_HOST" {
-  type        = string
-  description = "Host of the database"
-  default     = "neo4j+s://ae61ebf7.databases.neo4j.io"
-}
-
-variable "configuration_config_DB_NAME" {
-  type        = string
-  description = "Name of the database"
-  default     = "neo4j"
-}
-
-variable "configuration_config_DB_USER" {
-  type        = string
-  description = "Database username"
-  default     = "neo4j"
+  default     = ""
 }
 
 variable "configuration_config_CLUSTER_URL" {
   type        = string
   description = "URL of the cluster"
-  default     = "https://cluster.abotega.ca/api"
+  default     = ""
 }
 
 variable "configuration_config_COOKIE_NNCE" {
@@ -270,7 +284,7 @@ variable "configuration_config_DASHBOARD_POD_PORT" {
 variable "configuration_config_IDP_POD_PORT" {
   type        = string
   description = "Port of the IDP pod"
-  default     = "3001"
+  default     = "3007"
 }
 
 variable "configuration_config_PROXY_POD_PORT" {
@@ -282,7 +296,7 @@ variable "configuration_config_PROXY_POD_PORT" {
 variable "configuration_config_DEFAULT_CONTENT_SECURITY_POLICY_API_DASHBOARD" {
   type        = string
   description = "Default Content Security Policy for API Dashboard"
-  default     = "default-src 'self' *.abotega.ca https://auth-qa.credivera.com https://vc-qa.credivera.io https://ipv4.icanhazip.com https://api.ipify.com; script-src 'self' http://conoret.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://www.google.com/recaptcha/ 'unsafe-inline' 'unsafe-eval'; img-src 'self' www.gstatic.com/recaptcha data:; font-src 'self' https://fonts.gstatic.com; frame-src 'self' *.recaptcha.net recaptcha.net https://www.google.com/recaptcha/ https://recaptcha.google.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline';"
+  default     = ""
 }
 
 variable "configuration_config_MAX_SHUTDOWN" {
@@ -378,7 +392,7 @@ variable "configuration_config_MAX_TOKENS_N" {
 variable "configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN_IDP" {
   type        = string
   description = "CORS origin for the IDP server"
-  default     = "https://idp.abotega.ca"
+  default     = ""
 }
 
 variable "configuration_config_MAX_CHARACTERS_N" {
@@ -414,19 +428,19 @@ variable "configuration_config_QUERY_COMPLEXITY_LIMIT" {
 variable "configuration_config_DEFAULT_CONTENT_SECURITY_POLICY" {
   type        = string
   description = "Default Content Security Policy"
-  default     = "default-src 'self' *.abotega.ca https://embeddable-sandbox.cdn.apollographql.com/ https://auth-qa.credivera.com https://vc-qa.credivera.io https://ipv4.icanhazip.com https://api.ipify.com https://apollo-server-landing-page.cdn.apollographql.com; script-src 'self' https://embeddable-sandbox.cdn.apollographql.com/ http://conoret.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://www.google.com/recaptcha/ https://apollo-server-landing-page.cdn.apollographql.com/ 'unsafe-inline' 'unsafe-eval'; img-src 'self' https://apollo-server-landing-page.cdn.apollographql.com data:; frame-src 'self' https://sandbox.embed.apollographql.com/ *.recaptcha.net recaptcha.net https://www.google.com/recaptcha/ https://recaptcha.google.com https://apollo-server-landing-page.cdn.apollographql.com; style-src 'self' https://fonts.googleapis.com https://apollo-server-landing-page.cdn.apollographql.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://apollo-server-landing-page.cdn.apollographql.com;"
+  default     = ""
 }
 
 variable "configuration_config_UI_URL" {
   type        = string
   description = "URL for the UI"
-  default     = "https://abotega.ca"
+  default     = ""
 }
 
 variable "configuration_config_OIDC_URL" {
   type        = string
   description = "OIDC URL"
-  default     = "https://idp.abotega.ca/oidc"
+  default     = ""
 }
 
 variable "configuration_config_OIDC_CLIENT_ID" {
@@ -454,36 +468,16 @@ variable "configuration_config_secret_SESSION_PIPELINE" {
   default     = ""
 }
 
-variable "configuration_config_secret_DB_PASSWORD" {
-  description = "Database password"
-  type        = string
-  default     = ""
-}
-
 variable "configuration_config_secret_PRIM_ADMIN_PASS" {
   description = "Primary admin password"
   type        = string
-  default     = "your-pwd"
 }
 
 variable "configuration_config_secret_PRIM_JWT_SECRET" {
   description = "Primary JWT secret"
   type        = string
-  default     = "your-pwd-value"
-}
-
-variable "configuration_config_secret_OIDC_CLIENT_PWD" {
-  description = "OIDC client password"
-  type        = string
   default     = ""
 }
-
-variable "configuration_config_secret_INTERNAL_SECRET" {
-  description = "Internal secret key"
-  type        = string
-  default     = "your-secret"
-}
-
 
 # This section of following variables are for kubernetes/deployments/configmap : dataloader_ui_config
 variable "dataloader_ui_config_NODE_ENV" {
@@ -501,13 +495,13 @@ variable "dataloader_ui_config_PORT" {
 variable "dataloader_ui_config_REACT_APP_DATALOADER_URL" {
   description = "The URL for the data loader service."
   type        = string
-  default     = "https://dataloader.abotega.ca"
+  default     = ""
 }
 
 variable "dataloader_ui_config_REACT_APP_UI_URL_3EDGES" {
   description = "The URL for the 3edges UI."
   type        = string
-  default     = "https://abotega.ca"
+  default     = ""
 }
 
 variable "dataloader_ui_config_REACT_APP_ACCESS_TOKEN_COOKIE_NAME" {
@@ -543,7 +537,7 @@ variable "dataloader_ui_config_REACT_APP_OIDC_CLIENT_ID" {
 variable "dataloader_ui_config_REACT_APP_OIDC_URL" {
   description = "The URL for the OIDC provider."
   type        = string
-  default     = "https://idp.abotega.ca/oidc"
+  default     = ""
 }
 
 variable "dataloader_ui_config_REACT_APP_JWKS_URI" {
@@ -556,19 +550,6 @@ variable "dataloader_ui_config_REACT_APP_DOCUMENTATION_URL" {
   description = "The URL for the application documentation."
   type        = string
   default     = "https://docs.3edges.com/space/3edgesDoc/2226389009/Bulk+Data+import"
-}
-
-# This section of following variables are for kubernetes/deployments/secrets : dataloader_secrets
-variable "dataloader_secret_dbPass" {
-  description = "Database password for accessing the database."
-  type        = string
-  default     = ""
-}
-
-variable "dataloader_secret_OIDC_CLIENT_PWD" {
-  description = "Password for OIDC client authentication."
-  type        = string
-  default     = "your-pwd"
 }
 
 # This section of following variables are for kubernetes/deployments/configmap : dataloader_config
@@ -614,28 +595,10 @@ variable "dataloader_config_NEO4J_CONNECTION_TIMEOUT" {
   default     = "30000"
 }
 
-variable "dataloader_config_dbName" {
-  description = "Name of the Neo4j database."
-  type        = string
-  default     = "neo4j"
-}
-
-variable "dataloader_config_dbUser" {
-  description = "Username for the Neo4j database."
-  type        = string
-  default     = "neo4j"
-}
-
-variable "dataloader_config_dbHost" {
-  description = "Host URL for the Neo4j database."
-  type        = string
-  default     = "neo4j+s://ae61ebf7.databases.neo4j.io"
-}
-
 variable "dataloader_config_OIDC_URL" {
   description = "URL for the OpenID Connect provider."
   type        = string
-  default     = "https://idp.abotega.ca/oidc"
+  default     = ""
 }
 
 variable "dataloader_config_OIDC_CLIENT_ID" {
@@ -647,7 +610,7 @@ variable "dataloader_config_OIDC_CLIENT_ID" {
 variable "dataloader_config_CONFIGURATION_URL" {
   description = "URL for application configuration."
   type        = string
-  default     = "https://abotega.ca"
+  default     = ""
 }
 
 # This section of following variables are for kubernetes/deployments/configmap : cluster_config
@@ -666,7 +629,7 @@ variable "cluster_config_PORT" {
 variable "cluster_config_UI_URL" {
   description = "The URL for the user interface."
   type        = string
-  default     = "https://abotega.ca"
+  default     = ""
 }
 
 variable "cluster_config_CLIENT_EMAIL" {
@@ -678,7 +641,7 @@ variable "cluster_config_CLIENT_EMAIL" {
 variable "cluster_config_OIDC_URL" {
   description = "The OIDC provider URL."
   type        = string
-  default     = "https://idp.abotega.ca/oidc"
+  default     = ""
 }
 
 variable "cluster_config_OIDC_CLIENT_ID" {
@@ -690,7 +653,6 @@ variable "cluster_config_OIDC_CLIENT_ID" {
 variable "cluster_config_config_CLUSTER" {
   description = "The name of the cluster."
   type        = string
-  default     = "three-edges-cluster"
 }
 
 variable "cluster_config_config_LOCATION" {
@@ -702,43 +664,13 @@ variable "cluster_config_config_LOCATION" {
 variable "cluster_config_NGINX_LB" {
   description = "The load balancer DNS name for NGINX."
   type        = string
-  default     = "a716352115c504c3da290874d20eaab2-3e3aa36aacbd9350.elb.ca-west-1.amazonaws.com"
-}
-
-variable "cluster_config_DB_TYPE" {
-  description = "The type of database used."
-  type        = string
-  default     = "neo4j"
-}
-
-variable "cluster_config_DB_VERSION" {
-  description = "The version of the database."
-  type        = string
-  default     = "v5"
-}
-
-variable "cluster_config_DB_HOST" {
-  description = "The host URL for the database."
-  type        = string
-  default     = "neo4j+s://ae61ebf7.databases.neo4j.io"
-}
-
-variable "cluster_config_DB_NAME" {
-  description = "The name of the database."
-  type        = string
-  default     = "neo4j"
-}
-
-variable "cluster_config_DB_USER" {
-  description = "The username for accessing the database."
-  type        = string
-  default     = "neo4j"
+  default     = ""
 }
 
 variable "cluster_config_CLUSTER_URL" {
   description = "The URL for the cluster management interface."
   type        = string
-  default     = "https://cluster.abotega.ca"
+  default     = ""
 }
 
 variable "cluster_config_SEND_EMAIL_URL" {
@@ -753,41 +685,10 @@ variable "cluster_config_SEND_EMAIL_SERVER" {
   default     = "PROD"
 }
 
-variable "cluster_config_SEND_EMAIL_FROM" {
-  description = "The email address from which emails are sent."
-  type        = string
-  default     = "noreply@abotega.ca"
-}
-
-variable "cluster_config_SEND_EMAIL_FROM_NAME" {
-  description = "The name that appears in the 'from' field of sent emails."
-  type        = string
-  default     = "3Edges"
-}
-
-variable "cluster_config_PRIM_ADMIN_EMAIL" {
-  description = "The email address of the primary administrator."
-  type        = string
-  default     = "3admin@abotega.ca"
-}
-
-# This section of following variables are for kubernetes/deployments/secrets : cluster_secret
-variable "cluster_secret_OIDC_CLIENT_PWD" {
-  description = "Password for the OIDC client."
-  type        = string
-  default     = "your-pwd"
-}
-
-variable "cluster_secret_DB_PASSWORD" {
-  description = "Password for the database."
-  type        = string
-  default     = ""
-}
-
 variable "cluster_secret_PRIVATE_KEY" {
   description = "Private key for authentication."
   type        = string
-  default = ""
+  default     = ""
 }
 
 variable "cluster_secret_CRON_PWD" {
@@ -805,13 +706,7 @@ variable "cluster_secret_SESSION_PIPELINE" {
 variable "cluster_secret_TOKEN_PIPELINE" {
   description = "Token for the pipeline."
   type        = string
-  default     = "ccea8377-61b4-49aa-91f5-c312de02d5f3"
-}
-
-variable "cluster_secret_INTERNAL_SECRET" {
-  description = "Internal secret key."
-  type        = string
-  default     = "your-secret"
+  default     = ""
 }
 
 # This section of following variables are for kubernetes/deployments/configmap : idp_config
@@ -824,7 +719,7 @@ variable "idp_config_NODE_ENV" {
 variable "idp_config_OIDC_PORT" {
   description = "The port on which the OIDC server is listening."
   type        = string
-  default     = "3001"
+  default     = "3007"
 }
 
 variable "idp_config_SERVER_HTTP_CORS_ORIGIN" {
@@ -843,12 +738,6 @@ variable "idp_config_SERVER_HTTP_X_FRAME_OPTIONS" {
   description = "X-Frame-Options setting for the server."
   type        = string
   default     = "sameorigin"
-}
-
-variable "idp_config_PRIM_ADMIN_EMAIL" {
-  description = "Email address of the primary admin."
-  type        = string
-  default     = "3admin@abotega.ca"
 }
 
 variable "idp_config_CHECK_VERIFIED" {
@@ -884,7 +773,7 @@ variable "idp_config_AUTHN_QUERY_VERIFIED" {
 variable "idp_config_SOCIAL_URL" {
   description = "URL for social authentication."
   type        = string
-  default     = "https://social.abotega.ca"
+  default     = ""
 }
 
 variable "idp_config_CLAIMS_ARRAY" {
@@ -902,7 +791,7 @@ variable "idp_config_OIDC_ACCESS_TOKEN_EXPIRE" {
 variable "idp_config_CONTENT_SECURITY_POLICY" {
   description = "Content Security Policy settings for the application."
   type        = string
-  default     = "default-src 'self' https://abotega.ca https://abotega.ca/graphql https://idp.abotega.ca http://idp.abotega.ca https://3edges.com https://accounts.google.com https://www.google.com https://accounts.google.com/gsi/; frame-src 'self' https://www.google.com https://accounts.google.com/gsi/; base-uri 'self'; block-all-mixed-content; font-src 'self' https: data:; frame-ancestors 'self'; img-src 'self' data:; object-src 'none'; connect-src 'self' https://accounts.google.com/gsi/; script-src 'self' https://www.google.com https://accounts.google.com/gsi/client 'unsafe-inline'; script-src-elem 'self' https://accounts.google.com https://accounts.google.com/gsi/client 'unsafe-inline'; script-src-attr 'none'; style-src 'self' https://accounts.google.com/gsi/style https: 'unsafe-inline';"
+  default     = ""
 }
 
 variable "idp_config_ALLOW_HTTP_REDIRECTS" {
@@ -914,7 +803,7 @@ variable "idp_config_ALLOW_HTTP_REDIRECTS" {
 variable "idp_config_PRIM_UI_URL" {
   description = "URL for the primary UI."
   type        = string
-  default     = "https://abotega.ca"
+  default     = ""
 }
 
 variable "idp_config_OIDC_AUTHORIZE_ENDPOINT" {
@@ -980,37 +869,7 @@ variable "idp_config_NiamSvcAcc_username" {
 variable "idp_config_OIDC_URL" {
   description = "OIDC URL."
   type        = string
-  default     = "https://idp.abotega.ca/oidc"
-}
-
-variable "idp_config_DB_TYPE" {
-  description = "Database type."
-  type        = string
-  default     = "neo4j"
-}
-
-variable "idp_config_DB_VERSION" {
-  description = "Database version."
-  type        = string
-  default     = "v5"
-}
-
-variable "idp_config_DB_HOST" {
-  description = "Database host URL."
-  type        = string
-  default     = "neo4j+s://ae61ebf7.databases.neo4j.io"
-}
-
-variable "idp_config_DB_NAME" {
-  description = "Database name."
-  type        = string
-  default     = "neo4j"
-}
-
-variable "idp_config_DB_USER" {
-  description = "Database username."
-  type        = string
-  default     = "neo4j"
+  default     = ""
 }
 
 variable "idp_config_ACCESS_TOKEN_TYPE" {
@@ -1028,7 +887,7 @@ variable "idp_config_CONSENT_PAGE" {
 variable "idp_config_OIDC_URL_3EDGES" {
   description = "OIDC URL for 3edges."
   type        = string
-  default     = "https://idp.abotega.ca/oidc"
+  default     = ""
 }
 
 variable "idp_config_CLIENT_ID_3EDGES" {
@@ -1094,7 +953,7 @@ variable "idp_config_OIDC_REFRESH_TOKEN_EXPIRE" {
 variable "idp_config_CONFIG_URL" {
   description = "URL for configuration."
   type        = string
-  default     = "https://abotega.ca/graphql"
+  default     = ""
 }
 
 variable "idp_config_DB_RECORDS_BATCH_SIZE" {
@@ -1134,26 +993,6 @@ variable "idp_secret_NiamSvcAcc_pwd" {
   type        = string
   default     = ""
 }
-
-variable "idp_secret_DB_PASSWORD" {
-  description = "Password for database access"
-  type        = string
-  default     = ""
-}
-
-variable "idp_secret_CLIENT_PWD_3EDGES" {
-  description = "Password for 3edges client"
-  type        = string
-  default     = "your-pwd"
-}
-
-variable "idp_secret_INTERNAL_SECRET" {
-  description = "Internal secret key"
-  type        = string
-  default     = "your-secret"
-}
-
-
 
 # This section of following variables are for kubernetes/deployments/configmap : ui-config
 variable "ui_config_NODE_ENV" {
@@ -1219,7 +1058,7 @@ variable "ui_config_REACT_APP_OIDC_AUTH_ENDPOINT" {
 variable "ui_config_REACT_APP_URL_UI" {
   description = "The base URL of the UI for the React application."
   type        = string
-  default     = "https://abotega.ca"
+  default     = ""
 }
 
 variable "ui_config_REACT_APP_OIDC_TOKEN_ENDPOINT" {
@@ -1231,13 +1070,13 @@ variable "ui_config_REACT_APP_OIDC_TOKEN_ENDPOINT" {
 variable "ui_config_REACT_APP_OIDC_URL" {
   description = "The base URL for the OIDC provider used by the React application."
   type        = string
-  default     = "https://idp.abotega.ca/oidc"
+  default     = ""
 }
 
 variable "ui_config_REACT_APP_PRIM_BACKEND_URI" {
   description = "The URI of the backend used by the React application."
   type        = string
-  default     = "https://abotega.ca/graphql"
+  default     = ""
 }
 
 variable "ui_config_REACT_APP_ENABLE_NEWCLUSTER" {
@@ -1249,25 +1088,25 @@ variable "ui_config_REACT_APP_ENABLE_NEWCLUSTER" {
 variable "ui_config_REACT_APP_config_PROXY" {
   description = "The proxy URL used for the application configuration."
   type        = string
-  default     = "https://tmp-random-url.abotega.ca"
+  default     = ""
 }
 
 variable "ui_config_REACT_APP_NEWCLUSTER_PROXY" {
   description = "The proxy URL used for the new cluster feature."
   type        = string
-  default     = "https://tmp-random-url.abotega.ca"
+  default     = ""
 }
 
 variable "ui_config_REACT_APP_config_IDP" {
   description = "The IDP URL used for application configuration."
   type        = string
-  default     = "https://tmp-random-url.abotega.ca/oidc"
+  default     = ""
 }
 
 variable "ui_config_REACT_APP_NEWCLUSTER_IDP" {
   description = "The IDP URL used for the new cluster feature."
   type        = string
-  default     = "https://tmp-random-url.abotega.ca/oidc"
+  default     = ""
 }
 
 variable "ui_config_REACT_APP_REFRESH_TOKEN_LOCAL_STORAGE_NAME" {
@@ -1291,32 +1130,23 @@ variable "ui_config_REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME" {
 variable "ui_config_REACT_APP_WEBLOADER_URL" {
   description = "The URL for the web loader used by the React application."
   type        = string
-  default     = "https://webloader.abotega.ca"
+  default     = ""
 }
 
-
-
-# This section of following variables are for kubernetes/deployments/secrets : ui_secrets
-variable "ui_secret_REACT_APP_OIDC_CLIENT_PWD" {
-  description = "The OIDC client password for the React application."
+variable "ui_config_REACT_APP_CONTENT_SECURITY_POLICY" {
+  description = "Content Security Policy settings for the application."
   type        = string
-  default     = "your-pwd"
-}
-
-variable "ui_secret_REACT_APP_INTERNAL_SECRET" {
-  description = "The internal secret for the React application."
-  type        = string
-  default     = "your-secret"
+  default     = ""
 }
 
 variable "ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE" {
   description = "The invisible reCAPTCHA V2 key for the React application."
   type        = string
-  default     = ""
+  default     = "6LcmeBEbAAAAAO0GvPUCyIs9ow-LFUFiX6UQbU8m"
 }
 
 variable "ui_secret_REACT_APP_CAPTCHA_V2" {
   description = "The reCAPTCHA V2 key for the React application."
   type        = string
-  default     = ""
+  default     = "6LdfFiIbAAAAABnGUFnN3e8unsXBYVvMorbBFR4U"
 }

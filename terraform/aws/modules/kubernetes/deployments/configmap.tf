@@ -10,24 +10,24 @@ resource "kubernetes_config_map" "configuration_config" {
     ENABLE_INTROSPECTION                          = var.configuration_config_ENABLE_INTROSPECTION
     ENABLE_PLAYGROUND                             = var.configuration_config_ENABLE_PLAYGROUND
     REACT_APP_OTP_VALIDITY                        = var.configuration_config_REACT_APP_OTP_VALIDITY
-    SEND_EMAIL_FROM                               = var.configuration_config_SEND_EMAIL_FROM
-    SEND_EMAIL_FROM_NAME                          = var.configuration_config_SEND_EMAIL_FROM_NAME
+    SEND_EMAIL_FROM                               = var.shared_config_SEND_EMAIL_FROM
+    SEND_EMAIL_FROM_NAME                          = var.shared_config_SEND_EMAIL_FROM_NAME
     SEND_EMAIL_URL                                = var.configuration_config_SEND_EMAIL_URL
     NEO4J_POOL_SIZE                               = var.configuration_config_NEO4J_POOL_SIZE
     NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS       = var.configuration_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS
     NEO4J_MAX_CONNECTION_LIFETIME                 = var.configuration_config_NEO4J_MAX_CONNECTION_LIFETIME
     NEO4J_CONNECTION_TIMEOUT                      = var.configuration_config_NEO4J_CONNECTION_TIMEOUT
     RESET_ADMIN_USER                              = var.configuration_config_RESET_ADMIN_USER
-    PRIM_ADMIN_EMAIL                              = var.configuration_config_PRIM_ADMIN_EMAIL
+    PRIM_ADMIN_EMAIL                              = var.shared_config_PRIM_ADMIN_EMAIL
     NEO4J_URL_TEST                                = var.configuration_config_NEO4J_URL_TEST
     PRIM_CONFIG_NEO4J_DB_TEST                     = var.configuration_config_PRIM_CONFIG_NEO4J_DB_TEST
     PRIM_SERVER_HTTP_CORS_ORIGIN                  = var.configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN
     PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN          = var.configuration_config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN
-    DB_TYPE                                       = var.configuration_config_DB_TYPE
-    DB_VERSION                                    = var.configuration_config_DB_VERSION
-    DB_HOST                                       = var.configuration_config_DB_HOST
-    DB_NAME                                       = var.configuration_config_DB_NAME
-    DB_USER                                       = var.configuration_config_DB_USER
+    DB_TYPE                                       = var.three_edges_DB_TYPE
+    DB_VERSION                                    = var.three_edges_DB_VERSION
+    DB_HOST                                       = var.three_edges_DB_HOST
+    DB_NAME                                       = var.three_edges_DB_NAME
+    DB_USER                                       = var.three_edges_DB_USER
     CLUSTER_URL                                   = var.configuration_config_CLUSTER_URL
     COOKIE_NNCE                                   = var.configuration_config_COOKIE_NNCE
     COOKIE_PRIMSCOOKIE                            = var.configuration_config_COOKIE_PRIMSCOOKIE
@@ -112,9 +112,9 @@ resource "kubernetes_config_map" "dataloader_config" {
     NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS = var.dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS
     NEO4J_MAX_CONNECTION_LIFETIME           = var.dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME
     NEO4J_CONNECTION_TIMEOUT                = var.dataloader_config_NEO4J_CONNECTION_TIMEOUT
-    dbName                                  = var.dataloader_config_dbName
-    dbUser                                  = var.dataloader_config_dbUser
-    dbHost                                  = var.dataloader_config_dbHost
+    dbName                                  = var.three_edges_DB_NAME
+    dbUser                                  = var.three_edges_DB_USER
+    dbHost                                  = var.three_edges_DB_HOST
     OIDC_URL                                = var.dataloader_config_OIDC_URL
     OIDC_CLIENT_ID                          = var.dataloader_config_OIDC_CLIENT_ID
     CONFIGURATION_URL                       = var.dataloader_config_CONFIGURATION_URL
@@ -140,17 +140,17 @@ resource "kubernetes_config_map" "cluster_config" {
     config_CLUSTER       = var.cluster_config_config_CLUSTER
     config_LOCATION      = var.cluster_config_config_LOCATION
     NGINX_LB             = var.cluster_config_NGINX_LB
-    DB_TYPE              = var.cluster_config_DB_TYPE
-    DB_VERSION           = var.cluster_config_DB_VERSION
-    DB_HOST              = var.cluster_config_DB_HOST
-    DB_NAME              = var.cluster_config_DB_NAME
-    DB_USER              = var.cluster_config_DB_USER
+    DB_TYPE              = var.three_edges_DB_TYPE
+    DB_VERSION           = var.three_edges_DB_VERSION
+    DB_HOST              = var.three_edges_DB_HOST
+    DB_NAME              = var.three_edges_DB_NAME
+    DB_USER              = var.three_edges_DB_USER
     CLUSTER_URL          = var.cluster_config_CLUSTER_URL
     SEND_EMAIL_URL       = var.cluster_config_SEND_EMAIL_URL
     SEND_EMAIL_SERVER    = var.cluster_config_SEND_EMAIL_SERVER
-    SEND_EMAIL_FROM      = var.cluster_config_SEND_EMAIL_FROM
-    SEND_EMAIL_FROM_NAME = var.cluster_config_SEND_EMAIL_FROM_NAME
-    PRIM_ADMIN_EMAIL     = var.cluster_config_PRIM_ADMIN_EMAIL
+    SEND_EMAIL_FROM      = var.shared_config_SEND_EMAIL_FROM
+    SEND_EMAIL_FROM_NAME = var.shared_config_SEND_EMAIL_FROM_NAME
+    PRIM_ADMIN_EMAIL     = var.shared_config_PRIM_ADMIN_EMAIL
   }
 
 
@@ -171,7 +171,7 @@ resource "kubernetes_config_map" "idp_config" {
     SERVER_HTTP_CORS_ORIGIN               = var.idp_config_SERVER_HTTP_CORS_ORIGIN
     SERVER_HTTP_STRICT_TRANSPORT_SECURITY = var.idp_config_SERVER_HTTP_STRICT_TRANSPORT_SECURITY
     SERVER_HTTP_X_FRAME_OPTIONS           = var.idp_config_SERVER_HTTP_X_FRAME_OPTIONS
-    PRIM_ADMIN_EMAIL                      = var.idp_config_PRIM_ADMIN_EMAIL
+    PRIM_ADMIN_EMAIL                      = var.shared_config_PRIM_ADMIN_EMAIL
     CHECK_VERIFIED                        = var.idp_config_CHECK_VERIFIED
     NAMING_PROPERTY                       = var.idp_config_NAMING_PROPERTY
     SUBJECT_TYPE                          = var.idp_config_SUBJECT_TYPE
@@ -194,11 +194,11 @@ resource "kubernetes_config_map" "idp_config" {
     NiamSvcAcc_Client_id                  = var.idp_config_NiamSvcAcc_Client_id
     NiamSvcAcc_username                   = var.idp_config_NiamSvcAcc_username
     OIDC_URL                              = var.idp_config_OIDC_URL
-    DB_TYPE                               = var.idp_config_DB_TYPE
-    DB_VERSION                            = var.idp_config_DB_VERSION
-    DB_HOST                               = var.idp_config_DB_HOST
-    DB_NAME                               = var.idp_config_DB_NAME
-    DB_USER                               = var.idp_config_DB_USER
+    DB_TYPE                               = var.three_edges_DB_TYPE
+    DB_VERSION                            = var.three_edges_DB_VERSION
+    DB_HOST                               = var.three_edges_DB_HOST
+    DB_NAME                               = var.three_edges_DB_NAME
+    DB_USER                               = var.three_edges_DB_USER
     ACCESS_TOKEN_TYPE                     = var.idp_config_ACCESS_TOKEN_TYPE
     CONSENT_PAGE                          = var.idp_config_CONSENT_PAGE
     OIDC_URL_3EDGES                       = var.idp_config_OIDC_URL_3EDGES
@@ -253,7 +253,8 @@ resource "kubernetes_config_map" "ui_config" {
     REACT_APP_IDLE_TIME_IN_MINUTES               = var.ui_config_REACT_APP_IDLE_TIME_IN_MINUTES
     REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME = var.ui_config_REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME
     REACT_APP_WEBLOADER_URL                      = var.ui_config_REACT_APP_WEBLOADER_URL
-  }
+    REACT_APP_CONTENT_SECURITY_POLICY            = var.ui_config_REACT_APP_CONTENT_SECURITY_POLICY
+ }
 
   depends_on = [ var.kubernetes_namespace_namespace ]
 }

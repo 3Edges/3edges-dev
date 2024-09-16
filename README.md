@@ -1,6 +1,6 @@
 # 3Edges developer install
 
-1) Make sure your AWS is configured with your user credentials
+1) Make sure your AWS is configured with your user credentials and user has the required permissions
     - aws configure
 
 2) You must change those properties before start:
@@ -11,20 +11,5 @@
 
     - To start the project
 
-        ```terraform init```
+        ```./run.sh```
 
-    - To validate the main.tf
-
-        ```terraform validate```
-
-    - To generate an action plan
-
-        ```terraform plan -out=plan.bkp```
-
-    - Apply the selected plan
-
-        ```terraform apply plan.bkp```
-
-    - Destroy everything
-
-        ```terraform destroy -auto-approve```

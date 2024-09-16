@@ -53,30 +53,38 @@ module "kubernetes" {
   exclude_cluster_issuer            = var.exclude_cluster_issuer
   exclude_certificate               = var.exclude_certificate
 
+  shared_secret_OIDC_CLIENT_PWD      = var.shared_secret_OIDC_CLIENT_PWD
+  shared_secret_INTERNAL_SECRET      = var.shared_secret_INTERNAL_SECRET
+  shared_config_PRIM_ADMIN_EMAIL     = var.shared_config_PRIM_ADMIN_EMAIL
+  shared_config_SEND_EMAIL_FROM      = var.shared_config_SEND_EMAIL_FROM
+  shared_config_SEND_EMAIL_FROM_NAME = var.shared_config_SEND_EMAIL_FROM_NAME
+
+
+  # This section is for DB (idp, configuration) will be addressed as three_edges_<DB>
+  three_edges_DB_TYPE            = var.three_edges_DB_TYPE
+  three_edges_DB_VERSION         = var.three_edges_DB_VERSION
+  three_edges_DB_HOST            = var.three_edges_DB_HOST
+  three_edges_DB_NAME            = var.three_edges_DB_NAME
+  three_edges_DB_USER            = var.three_edges_DB_USER
+  three_edges_secret_DB_PASSWORD = var.three_edges_secret_DB_PASSWORD
+
+
   configuration_config_NODE_ENV                                      = var.configuration_config_NODE_ENV
   configuration_config_SERVER_PORT                                   = var.configuration_config_SERVER_PORT
   configuration_config_ENABLE_INTROSPECTION                          = var.configuration_config_ENABLE_INTROSPECTION
   configuration_config_ENABLE_PLAYGROUND                             = var.configuration_config_ENABLE_PLAYGROUND
   configuration_config_REACT_APP_OTP_VALIDITY                        = var.configuration_config_REACT_APP_OTP_VALIDITY
-  configuration_config_SEND_EMAIL_FROM                               = var.configuration_config_SEND_EMAIL_FROM
-  configuration_config_SEND_EMAIL_FROM_NAME                          = var.configuration_config_SEND_EMAIL_FROM_NAME
   configuration_config_SEND_EMAIL_URL                                = var.configuration_config_SEND_EMAIL_URL
   configuration_config_NEO4J_POOL_SIZE                               = var.configuration_config_NEO4J_POOL_SIZE
   configuration_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS       = var.configuration_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS
   configuration_config_NEO4J_MAX_CONNECTION_LIFETIME                 = var.configuration_config_NEO4J_MAX_CONNECTION_LIFETIME
   configuration_config_NEO4J_CONNECTION_TIMEOUT                      = var.configuration_config_NEO4J_CONNECTION_TIMEOUT
   configuration_config_RESET_ADMIN_USER                              = var.configuration_config_RESET_ADMIN_USER
-  configuration_config_PRIM_ADMIN_EMAIL                              = var.configuration_config_PRIM_ADMIN_EMAIL
   configuration_config_NEO4J_URL_TEST                                = var.configuration_config_NEO4J_URL_TEST
   configuration_config_PRIM_CONFIG_NEO4J_DB_TEST                     = var.configuration_config_PRIM_CONFIG_NEO4J_DB_TEST
-  configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN                  = var.configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN
-  configuration_config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN          = var.configuration_config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN
-  configuration_config_DB_TYPE                                       = var.configuration_config_DB_TYPE
-  configuration_config_DB_VERSION                                    = var.configuration_config_DB_VERSION
-  configuration_config_DB_HOST                                       = var.configuration_config_DB_HOST
-  configuration_config_DB_NAME                                       = var.configuration_config_DB_NAME
-  configuration_config_DB_USER                                       = var.configuration_config_DB_USER
-  configuration_config_CLUSTER_URL                                   = var.configuration_config_CLUSTER_URL
+  configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN                  = local.configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN
+  configuration_config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN          = local.configuration_config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN
+  configuration_config_CLUSTER_URL                                   = local.configuration_config_CLUSTER_URL
   configuration_config_COOKIE_NNCE                                   = var.configuration_config_COOKIE_NNCE
   configuration_config_COOKIE_PRIMSCOOKIE                            = var.configuration_config_COOKIE_PRIMSCOOKIE
   configuration_config_COOKIE_PKEY                                   = var.configuration_config_COOKIE_PKEY
@@ -90,7 +98,7 @@ module "kubernetes" {
   configuration_config_DASHBOARD_POD_PORT                            = var.configuration_config_DASHBOARD_POD_PORT
   configuration_config_IDP_POD_PORT                                  = var.configuration_config_IDP_POD_PORT
   configuration_config_PROXY_POD_PORT                                = var.configuration_config_PROXY_POD_PORT
-  configuration_config_DEFAULT_CONTENT_SECURITY_POLICY_API_DASHBOARD = var.configuration_config_DEFAULT_CONTENT_SECURITY_POLICY_API_DASHBOARD
+  configuration_config_DEFAULT_CONTENT_SECURITY_POLICY_API_DASHBOARD = local.configuration_config_DEFAULT_CONTENT_SECURITY_POLICY_API_DASHBOARD
   configuration_config_MAX_SHUTDOWN                                  = var.configuration_config_MAX_SHUTDOWN
   configuration_config_MAX_REDEPLOY                                  = var.configuration_config_MAX_REDEPLOY
   configuration_config_SEND_EMAIL_SERVER                             = var.configuration_config_SEND_EMAIL_SERVER
@@ -106,41 +114,36 @@ module "kubernetes" {
   configuration_config_MAX_DIRECTIVES_N                              = var.configuration_config_MAX_DIRECTIVES_N
   configuration_config_MAX_DEPTH_N                                   = var.configuration_config_MAX_DEPTH_N
   configuration_config_MAX_TOKENS_N                                  = var.configuration_config_MAX_TOKENS_N
-  configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN_IDP              = var.configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN_IDP
+  configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN_IDP              = local.configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN_IDP
   configuration_config_MAX_CHARACTERS_N                              = var.configuration_config_MAX_CHARACTERS_N
   configuration_config_PROCESS_TIMEOUT_N                             = var.configuration_config_PROCESS_TIMEOUT_N
   configuration_config_UI_PROCESS_TIMEOUT_N                          = var.configuration_config_UI_PROCESS_TIMEOUT_N
   configuration_config_DB_RECORDS_BATCH_SIZE                         = var.configuration_config_DB_RECORDS_BATCH_SIZE
   configuration_config_QUERY_COMPLEXITY_LIMIT                        = var.configuration_config_QUERY_COMPLEXITY_LIMIT
-  configuration_config_DEFAULT_CONTENT_SECURITY_POLICY               = var.configuration_config_DEFAULT_CONTENT_SECURITY_POLICY
-  configuration_config_UI_URL                                        = var.configuration_config_UI_URL
-  configuration_config_OIDC_URL                                      = var.configuration_config_OIDC_URL
+  configuration_config_DEFAULT_CONTENT_SECURITY_POLICY               = local.configuration_config_DEFAULT_CONTENT_SECURITY_POLICY
+  configuration_config_UI_URL                                        = local.configuration_config_UI_URL
+  configuration_config_OIDC_URL                                      = local.configuration_config_OIDC_URL
   configuration_config_OIDC_CLIENT_ID                                = var.configuration_config_OIDC_CLIENT_ID
 
   configuration_config_secret_TOKEN_PIPELINE      = var.configuration_config_secret_TOKEN_PIPELINE
   configuration_config_secret_NEO4J_PASSWORD_TEST = var.configuration_config_secret_NEO4J_PASSWORD_TEST
   configuration_config_secret_SESSION_PIPELINE    = var.configuration_config_secret_SESSION_PIPELINE
-  configuration_config_secret_DB_PASSWORD         = var.configuration_config_secret_DB_PASSWORD
   configuration_config_secret_PRIM_ADMIN_PASS     = var.configuration_config_secret_PRIM_ADMIN_PASS
-  configuration_config_secret_PRIM_JWT_SECRET     = var.configuration_config_secret_PRIM_JWT_SECRET
-  configuration_config_secret_OIDC_CLIENT_PWD     = var.configuration_config_secret_OIDC_CLIENT_PWD
-  configuration_config_secret_INTERNAL_SECRET     = var.configuration_config_secret_INTERNAL_SECRET
+  configuration_config_secret_PRIM_JWT_SECRET     = random_password.configuration_config_secret_PRIM_JWT_SECRET.result
 
   dataloader_ui_config_NODE_ENV                           = var.dataloader_ui_config_NODE_ENV
   dataloader_ui_config_PORT                               = var.dataloader_ui_config_PORT
-  dataloader_ui_config_REACT_APP_DATALOADER_URL           = var.dataloader_ui_config_REACT_APP_DATALOADER_URL
-  dataloader_ui_config_REACT_APP_UI_URL_3EDGES            = var.dataloader_ui_config_REACT_APP_UI_URL_3EDGES
+  dataloader_ui_config_REACT_APP_DATALOADER_URL           = local.dataloader_ui_config_REACT_APP_DATALOADER_URL
+  dataloader_ui_config_REACT_APP_UI_URL_3EDGES            = local.dataloader_ui_config_REACT_APP_UI_URL_3EDGES
   dataloader_ui_config_REACT_APP_ACCESS_TOKEN_COOKIE_NAME = var.dataloader_ui_config_REACT_APP_ACCESS_TOKEN_COOKIE_NAME
   dataloader_ui_config_REACT_APP_NONCE_COOKIE_NAME        = var.dataloader_ui_config_REACT_APP_NONCE_COOKIE_NAME
   dataloader_ui_config_REACT_APP_PKEY_COOKIE_NAME         = var.dataloader_ui_config_REACT_APP_PKEY_COOKIE_NAME
   dataloader_ui_config_REACT_APP_ID_TOKEN_COOKIE_NAME     = var.dataloader_ui_config_REACT_APP_ID_TOKEN_COOKIE_NAME
   dataloader_ui_config_REACT_APP_OIDC_CLIENT_ID           = var.dataloader_ui_config_REACT_APP_OIDC_CLIENT_ID
-  dataloader_ui_config_REACT_APP_OIDC_URL                 = var.dataloader_ui_config_REACT_APP_OIDC_URL
+  dataloader_ui_config_REACT_APP_OIDC_URL                 = local.dataloader_ui_config_REACT_APP_OIDC_URL
   dataloader_ui_config_REACT_APP_JWKS_URI                 = var.dataloader_ui_config_REACT_APP_JWKS_URI
   dataloader_ui_config_REACT_APP_DOCUMENTATION_URL        = var.dataloader_ui_config_REACT_APP_DOCUMENTATION_URL
 
-  dataloader_secret_dbPass          = var.dataloader_secret_dbPass
-  dataloader_secret_OIDC_CLIENT_PWD = var.dataloader_secret_OIDC_CLIENT_PWD
 
   dataloader_config_NODE_ENV                                = var.dataloader_config_NODE_ENV
   dataloader_config_CORS_ORIGIN                             = var.dataloader_config_CORS_ORIGIN
@@ -149,41 +152,27 @@ module "kubernetes" {
   dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS = var.dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS
   dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME           = var.dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME
   dataloader_config_NEO4J_CONNECTION_TIMEOUT                = var.dataloader_config_NEO4J_CONNECTION_TIMEOUT
-  dataloader_config_dbName                                  = var.dataloader_config_dbName
-  dataloader_config_dbUser                                  = var.dataloader_config_dbUser
-  dataloader_config_dbHost                                  = var.dataloader_config_dbHost
-  dataloader_config_OIDC_URL                                = var.dataloader_config_OIDC_URL
+  dataloader_config_OIDC_URL                                = local.dataloader_config_OIDC_URL
   dataloader_config_OIDC_CLIENT_ID                          = var.dataloader_config_OIDC_CLIENT_ID
-  dataloader_config_CONFIGURATION_URL                       = var.dataloader_config_CONFIGURATION_URL
+  dataloader_config_CONFIGURATION_URL                       = local.dataloader_config_CONFIGURATION_URL
 
-  cluster_config_NODE_ENV             = var.cluster_config_NODE_ENV
-  cluster_config_PORT                 = var.cluster_config_PORT
-  cluster_config_UI_URL               = var.cluster_config_UI_URL
-  cluster_config_CLIENT_EMAIL         = var.cluster_config_CLIENT_EMAIL
-  cluster_config_OIDC_URL             = var.cluster_config_OIDC_URL
-  cluster_config_OIDC_CLIENT_ID       = var.cluster_config_OIDC_CLIENT_ID
-  cluster_config_config_CLUSTER       = var.cluster_config_config_CLUSTER
-  cluster_config_config_LOCATION      = var.cluster_config_config_LOCATION
-  cluster_config_NGINX_LB             = var.cluster_config_NGINX_LB
-  cluster_config_DB_TYPE              = var.cluster_config_DB_TYPE
-  cluster_config_DB_VERSION           = var.cluster_config_DB_VERSION
-  cluster_config_DB_HOST              = var.cluster_config_DB_HOST
-  cluster_config_DB_NAME              = var.cluster_config_DB_NAME
-  cluster_config_DB_USER              = var.cluster_config_DB_USER
-  cluster_config_CLUSTER_URL          = var.cluster_config_CLUSTER_URL
-  cluster_config_SEND_EMAIL_URL       = var.cluster_config_SEND_EMAIL_URL
-  cluster_config_SEND_EMAIL_SERVER    = var.cluster_config_SEND_EMAIL_SERVER
-  cluster_config_SEND_EMAIL_FROM      = var.cluster_config_SEND_EMAIL_FROM
-  cluster_config_SEND_EMAIL_FROM_NAME = var.cluster_config_SEND_EMAIL_FROM_NAME
-  cluster_config_PRIM_ADMIN_EMAIL     = var.cluster_config_PRIM_ADMIN_EMAIL
+  cluster_config_NODE_ENV          = var.cluster_config_NODE_ENV
+  cluster_config_PORT              = var.cluster_config_PORT
+  cluster_config_UI_URL            = local.cluster_config_UI_URL
+  cluster_config_CLIENT_EMAIL      = var.cluster_config_CLIENT_EMAIL
+  cluster_config_OIDC_URL          = local.cluster_config_OIDC_URL
+  cluster_config_OIDC_CLIENT_ID    = var.cluster_config_OIDC_CLIENT_ID
+  cluster_config_config_CLUSTER    = var.cluster_config_config_CLUSTER
+  cluster_config_config_LOCATION   = local.cluster_config_config_LOCATION
+  cluster_config_NGINX_LB          = var.cluster_config_NGINX_LB
+  cluster_config_CLUSTER_URL       = local.cluster_config_CLUSTER_URL
+  cluster_config_SEND_EMAIL_URL    = var.cluster_config_SEND_EMAIL_URL
+  cluster_config_SEND_EMAIL_SERVER = var.cluster_config_SEND_EMAIL_SERVER
 
-  cluster_secret_OIDC_CLIENT_PWD  = var.cluster_secret_OIDC_CLIENT_PWD
-  cluster_secret_DB_PASSWORD      = var.cluster_secret_DB_PASSWORD
   cluster_secret_PRIVATE_KEY      = var.cluster_secret_PRIVATE_KEY
   cluster_secret_CRON_PWD         = var.cluster_secret_CRON_PWD
   cluster_secret_SESSION_PIPELINE = var.cluster_secret_SESSION_PIPELINE
   cluster_secret_TOKEN_PIPELINE   = var.cluster_secret_TOKEN_PIPELINE
-  cluster_secret_INTERNAL_SECRET  = var.cluster_secret_INTERNAL_SECRET
 
   ui_config_NODE_ENV                                     = var.ui_config_NODE_ENV
   ui_config_PORT                                         = var.ui_config_PORT
@@ -195,22 +184,21 @@ module "kubernetes" {
   ui_config_REACT_APP_JWKS_URI                           = var.ui_config_REACT_APP_JWKS_URI
   ui_config_REACT_APP_OIDC_CLIENT_ID                     = var.ui_config_REACT_APP_OIDC_CLIENT_ID
   ui_config_REACT_APP_OIDC_AUTH_ENDPOINT                 = var.ui_config_REACT_APP_OIDC_AUTH_ENDPOINT
-  ui_config_REACT_APP_URL_UI                             = var.ui_config_REACT_APP_URL_UI
+  ui_config_REACT_APP_URL_UI                             = local.ui_config_REACT_APP_URL_UI
   ui_config_REACT_APP_OIDC_TOKEN_ENDPOINT                = var.ui_config_REACT_APP_OIDC_TOKEN_ENDPOINT
-  ui_config_REACT_APP_OIDC_URL                           = var.ui_config_REACT_APP_OIDC_URL
-  ui_config_REACT_APP_PRIM_BACKEND_URI                   = var.ui_config_REACT_APP_PRIM_BACKEND_URI
+  ui_config_REACT_APP_OIDC_URL                           = local.ui_config_REACT_APP_OIDC_URL
+  ui_config_REACT_APP_PRIM_BACKEND_URI                   = local.ui_config_REACT_APP_PRIM_BACKEND_URI
   ui_config_REACT_APP_ENABLE_NEWCLUSTER                  = var.ui_config_REACT_APP_ENABLE_NEWCLUSTER
-  ui_config_REACT_APP_config_PROXY                       = var.ui_config_REACT_APP_config_PROXY
-  ui_config_REACT_APP_NEWCLUSTER_PROXY                   = var.ui_config_REACT_APP_NEWCLUSTER_PROXY
-  ui_config_REACT_APP_config_IDP                         = var.ui_config_REACT_APP_config_IDP
-  ui_config_REACT_APP_NEWCLUSTER_IDP                     = var.ui_config_REACT_APP_NEWCLUSTER_IDP
+  ui_config_REACT_APP_config_PROXY                       = local.ui_config_REACT_APP_config_PROXY
+  ui_config_REACT_APP_NEWCLUSTER_PROXY                   = local.ui_config_REACT_APP_NEWCLUSTER_PROXY
+  ui_config_REACT_APP_config_IDP                         = local.ui_config_REACT_APP_config_IDP
+  ui_config_REACT_APP_NEWCLUSTER_IDP                     = local.ui_config_REACT_APP_NEWCLUSTER_IDP
   ui_config_REACT_APP_REFRESH_TOKEN_LOCAL_STORAGE_NAME   = var.ui_config_REACT_APP_REFRESH_TOKEN_LOCAL_STORAGE_NAME
   ui_config_REACT_APP_IDLE_TIME_IN_MINUTES               = var.ui_config_REACT_APP_IDLE_TIME_IN_MINUTES
   ui_config_REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME = var.ui_config_REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME
-  ui_config_REACT_APP_WEBLOADER_URL                      = var.ui_config_REACT_APP_WEBLOADER_URL
+  ui_config_REACT_APP_WEBLOADER_URL                      = local.ui_config_REACT_APP_WEBLOADER_URL
+  ui_config_REACT_APP_CONTENT_SECURITY_POLICY            = local.ui_config_REACT_APP_CONTENT_SECURITY_POLICY
 
-  ui_secret_REACT_APP_OIDC_CLIENT_PWD      = var.ui_secret_REACT_APP_OIDC_CLIENT_PWD
-  ui_secret_REACT_APP_INTERNAL_SECRET      = var.ui_secret_REACT_APP_INTERNAL_SECRET
   ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE = var.ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE
   ui_secret_REACT_APP_CAPTCHA_V2           = var.ui_secret_REACT_APP_CAPTCHA_V2
 
@@ -219,18 +207,17 @@ module "kubernetes" {
   idp_config_SERVER_HTTP_CORS_ORIGIN               = var.idp_config_SERVER_HTTP_CORS_ORIGIN
   idp_config_SERVER_HTTP_STRICT_TRANSPORT_SECURITY = var.idp_config_SERVER_HTTP_STRICT_TRANSPORT_SECURITY
   idp_config_SERVER_HTTP_X_FRAME_OPTIONS           = var.idp_config_SERVER_HTTP_X_FRAME_OPTIONS
-  idp_config_PRIM_ADMIN_EMAIL                      = var.idp_config_PRIM_ADMIN_EMAIL
   idp_config_CHECK_VERIFIED                        = var.idp_config_CHECK_VERIFIED
   idp_config_NAMING_PROPERTY                       = var.idp_config_NAMING_PROPERTY
   idp_config_SUBJECT_TYPE                          = var.idp_config_SUBJECT_TYPE
   idp_config_AUTHN_QUERY                           = var.idp_config_AUTHN_QUERY
   idp_config_AUTHN_QUERY_VERIFIED                  = var.idp_config_AUTHN_QUERY_VERIFIED
-  idp_config_SOCIAL_URL                            = var.idp_config_SOCIAL_URL
+  idp_config_SOCIAL_URL                            = local.idp_config_SOCIAL_URL
   idp_config_CLAIMS_ARRAY                          = var.idp_config_CLAIMS_ARRAY
   idp_config_OIDC_ACCESS_TOKEN_EXPIRE              = var.idp_config_OIDC_ACCESS_TOKEN_EXPIRE
-  idp_config_CONTENT_SECURITY_POLICY               = var.idp_config_CONTENT_SECURITY_POLICY
+  idp_config_CONTENT_SECURITY_POLICY               = local.idp_config_CONTENT_SECURITY_POLICY
   idp_config_ALLOW_HTTP_REDIRECTS                  = var.idp_config_ALLOW_HTTP_REDIRECTS
-  idp_config_PRIM_UI_URL                           = var.idp_config_PRIM_UI_URL
+  idp_config_PRIM_UI_URL                           = local.idp_config_PRIM_UI_URL
   idp_config_OIDC_AUTHORIZE_ENDPOINT               = var.idp_config_OIDC_AUTHORIZE_ENDPOINT
   idp_config_OIDC_TOKEN_ENDPOINT                   = var.idp_config_OIDC_TOKEN_ENDPOINT
   idp_config_OIDC_TOKEN_INTROSPECTION_ENDPOINT     = var.idp_config_OIDC_TOKEN_INTROSPECTION_ENDPOINT
@@ -241,15 +228,10 @@ module "kubernetes" {
   idp_config_OIDC_REGISTRATION_URI                 = var.idp_config_OIDC_REGISTRATION_URI
   idp_config_NiamSvcAcc_Client_id                  = var.idp_config_NiamSvcAcc_Client_id
   idp_config_NiamSvcAcc_username                   = var.idp_config_NiamSvcAcc_username
-  idp_config_OIDC_URL                              = var.idp_config_OIDC_URL
-  idp_config_DB_TYPE                               = var.idp_config_DB_TYPE
-  idp_config_DB_VERSION                            = var.idp_config_DB_VERSION
-  idp_config_DB_HOST                               = var.idp_config_DB_HOST
-  idp_config_DB_NAME                               = var.idp_config_DB_NAME
-  idp_config_DB_USER                               = var.idp_config_DB_USER
+  idp_config_OIDC_URL                              = local.idp_config_OIDC_URL
   idp_config_ACCESS_TOKEN_TYPE                     = var.idp_config_ACCESS_TOKEN_TYPE
   idp_config_CONSENT_PAGE                          = var.idp_config_CONSENT_PAGE
-  idp_config_OIDC_URL_3EDGES                       = var.idp_config_OIDC_URL_3EDGES
+  idp_config_OIDC_URL_3EDGES                       = local.idp_config_OIDC_URL_3EDGES
   idp_config_CLIENT_ID_3EDGES                      = var.idp_config_CLIENT_ID_3EDGES
   idp_config_COOKIE_NNCE                           = var.idp_config_COOKIE_NNCE
   idp_config_COOKIE_PRIMSCOOKIE                    = var.idp_config_COOKIE_PRIMSCOOKIE
@@ -260,19 +242,25 @@ module "kubernetes" {
   idp_config_SOCIAL_GOOGLE_JWKS_URI                = var.idp_config_SOCIAL_GOOGLE_JWKS_URI
   idp_config_PRIM_UI_CLIENT_ID                     = var.idp_config_PRIM_UI_CLIENT_ID
   idp_config_OIDC_REFRESH_TOKEN_EXPIRE             = var.idp_config_OIDC_REFRESH_TOKEN_EXPIRE
-  idp_config_CONFIG_URL                            = var.idp_config_CONFIG_URL
+  idp_config_CONFIG_URL                            = local.idp_config_CONFIG_URL
   idp_config_DB_RECORDS_BATCH_SIZE                 = var.idp_config_DB_RECORDS_BATCH_SIZE
   idp_config_REDIS_HOST                            = var.idp_config_REDIS_HOST
   idp_config_REDIS_PORT                            = var.idp_config_REDIS_PORT
 
-  idp_secret_CLIENT_SECRET_ENC_KEY    = var.idp_secret_CLIENT_SECRET_ENC_KEY
-  idp_secret_NiamSvcAcc_Client_secret = var.idp_secret_NiamSvcAcc_Client_secret
-  idp_secret_NiamSvcAcc_pwd           = var.idp_secret_NiamSvcAcc_pwd
-  idp_secret_DB_PASSWORD              = var.idp_secret_DB_PASSWORD
-  idp_secret_CLIENT_PWD_3EDGES        = var.idp_secret_CLIENT_PWD_3EDGES
-  idp_secret_INTERNAL_SECRET          = var.idp_secret_INTERNAL_SECRET
+  idp_secret_CLIENT_SECRET_ENC_KEY    = random_password.idp_secret_CLIENT_SECRET_ENC_KEY.result
+  idp_secret_NiamSvcAcc_Client_secret = random_password.idp_secret_NiamSvcAcc_Client_secret.result
+  idp_secret_NiamSvcAcc_pwd           = random_password.idp_secret_NiamSvcAcc_pwd.result
+
+}
+
+module "cypher" {
+  source                         = "./modules/cypher"
+  three_edges_DB_HOST            = var.three_edges_DB_HOST
+  three_edges_DB_USER            = var.three_edges_DB_USER
+  three_edges_secret_DB_PASSWORD = var.three_edges_secret_DB_PASSWORD
+  hosted_zone                    = var.hosted_zone
 
 
-
+  depends_on = [module.cluster, module.iam, module.kubernetes, module.vpc]
 
 }

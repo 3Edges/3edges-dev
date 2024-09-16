@@ -93,7 +93,7 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
             service {
               name = "idp"
               port {
-                number = 3001
+                number = 3007
               }
             }
           }

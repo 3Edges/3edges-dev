@@ -26,6 +26,32 @@ variable "exclude_cluster_issuer" {}
 
 variable "exclude_certificate" {}
 
+# This section is for sahred / common values 
+variable "shared_secret_OIDC_CLIENT_PWD" {}
+
+variable "shared_secret_INTERNAL_SECRET" {}
+
+variable "shared_config_PRIM_ADMIN_EMAIL" {}
+
+variable "shared_config_SEND_EMAIL_FROM" {}
+
+variable "shared_config_SEND_EMAIL_FROM_NAME" {}
+
+
+# This section is for DB (idp, configuration) will be addressed as three_edges_<DB>
+variable "three_edges_DB_TYPE" {}
+
+variable "three_edges_DB_VERSION" {}
+
+variable "three_edges_DB_HOST" {}
+
+variable "three_edges_DB_NAME" {}
+
+variable "three_edges_DB_USER" {}
+
+variable "three_edges_secret_DB_PASSWORD" {}
+
+
 # This section of following variables are for kubernetes/deployments/configmap : configuration_config
 variable "configuration_config_NODE_ENV" {}
 
@@ -36,10 +62,6 @@ variable "configuration_config_ENABLE_INTROSPECTION" {}
 variable "configuration_config_ENABLE_PLAYGROUND" {}
 
 variable "configuration_config_REACT_APP_OTP_VALIDITY" {}
-
-variable "configuration_config_SEND_EMAIL_FROM" {}
-
-variable "configuration_config_SEND_EMAIL_FROM_NAME" {}
 
 variable "configuration_config_SEND_EMAIL_URL" {}
 
@@ -53,8 +75,6 @@ variable "configuration_config_NEO4J_CONNECTION_TIMEOUT" {}
 
 variable "configuration_config_RESET_ADMIN_USER" {}
 
-variable "configuration_config_PRIM_ADMIN_EMAIL" {}
-
 variable "configuration_config_NEO4J_URL_TEST" {}
 
 variable "configuration_config_PRIM_CONFIG_NEO4J_DB_TEST" {}
@@ -62,16 +82,6 @@ variable "configuration_config_PRIM_CONFIG_NEO4J_DB_TEST" {}
 variable "configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN" {}
 
 variable "configuration_config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN" {}
-
-variable "configuration_config_DB_TYPE" {}
-
-variable "configuration_config_DB_VERSION" {}
-
-variable "configuration_config_DB_HOST" {}
-
-variable "configuration_config_DB_NAME" {}
-
-variable "configuration_config_DB_USER" {}
 
 variable "configuration_config_CLUSTER_URL" {}
 
@@ -159,15 +169,9 @@ variable "configuration_config_secret_NEO4J_PASSWORD_TEST" {}
 
 variable "configuration_config_secret_SESSION_PIPELINE" {}
 
-variable "configuration_config_secret_DB_PASSWORD" {}
-
 variable "configuration_config_secret_PRIM_ADMIN_PASS" {}
 
 variable "configuration_config_secret_PRIM_JWT_SECRET" {}
-
-variable "configuration_config_secret_OIDC_CLIENT_PWD" {}
-
-variable "configuration_config_secret_INTERNAL_SECRET" {}
 
 #This section of following variables are for kubernetes/deployments/configmap : dataloader_ui_config 
 variable "dataloader_ui_config_NODE_ENV" {}
@@ -194,11 +198,6 @@ variable "dataloader_ui_config_REACT_APP_JWKS_URI" {}
 
 variable "dataloader_ui_config_REACT_APP_DOCUMENTATION_URL" {}
 
-# This section of following variables are for kubernetes/deployments/secrets : dataloader_secrets
-variable "dataloader_secret_dbPass" {}
-
-variable "dataloader_secret_OIDC_CLIENT_PWD" {}
-
 # This section of following variables are for kubernetes/deployments/configmap : dataloader_config
 variable "dataloader_config_NODE_ENV" {}
 
@@ -213,12 +212,6 @@ variable "dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS" {}
 variable "dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME" {}
 
 variable "dataloader_config_NEO4J_CONNECTION_TIMEOUT" {}
-
-variable "dataloader_config_dbName" {}
-
-variable "dataloader_config_dbUser" {}
-
-variable "dataloader_config_dbHost" {}
 
 variable "dataloader_config_OIDC_URL" {}
 
@@ -245,32 +238,11 @@ variable "cluster_config_config_LOCATION" {}
 
 variable "cluster_config_NGINX_LB" {}
 
-variable "cluster_config_DB_TYPE" {}
-
-variable "cluster_config_DB_VERSION" {}
-
-variable "cluster_config_DB_HOST" {}
-
-variable "cluster_config_DB_NAME" {}
-
-variable "cluster_config_DB_USER" {}
-
 variable "cluster_config_CLUSTER_URL" {}
 
 variable "cluster_config_SEND_EMAIL_URL" {}
 
 variable "cluster_config_SEND_EMAIL_SERVER" {}
-
-variable "cluster_config_SEND_EMAIL_FROM" {}
-
-variable "cluster_config_SEND_EMAIL_FROM_NAME" {}
-
-variable "cluster_config_PRIM_ADMIN_EMAIL" {}
-
-# This section of following variables are for kubernetes/deployments/secrets : cluster_secret
-variable "cluster_secret_OIDC_CLIENT_PWD" {}
-
-variable "cluster_secret_DB_PASSWORD" {}
 
 variable "cluster_secret_PRIVATE_KEY" {}
 
@@ -279,8 +251,6 @@ variable "cluster_secret_CRON_PWD" {}
 variable "cluster_secret_SESSION_PIPELINE" {}
 
 variable "cluster_secret_TOKEN_PIPELINE" {}
-
-variable "cluster_secret_INTERNAL_SECRET" {}
 
 
 variable "idp_config_NODE_ENV" {}
@@ -292,8 +262,6 @@ variable "idp_config_SERVER_HTTP_CORS_ORIGIN" {}
 variable "idp_config_SERVER_HTTP_STRICT_TRANSPORT_SECURITY" {}
 
 variable "idp_config_SERVER_HTTP_X_FRAME_OPTIONS" {}
-
-variable "idp_config_PRIM_ADMIN_EMAIL" {}
 
 variable "idp_config_CHECK_VERIFIED" {}
 
@@ -339,16 +307,6 @@ variable "idp_config_NiamSvcAcc_username" {}
 
 variable "idp_config_OIDC_URL" {}
 
-variable "idp_config_DB_TYPE" {}
-
-variable "idp_config_DB_VERSION" {}
-
-variable "idp_config_DB_HOST" {}
-
-variable "idp_config_DB_NAME" {}
-
-variable "idp_config_DB_USER" {}
-
 variable "idp_config_ACCESS_TOKEN_TYPE" {}
 
 variable "idp_config_CONSENT_PAGE" {}
@@ -390,13 +348,6 @@ variable "idp_secret_CLIENT_SECRET_ENC_KEY" {}
 variable "idp_secret_NiamSvcAcc_Client_secret" {}
 
 variable "idp_secret_NiamSvcAcc_pwd" {}
-
-variable "idp_secret_DB_PASSWORD" {}
-
-variable "idp_secret_CLIENT_PWD_3EDGES" {}
-
-variable "idp_secret_INTERNAL_SECRET" {}
-
 
 # This section of following variables are for kubernetes/deployments/configmap : ui-config
 variable "ui_config_NODE_ENV" {}
@@ -445,11 +396,9 @@ variable "ui_config_REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME" {}
 
 variable "ui_config_REACT_APP_WEBLOADER_URL" {}
 
+variable "ui_config_REACT_APP_CONTENT_SECURITY_POLICY" {}
+
 # This section of following variables are for kubernetes/deployments/secrets : ui_secrets
-variable "ui_secret_REACT_APP_OIDC_CLIENT_PWD" {}
-
-variable "ui_secret_REACT_APP_INTERNAL_SECRET" {}
-
 variable "ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE" {}
 
 variable "ui_secret_REACT_APP_CAPTCHA_V2" {}

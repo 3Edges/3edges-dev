@@ -114,13 +114,8 @@ resource "helm_release" "cert_manager" {
   namespace  = "cert-manager"
   chart      = "cert-manager"
   repository = "https://charts.jetstack.io"
-  # version    = "v1.12.3"
   version = "v1.14.4"
   timeout    = "3600"
-
-  values = [
-    file("${path.module}/values.yaml")
-  ]
 
   set {
     name  = "installCRDs"
@@ -144,29 +139,34 @@ module "deployments" {
   exclude_cluster_issuer                               = var.exclude_cluster_issuer
   exclude_certificate                                  = var.exclude_certificate
   
+  shared_secret_OIDC_CLIENT_PWD                        = var.shared_secret_OIDC_CLIENT_PWD
+  shared_secret_INTERNAL_SECRET                        = var.shared_secret_INTERNAL_SECRET
+  shared_config_PRIM_ADMIN_EMAIL                       = var.shared_config_PRIM_ADMIN_EMAIL
+  shared_config_SEND_EMAIL_FROM                        = var.shared_config_SEND_EMAIL_FROM
+  shared_config_SEND_EMAIL_FROM_NAME                   = var.shared_config_SEND_EMAIL_FROM_NAME
+
+  three_edges_DB_TYPE                                       = var.three_edges_DB_TYPE
+  three_edges_DB_VERSION                                    = var.three_edges_DB_VERSION
+  three_edges_DB_HOST                                       = var.three_edges_DB_HOST
+  three_edges_DB_NAME                                       = var.three_edges_DB_NAME
+  three_edges_DB_USER                                       = var.three_edges_DB_USER
+  three_edges_secret_DB_PASSWORD                            = var.three_edges_secret_DB_PASSWORD
+
   configuration_config_NODE_ENV                                      = var.configuration_config_NODE_ENV
   configuration_config_SERVER_PORT                                   = var.configuration_config_SERVER_PORT
   configuration_config_ENABLE_INTROSPECTION                          = var.configuration_config_ENABLE_INTROSPECTION
   configuration_config_ENABLE_PLAYGROUND                             = var.configuration_config_ENABLE_PLAYGROUND
   configuration_config_REACT_APP_OTP_VALIDITY                        = var.configuration_config_REACT_APP_OTP_VALIDITY
-  configuration_config_SEND_EMAIL_FROM                               = var.configuration_config_SEND_EMAIL_FROM
-  configuration_config_SEND_EMAIL_FROM_NAME                          = var.configuration_config_SEND_EMAIL_FROM_NAME
   configuration_config_SEND_EMAIL_URL                                = var.configuration_config_SEND_EMAIL_URL
   configuration_config_NEO4J_POOL_SIZE                               = var.configuration_config_NEO4J_POOL_SIZE
   configuration_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS       = var.configuration_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS
   configuration_config_NEO4J_MAX_CONNECTION_LIFETIME                 = var.configuration_config_NEO4J_MAX_CONNECTION_LIFETIME
   configuration_config_NEO4J_CONNECTION_TIMEOUT                      = var.configuration_config_NEO4J_CONNECTION_TIMEOUT
   configuration_config_RESET_ADMIN_USER                              = var.configuration_config_RESET_ADMIN_USER
-  configuration_config_PRIM_ADMIN_EMAIL                              = var.configuration_config_PRIM_ADMIN_EMAIL
   configuration_config_NEO4J_URL_TEST                                = var.configuration_config_NEO4J_URL_TEST
   configuration_config_PRIM_CONFIG_NEO4J_DB_TEST                     = var.configuration_config_PRIM_CONFIG_NEO4J_DB_TEST
   configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN                  = var.configuration_config_PRIM_SERVER_HTTP_CORS_ORIGIN
   configuration_config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN          = var.configuration_config_PRIM_SERVER_HTTP_CORS_DEFAULT_ORIGIN
-  configuration_config_DB_TYPE                                       = var.configuration_config_DB_TYPE
-  configuration_config_DB_VERSION                                    = var.configuration_config_DB_VERSION
-  configuration_config_DB_HOST                                       = var.configuration_config_DB_HOST
-  configuration_config_DB_NAME                                       = var.configuration_config_DB_NAME
-  configuration_config_DB_USER                                       = var.configuration_config_DB_USER
   configuration_config_CLUSTER_URL                                   = var.configuration_config_CLUSTER_URL
   configuration_config_COOKIE_NNCE                                   = var.configuration_config_COOKIE_NNCE
   configuration_config_COOKIE_PRIMSCOOKIE                            = var.configuration_config_COOKIE_PRIMSCOOKIE
@@ -211,11 +211,8 @@ module "deployments" {
   configuration_config_secret_TOKEN_PIPELINE                         = var.configuration_config_secret_TOKEN_PIPELINE
   configuration_config_secret_NEO4J_PASSWORD_TEST                    = var.configuration_config_secret_NEO4J_PASSWORD_TEST
   configuration_config_secret_SESSION_PIPELINE                       = var.configuration_config_secret_SESSION_PIPELINE
-  configuration_config_secret_DB_PASSWORD                            = var.configuration_config_secret_DB_PASSWORD
   configuration_config_secret_PRIM_ADMIN_PASS                        = var.configuration_config_secret_PRIM_ADMIN_PASS
   configuration_config_secret_PRIM_JWT_SECRET                        = var.configuration_config_secret_PRIM_JWT_SECRET
-  configuration_config_secret_OIDC_CLIENT_PWD                        = var.configuration_config_secret_OIDC_CLIENT_PWD
-  configuration_config_secret_INTERNAL_SECRET                        = var.configuration_config_secret_INTERNAL_SECRET
   
   dataloader_ui_config_NODE_ENV                                = var.dataloader_ui_config_NODE_ENV
   dataloader_ui_config_PORT                                    = var.dataloader_ui_config_PORT
@@ -230,9 +227,6 @@ module "deployments" {
   dataloader_ui_config_REACT_APP_JWKS_URI                      = var.dataloader_ui_config_REACT_APP_JWKS_URI
   dataloader_ui_config_REACT_APP_DOCUMENTATION_URL             = var.dataloader_ui_config_REACT_APP_DOCUMENTATION_URL
   
-  dataloader_secret_dbPass                                     = var.dataloader_secret_dbPass
-  dataloader_secret_OIDC_CLIENT_PWD                            = var.dataloader_secret_OIDC_CLIENT_PWD
-
   dataloader_config_NODE_ENV                                   = var.dataloader_config_NODE_ENV
   dataloader_config_CORS_ORIGIN                                = var.dataloader_config_CORS_ORIGIN
   dataloader_config_PORT                                       = var.dataloader_config_PORT
@@ -240,9 +234,6 @@ module "deployments" {
   dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS    = var.dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS
   dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME              = var.dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME
   dataloader_config_NEO4J_CONNECTION_TIMEOUT                   = var.dataloader_config_NEO4J_CONNECTION_TIMEOUT
-  dataloader_config_dbName                                     = var.dataloader_config_dbName
-  dataloader_config_dbUser                                     = var.dataloader_config_dbUser
-  dataloader_config_dbHost                                     = var.dataloader_config_dbHost
   dataloader_config_OIDC_URL                                   = var.dataloader_config_OIDC_URL
   dataloader_config_OIDC_CLIENT_ID                             = var.dataloader_config_OIDC_CLIENT_ID
   dataloader_config_CONFIGURATION_URL                          = var.dataloader_config_CONFIGURATION_URL
@@ -256,25 +247,14 @@ module "deployments" {
   cluster_config_config_CLUSTER                        = var.cluster_config_config_CLUSTER
   cluster_config_config_LOCATION                       = var.cluster_config_config_LOCATION
   cluster_config_NGINX_LB                              = var.cluster_config_NGINX_LB
-  cluster_config_DB_TYPE                               = var.cluster_config_DB_TYPE
-  cluster_config_DB_VERSION                            = var.cluster_config_DB_VERSION
-  cluster_config_DB_HOST                               = var.cluster_config_DB_HOST
-  cluster_config_DB_NAME                               = var.cluster_config_DB_NAME
-  cluster_config_DB_USER                               = var.cluster_config_DB_USER
   cluster_config_CLUSTER_URL                           = var.cluster_config_CLUSTER_URL
   cluster_config_SEND_EMAIL_URL                        = var.cluster_config_SEND_EMAIL_URL
   cluster_config_SEND_EMAIL_SERVER                     = var.cluster_config_SEND_EMAIL_SERVER
-  cluster_config_SEND_EMAIL_FROM                       = var.cluster_config_SEND_EMAIL_FROM
-  cluster_config_SEND_EMAIL_FROM_NAME                  = var.cluster_config_SEND_EMAIL_FROM_NAME
-  cluster_config_PRIM_ADMIN_EMAIL                      = var.cluster_config_PRIM_ADMIN_EMAIL
 
-  cluster_secret_OIDC_CLIENT_PWD      = var.cluster_secret_OIDC_CLIENT_PWD
-  cluster_secret_DB_PASSWORD          = var.cluster_secret_DB_PASSWORD
   cluster_secret_PRIVATE_KEY          = var.cluster_secret_PRIVATE_KEY
   cluster_secret_CRON_PWD             = var.cluster_secret_CRON_PWD
   cluster_secret_SESSION_PIPELINE     = var.cluster_secret_SESSION_PIPELINE
   cluster_secret_TOKEN_PIPELINE       = var.cluster_secret_TOKEN_PIPELINE
-  cluster_secret_INTERNAL_SECRET      = var.cluster_secret_INTERNAL_SECRET
 
   ui_config_NODE_ENV                                     = var.ui_config_NODE_ENV
   ui_config_PORT                                         = var.ui_config_PORT
@@ -299,9 +279,9 @@ module "deployments" {
   ui_config_REACT_APP_IDLE_TIME_IN_MINUTES               = var.ui_config_REACT_APP_IDLE_TIME_IN_MINUTES
   ui_config_REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME = var.ui_config_REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME
   ui_config_REACT_APP_WEBLOADER_URL                      = var.ui_config_REACT_APP_WEBLOADER_URL
+  ui_config_REACT_APP_CONTENT_SECURITY_POLICY            = var.ui_config_REACT_APP_CONTENT_SECURITY_POLICY
 
-  ui_secret_REACT_APP_OIDC_CLIENT_PWD      = var.ui_secret_REACT_APP_OIDC_CLIENT_PWD
-  ui_secret_REACT_APP_INTERNAL_SECRET      = var.ui_secret_REACT_APP_INTERNAL_SECRET
+
   ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE = var.ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE
   ui_secret_REACT_APP_CAPTCHA_V2           = var.ui_secret_REACT_APP_CAPTCHA_V2
 
@@ -310,7 +290,6 @@ module "deployments" {
   idp_config_SERVER_HTTP_CORS_ORIGIN               = var.idp_config_SERVER_HTTP_CORS_ORIGIN
   idp_config_SERVER_HTTP_STRICT_TRANSPORT_SECURITY = var.idp_config_SERVER_HTTP_STRICT_TRANSPORT_SECURITY
   idp_config_SERVER_HTTP_X_FRAME_OPTIONS           = var.idp_config_SERVER_HTTP_X_FRAME_OPTIONS
-  idp_config_PRIM_ADMIN_EMAIL                      = var.idp_config_PRIM_ADMIN_EMAIL
   idp_config_CHECK_VERIFIED                        = var.idp_config_CHECK_VERIFIED
   idp_config_NAMING_PROPERTY                       = var.idp_config_NAMING_PROPERTY
   idp_config_SUBJECT_TYPE                          = var.idp_config_SUBJECT_TYPE
@@ -333,11 +312,6 @@ module "deployments" {
   idp_config_NiamSvcAcc_Client_id                  = var.idp_config_NiamSvcAcc_Client_id
   idp_config_NiamSvcAcc_username                   = var.idp_config_NiamSvcAcc_username
   idp_config_OIDC_URL                              = var.idp_config_OIDC_URL
-  idp_config_DB_TYPE                               = var.idp_config_DB_TYPE
-  idp_config_DB_VERSION                            = var.idp_config_DB_VERSION
-  idp_config_DB_HOST                               = var.idp_config_DB_HOST
-  idp_config_DB_NAME                               = var.idp_config_DB_NAME
-  idp_config_DB_USER                               = var.idp_config_DB_USER
   idp_config_ACCESS_TOKEN_TYPE                     = var.idp_config_ACCESS_TOKEN_TYPE
   idp_config_CONSENT_PAGE                          = var.idp_config_CONSENT_PAGE
   idp_config_OIDC_URL_3EDGES                       = var.idp_config_OIDC_URL_3EDGES
@@ -359,9 +333,6 @@ module "deployments" {
   idp_secret_CLIENT_SECRET_ENC_KEY    = var.idp_secret_CLIENT_SECRET_ENC_KEY
   idp_secret_NiamSvcAcc_Client_secret = var.idp_secret_NiamSvcAcc_Client_secret
   idp_secret_NiamSvcAcc_pwd           = var.idp_secret_NiamSvcAcc_pwd
-  idp_secret_DB_PASSWORD              = var.idp_secret_DB_PASSWORD
-  idp_secret_CLIENT_PWD_3EDGES        = var.idp_secret_CLIENT_PWD_3EDGES
-  idp_secret_INTERNAL_SECRET          = var.idp_secret_INTERNAL_SECRET
 
   providers = {
     kubernetes = kubernetes

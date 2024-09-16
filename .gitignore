@@ -7,3 +7,4 @@ localhost/.env
 .git
 /tmp
 tfplan
+values.yaml
