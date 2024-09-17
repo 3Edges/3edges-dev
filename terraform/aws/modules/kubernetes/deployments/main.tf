@@ -89,6 +89,7 @@ resource "kubernetes_manifest" "letsencrypt_wildcard" {
       }
       secretName = "letsencrypt-wildcard-secret"
       dnsNames   = ["${var.hosted_zone}", "*.${var.hosted_zone}"]
+
     }
   }
   depends_on = [kubernetes_manifest.cert_manager_cluster_issuer]
