@@ -259,7 +259,7 @@ module "cypher" {
   three_edges_DB_USER            = var.three_edges_DB_USER
   three_edges_secret_DB_PASSWORD = var.three_edges_secret_DB_PASSWORD
   hosted_zone                    = var.hosted_zone
-
+  n_client_secret                = var.n_client_secret
 
   depends_on = [module.cluster, module.iam, module.kubernetes, module.vpc]
 

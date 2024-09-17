@@ -140,3 +140,9 @@ After making the necessary changes, run the deployment script
 # cd 3edges-deployments/terraform/aws/
 # ./run.sh
 ```
+
+## Configuring Domain with Route 53 Name Servers
+
+1. In AWS Route 53, go to your hosted zone and copy the 4 name servers listed in the NS record.
+
+2. Go to your domain registrar's dashboard and replace the existing name servers with the ones from Route 53.

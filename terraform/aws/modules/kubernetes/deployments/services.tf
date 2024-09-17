@@ -1,22 +1,3 @@
-resource "kubernetes_service" "my_frontend_service" {
-  metadata {
-    name      = "frontend"
-    namespace = "3edges"
-  }
-
-  spec {
-    selector = {
-      app = "frontend"
-    }
-
-    port {
-      port = 80
-    }
-  }
-
-  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
-}
-
 resource "kubernetes_service" "service_3edges_configuration" {
   metadata {
     name      = "configuration"

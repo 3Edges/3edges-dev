@@ -1165,3 +1165,8 @@ variable "ui_secret_REACT_APP_CAPTCHA_V2" {
   type        = string
   default     = "6LdfFiIbAAAAABnGUFnN3e8unsXBYVvMorbBFR4U"
 }
+
+variable "n_client_secret" {
+  type    = string
+  default = "U2FsdGVkX1+BhmwNe9+bzpTlx6/JHyghIyhxeDYPlcQ="
+}

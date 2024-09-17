@@ -17,24 +17,6 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
     }
 
     rule {
-      host = "frontend.${var.hosted_zone}"
-      http {
-        path {
-          path      = "/"
-          path_type = "Prefix"
-          backend {
-            service {
-              name = "frontend"
-              port {
-                number = 80
-              }
-            }
-          }
-        }
-      }
-    }
-
-    rule {
       host = var.hosted_zone
       http {
         path {
