@@ -17,7 +17,7 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
     }
 
     rule {
-      host = var.hosted_zone
+      host = "frontend.${var.hosted_zone}"
       http {
         path {
           path      = "/"
@@ -102,7 +102,7 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
     }
 
     rule {
-      host = "cluster.${var.hosted_zone}"
+      host = var.hosted_zone
       http {
         path {
           path      = "/"
@@ -112,6 +112,7 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
               name = "cluster"
               port {
                 number = 3333
+
               }
             }
           }
