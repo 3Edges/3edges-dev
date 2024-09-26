@@ -146,7 +146,7 @@ Clone the repository containing the Terraform configuration:
 
 ## Modify the Backend Configuration 
 
-Updat the `backend.tf` file with your S3 bucket details
+Update the `backend.tf` file with your S3 bucket details
 
 ```
 3edges-deployments/terraform/aws/backend.tf
