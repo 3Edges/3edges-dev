@@ -70,7 +70,7 @@ resource "kubernetes_config_map" "configuration_config" {
     OIDC_CLIENT_ID                                = var.configuration_config_OIDC_CLIENT_ID
   }
 
-  depends_on = [ var.kubernetes_namespace_namespace ]
+  depends_on = [var.kubernetes_namespace_namespace]
 
 }
 
@@ -95,7 +95,7 @@ resource "kubernetes_config_map" "dataloader_ui_config" {
     REACT_APP_DOCUMENTATION_URL        = var.dataloader_ui_config_REACT_APP_DOCUMENTATION_URL
   }
 
-  depends_on = [ var.kubernetes_namespace_namespace ]
+  depends_on = [var.kubernetes_namespace_namespace]
 }
 
 resource "kubernetes_config_map" "dataloader_config" {
@@ -122,7 +122,7 @@ resource "kubernetes_config_map" "dataloader_config" {
 
 
 
-  depends_on = [ var.kubernetes_namespace_namespace ]
+  depends_on = [var.kubernetes_namespace_namespace]
 }
 
 resource "kubernetes_config_map" "cluster_config" {
@@ -131,30 +131,37 @@ resource "kubernetes_config_map" "cluster_config" {
     namespace = "3edges"
   }
   data = {
-    NODE_ENV             = var.cluster_config_NODE_ENV
-    PORT                 = var.cluster_config_PORT
-    UI_URL               = var.cluster_config_UI_URL
-    CLIENT_EMAIL         = var.cluster_config_CLIENT_EMAIL
-    OIDC_URL             = var.cluster_config_OIDC_URL
-    OIDC_CLIENT_ID       = var.cluster_config_OIDC_CLIENT_ID
-    config_CLUSTER       = var.cluster_config_config_CLUSTER
-    config_LOCATION      = var.cluster_config_config_LOCATION
-    NGINX_LB             = var.cluster_config_NGINX_LB
-    DB_TYPE              = var.three_edges_DB_TYPE
-    DB_VERSION           = var.three_edges_DB_VERSION
-    DB_HOST              = var.three_edges_DB_HOST
-    DB_NAME              = var.three_edges_DB_NAME
-    DB_USER              = var.three_edges_DB_USER
-    CLUSTER_URL          = var.cluster_config_CLUSTER_URL
-    SEND_EMAIL_URL       = var.cluster_config_SEND_EMAIL_URL
-    SEND_EMAIL_SERVER    = var.cluster_config_SEND_EMAIL_SERVER
-    SEND_EMAIL_FROM      = var.shared_config_SEND_EMAIL_FROM
-    SEND_EMAIL_FROM_NAME = var.shared_config_SEND_EMAIL_FROM_NAME
-    PRIM_ADMIN_EMAIL     = var.shared_config_PRIM_ADMIN_EMAIL
+    NODE_ENV              = var.cluster_config_NODE_ENV
+    PORT                  = var.cluster_config_PORT
+    UI_URL                = var.cluster_config_UI_URL
+    CLIENT_EMAIL          = var.cluster_config_CLIENT_EMAIL
+    OIDC_URL              = var.cluster_config_OIDC_URL
+    OIDC_CLIENT_ID        = var.cluster_config_OIDC_CLIENT_ID
+    config_CLUSTER        = var.cluster_config_config_CLUSTER
+    config_LOCATION       = var.cluster_config_config_LOCATION
+    NGINX_LB              = var.cluster_config_NGINX_LB
+    DB_TYPE               = var.three_edges_DB_TYPE
+    DB_VERSION            = var.three_edges_DB_VERSION
+    DB_HOST               = var.three_edges_DB_HOST
+    DB_NAME               = var.three_edges_DB_NAME
+    DB_USER               = var.three_edges_DB_USER
+    CLUSTER_URL           = var.cluster_config_CLUSTER_URL
+    SEND_EMAIL_URL        = var.cluster_config_SEND_EMAIL_URL
+    SEND_EMAIL_SERVER     = var.cluster_config_SEND_EMAIL_SERVER
+    SEND_EMAIL_FROM       = var.shared_config_SEND_EMAIL_FROM
+    SEND_EMAIL_FROM_NAME  = var.shared_config_SEND_EMAIL_FROM_NAME
+    PRIM_ADMIN_EMAIL      = var.shared_config_PRIM_ADMIN_EMAIL
+    AWS_ACCESS_KEY_ID     = var.aws_access_key_id
+    AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key
+    CLUSTER               = var.eks_cluster
+    AWS_DEFAULT_REGION    = var.aws_region
+    API_NAME              = local.api_name
+    hostedZoneID          = var.aws_route53_zone_hosted_zone_id
+
   }
 
 
-  depends_on = [ var.kubernetes_namespace_namespace ]
+  depends_on = [var.kubernetes_namespace_namespace]
 }
 
 
@@ -220,7 +227,7 @@ resource "kubernetes_config_map" "idp_config" {
 
 
 
-  depends_on = [ var.kubernetes_namespace_namespace ]
+  depends_on = [var.kubernetes_namespace_namespace]
 }
 
 resource "kubernetes_config_map" "ui_config" {
@@ -254,7 +261,11 @@ resource "kubernetes_config_map" "ui_config" {
     REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME = var.ui_config_REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME
     REACT_APP_WEBLOADER_URL                      = var.ui_config_REACT_APP_WEBLOADER_URL
     REACT_APP_CONTENT_SECURITY_POLICY            = var.ui_config_REACT_APP_CONTENT_SECURITY_POLICY
- }
+    REACT_APP_3EDGES_PROXY                       = "https://tmp-random-url.${var.hosted_zone}"
+    REACT_APP_3EDGES_IDP                         = "https://tmp-random-url.${var.hosted_zone}/oidc"
+    REACT_APP_API_NAME                           = local.api_name
+    REACT_APP_DOMAIN                             = var.hosted_zone
+  }
 
-  depends_on = [ var.kubernetes_namespace_namespace ]
+  depends_on = [var.kubernetes_namespace_namespace]
 }

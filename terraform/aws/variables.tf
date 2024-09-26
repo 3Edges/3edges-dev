@@ -75,13 +75,13 @@ variable "exclude_certificate" {
 variable "shared_secret_OIDC_CLIENT_PWD" {
   description = "OIDC client password"
   type        = string
-  default     = "g3ize7GxYFPT"
+  default     = ""
 }
 
 variable "shared_secret_INTERNAL_SECRET" {
   description = "Internal secret key"
   type        = string
-  default     = "MRDIuSYR6wqg0ha9"
+  default     = ""
 }
 
 variable "shared_config_PRIM_ADMIN_EMAIL" {
@@ -299,7 +299,7 @@ variable "configuration_config_DASHBOARD_POD_PORT" {
 variable "configuration_config_IDP_POD_PORT" {
   type        = string
   description = "Port of the IDP pod"
-  default     = "3007"
+  default     = "3001"
 }
 
 variable "configuration_config_PROXY_POD_PORT" {
@@ -1157,16 +1157,37 @@ variable "ui_config_REACT_APP_CONTENT_SECURITY_POLICY" {
 variable "ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE" {
   description = "The invisible reCAPTCHA V2 key for the React application."
   type        = string
-  default     = "6LcmeBEbAAAAAO0GvPUCyIs9ow-LFUFiX6UQbU8m"
+  default     = ""
 }
 
 variable "ui_secret_REACT_APP_CAPTCHA_V2" {
   description = "The reCAPTCHA V2 key for the React application."
   type        = string
-  default     = "6LdfFiIbAAAAABnGUFnN3e8unsXBYVvMorbBFR4U"
+  default     = ""
 }
 
 variable "n_client_secret" {
   type    = string
-  default = "U2FsdGVkX1+BhmwNe9+bzpTlx6/JHyghIyhxeDYPlcQ="
+  default = ""
+}
+
+variable "four_letter_random" {
+  description = "Just using for naming AWS resources, for uniquiness"
+  type        = string
+  default     = ""
+}
+
+
+variable "api_name" {
+  default = ""
+}
+
+variable "PROM_METRICS_PREFIX" {
+  default = ""
+}
+
+variable "manual_api_deployment" {
+  description = "Manual 3Edges Client API deployment (true or false)"
+  default     = false
+  type        = bool
 }

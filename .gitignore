@@ -8,3 +8,4 @@ localhost/.env
 /tmp
 tfplan
 values.yaml
+n_client_secret.txt

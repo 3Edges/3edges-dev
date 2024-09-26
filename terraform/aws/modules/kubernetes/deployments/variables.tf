@@ -16,6 +16,8 @@ variable "aws_secret_access_key" {}
 
 variable "aws_eks_cluster_auth_endpoint" {}
 
+variable "eks_cluster" {}
+
 variable "exclude_cluster_issuer" {}
 
 variable "exclude_certificate" {}
@@ -239,6 +241,7 @@ variable "cluster_config_SEND_EMAIL_URL" {}
 
 variable "cluster_config_SEND_EMAIL_SERVER" {}
 
+
 # This section of following variables are for kubernetes/deployments/secrets : cluster_secret
 
 variable "cluster_secret_PRIVATE_KEY" {}
@@ -397,3 +400,10 @@ variable "ui_config_REACT_APP_CONTENT_SECURITY_POLICY" {}
 variable "ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE" {}
 
 variable "ui_secret_REACT_APP_CAPTCHA_V2" {}
+
+
+variable "api_name" {}
+
+variable "PROM_METRICS_PREFIX" {}
+
+variable "manual_api_deployment" {}

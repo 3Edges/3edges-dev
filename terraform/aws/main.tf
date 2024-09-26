@@ -44,6 +44,7 @@ module "kubernetes" {
   aws_eks_cluster_auth_certificate  = module.cluster.aws_eks_cluster_auth_certificate
   aws_eks_cluster_eks_cluster_id    = module.cluster.aws_eks_cluster_eks_cluster_id
   aws_eks_cluster_eks_cluster_name  = module.cluster.aws_eks_cluster_eks_cluster_name
+  eks_cluster                       = var.eks_cluster
   aws_region                        = var.aws_region
   hosted_zone                       = var.hosted_zone
   eks_node_role                     = var.eks_node_role
@@ -53,8 +54,8 @@ module "kubernetes" {
   exclude_cluster_issuer            = var.exclude_cluster_issuer
   exclude_certificate               = var.exclude_certificate
 
-  shared_secret_OIDC_CLIENT_PWD      = var.shared_secret_OIDC_CLIENT_PWD
-  shared_secret_INTERNAL_SECRET      = var.shared_secret_INTERNAL_SECRET
+  shared_secret_OIDC_CLIENT_PWD      = random_password.shared_secret_OIDC_CLIENT_PWD.result
+  shared_secret_INTERNAL_SECRET      = random_password.shared_secret_INTERNAL_SECRET.result
   shared_config_PRIM_ADMIN_EMAIL     = var.shared_config_PRIM_ADMIN_EMAIL
   shared_config_SEND_EMAIL_FROM      = var.shared_config_SEND_EMAIL_FROM
   shared_config_SEND_EMAIL_FROM_NAME = var.shared_config_SEND_EMAIL_FROM_NAME
@@ -251,10 +252,19 @@ module "kubernetes" {
   idp_secret_NiamSvcAcc_Client_secret = random_password.idp_secret_NiamSvcAcc_Client_secret.result
   idp_secret_NiamSvcAcc_pwd           = random_password.idp_secret_NiamSvcAcc_pwd.result
 
+  api_name              = var.api_name
+  PROM_METRICS_PREFIX   = var.PROM_METRICS_PREFIX
+  manual_api_deployment = var.manual_api_deployment
+
+
 }
 
 module "cypher" {
-  source                         = "./modules/cypher"
+  source                        = "./modules/cypher"
+  shared_secret_OIDC_CLIENT_PWD = random_password.shared_secret_OIDC_CLIENT_PWD.result
+  shared_secret_INTERNAL_SECRET = random_password.shared_secret_INTERNAL_SECRET.result
+  four_letter_random            = random_string.four_letter_random.result
+
   three_edges_DB_HOST            = var.three_edges_DB_HOST
   three_edges_DB_USER            = var.three_edges_DB_USER
   three_edges_secret_DB_PASSWORD = var.three_edges_secret_DB_PASSWORD

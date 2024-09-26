@@ -5,6 +5,7 @@ provider "kubernetes" {
   token                  = var.aws_eks_cluster_auth_token
 }
 
+
 resource "kubernetes_config_map" "aws_auth" {
   metadata {
     name      = "aws-auth"
@@ -114,7 +115,7 @@ resource "helm_release" "cert_manager" {
   namespace  = "cert-manager"
   chart      = "cert-manager"
   repository = "https://charts.jetstack.io"
-  version = "v1.14.4"
+  version    = "v1.14.4"
   timeout    = "3600"
 
   set {
@@ -126,31 +127,32 @@ resource "helm_release" "cert_manager" {
 }
 
 module "deployments" {
-  source                                               = "./deployments"
-  cert_manager                                         = kubernetes_namespace.cert_manager_namespace.metadata[0].name
-  ingress_nginx                                        = helm_release.ingress_nginx
-  hosted_zone                                          = var.hosted_zone
-  aws_region                                           = var.aws_region
-  aws_access_key_id                                    = var.aws_access_key_id
-  aws_secret_access_key                                = var.aws_secret_access_key
-  aws_route53_zone_hosted_zone_id                      = aws_route53_zone.hosted_zone.id
-  kubernetes_namespace_namespace                       = kubernetes_namespace.namespace
-  aws_eks_cluster_auth_endpoint                        = var.aws_eks_cluster_auth_endpoint
-  exclude_cluster_issuer                               = var.exclude_cluster_issuer
-  exclude_certificate                                  = var.exclude_certificate
-  
-  shared_secret_OIDC_CLIENT_PWD                        = var.shared_secret_OIDC_CLIENT_PWD
-  shared_secret_INTERNAL_SECRET                        = var.shared_secret_INTERNAL_SECRET
-  shared_config_PRIM_ADMIN_EMAIL                       = var.shared_config_PRIM_ADMIN_EMAIL
-  shared_config_SEND_EMAIL_FROM                        = var.shared_config_SEND_EMAIL_FROM
-  shared_config_SEND_EMAIL_FROM_NAME                   = var.shared_config_SEND_EMAIL_FROM_NAME
+  source                          = "./deployments"
+  cert_manager                    = kubernetes_namespace.cert_manager_namespace.metadata[0].name
+  ingress_nginx                   = helm_release.ingress_nginx
+  hosted_zone                     = var.hosted_zone
+  aws_region                      = var.aws_region
+  aws_access_key_id               = var.aws_access_key_id
+  aws_secret_access_key           = var.aws_secret_access_key
+  aws_route53_zone_hosted_zone_id = aws_route53_zone.hosted_zone.id
+  kubernetes_namespace_namespace  = kubernetes_namespace.namespace
+  aws_eks_cluster_auth_endpoint   = var.aws_eks_cluster_auth_endpoint
+  eks_cluster                     = var.eks_cluster
+  exclude_cluster_issuer          = var.exclude_cluster_issuer
+  exclude_certificate             = var.exclude_certificate
 
-  three_edges_DB_TYPE                                       = var.three_edges_DB_TYPE
-  three_edges_DB_VERSION                                    = var.three_edges_DB_VERSION
-  three_edges_DB_HOST                                       = var.three_edges_DB_HOST
-  three_edges_DB_NAME                                       = var.three_edges_DB_NAME
-  three_edges_DB_USER                                       = var.three_edges_DB_USER
-  three_edges_secret_DB_PASSWORD                            = var.three_edges_secret_DB_PASSWORD
+  shared_secret_OIDC_CLIENT_PWD      = var.shared_secret_OIDC_CLIENT_PWD
+  shared_secret_INTERNAL_SECRET      = var.shared_secret_INTERNAL_SECRET
+  shared_config_PRIM_ADMIN_EMAIL     = var.shared_config_PRIM_ADMIN_EMAIL
+  shared_config_SEND_EMAIL_FROM      = var.shared_config_SEND_EMAIL_FROM
+  shared_config_SEND_EMAIL_FROM_NAME = var.shared_config_SEND_EMAIL_FROM_NAME
+
+  three_edges_DB_TYPE            = var.three_edges_DB_TYPE
+  three_edges_DB_VERSION         = var.three_edges_DB_VERSION
+  three_edges_DB_HOST            = var.three_edges_DB_HOST
+  three_edges_DB_NAME            = var.three_edges_DB_NAME
+  three_edges_DB_USER            = var.three_edges_DB_USER
+  three_edges_secret_DB_PASSWORD = var.three_edges_secret_DB_PASSWORD
 
   configuration_config_NODE_ENV                                      = var.configuration_config_NODE_ENV
   configuration_config_SERVER_PORT                                   = var.configuration_config_SERVER_PORT
@@ -207,54 +209,54 @@ module "deployments" {
   configuration_config_UI_URL                                        = var.configuration_config_UI_URL
   configuration_config_OIDC_URL                                      = var.configuration_config_OIDC_URL
   configuration_config_OIDC_CLIENT_ID                                = var.configuration_config_OIDC_CLIENT_ID
-  
-  configuration_config_secret_TOKEN_PIPELINE                         = var.configuration_config_secret_TOKEN_PIPELINE
-  configuration_config_secret_NEO4J_PASSWORD_TEST                    = var.configuration_config_secret_NEO4J_PASSWORD_TEST
-  configuration_config_secret_SESSION_PIPELINE                       = var.configuration_config_secret_SESSION_PIPELINE
-  configuration_config_secret_PRIM_ADMIN_PASS                        = var.configuration_config_secret_PRIM_ADMIN_PASS
-  configuration_config_secret_PRIM_JWT_SECRET                        = var.configuration_config_secret_PRIM_JWT_SECRET
-  
-  dataloader_ui_config_NODE_ENV                                = var.dataloader_ui_config_NODE_ENV
-  dataloader_ui_config_PORT                                    = var.dataloader_ui_config_PORT
-  dataloader_ui_config_REACT_APP_DATALOADER_URL                = var.dataloader_ui_config_REACT_APP_DATALOADER_URL
-  dataloader_ui_config_REACT_APP_UI_URL_3EDGES                 = var.dataloader_ui_config_REACT_APP_UI_URL_3EDGES
-  dataloader_ui_config_REACT_APP_ACCESS_TOKEN_COOKIE_NAME      = var.dataloader_ui_config_REACT_APP_ACCESS_TOKEN_COOKIE_NAME
-  dataloader_ui_config_REACT_APP_NONCE_COOKIE_NAME             = var.dataloader_ui_config_REACT_APP_NONCE_COOKIE_NAME
-  dataloader_ui_config_REACT_APP_PKEY_COOKIE_NAME              = var.dataloader_ui_config_REACT_APP_PKEY_COOKIE_NAME
-  dataloader_ui_config_REACT_APP_ID_TOKEN_COOKIE_NAME          = var.dataloader_ui_config_REACT_APP_ID_TOKEN_COOKIE_NAME
-  dataloader_ui_config_REACT_APP_OIDC_CLIENT_ID                = var.dataloader_ui_config_REACT_APP_OIDC_CLIENT_ID
-  dataloader_ui_config_REACT_APP_OIDC_URL                      = var.dataloader_ui_config_REACT_APP_OIDC_URL
-  dataloader_ui_config_REACT_APP_JWKS_URI                      = var.dataloader_ui_config_REACT_APP_JWKS_URI
-  dataloader_ui_config_REACT_APP_DOCUMENTATION_URL             = var.dataloader_ui_config_REACT_APP_DOCUMENTATION_URL
-  
-  dataloader_config_NODE_ENV                                   = var.dataloader_config_NODE_ENV
-  dataloader_config_CORS_ORIGIN                                = var.dataloader_config_CORS_ORIGIN
-  dataloader_config_PORT                                       = var.dataloader_config_PORT
-  dataloader_config_NEO4J_POOL_SIZE                            = var.dataloader_config_NEO4J_POOL_SIZE
-  dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS    = var.dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS
-  dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME              = var.dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME
-  dataloader_config_NEO4J_CONNECTION_TIMEOUT                   = var.dataloader_config_NEO4J_CONNECTION_TIMEOUT
-  dataloader_config_OIDC_URL                                   = var.dataloader_config_OIDC_URL
-  dataloader_config_OIDC_CLIENT_ID                             = var.dataloader_config_OIDC_CLIENT_ID
-  dataloader_config_CONFIGURATION_URL                          = var.dataloader_config_CONFIGURATION_URL
 
-  cluster_config_NODE_ENV                              = var.cluster_config_NODE_ENV
-  cluster_config_PORT                                  = var.cluster_config_PORT
-  cluster_config_UI_URL                                = var.cluster_config_UI_URL
-  cluster_config_CLIENT_EMAIL                          = var.cluster_config_CLIENT_EMAIL
-  cluster_config_OIDC_URL                              = var.cluster_config_OIDC_URL
-  cluster_config_OIDC_CLIENT_ID                        = var.cluster_config_OIDC_CLIENT_ID
-  cluster_config_config_CLUSTER                        = var.cluster_config_config_CLUSTER
-  cluster_config_config_LOCATION                       = var.cluster_config_config_LOCATION
-  cluster_config_NGINX_LB                              = var.cluster_config_NGINX_LB
-  cluster_config_CLUSTER_URL                           = var.cluster_config_CLUSTER_URL
-  cluster_config_SEND_EMAIL_URL                        = var.cluster_config_SEND_EMAIL_URL
-  cluster_config_SEND_EMAIL_SERVER                     = var.cluster_config_SEND_EMAIL_SERVER
+  configuration_config_secret_TOKEN_PIPELINE      = var.configuration_config_secret_TOKEN_PIPELINE
+  configuration_config_secret_NEO4J_PASSWORD_TEST = var.configuration_config_secret_NEO4J_PASSWORD_TEST
+  configuration_config_secret_SESSION_PIPELINE    = var.configuration_config_secret_SESSION_PIPELINE
+  configuration_config_secret_PRIM_ADMIN_PASS     = var.configuration_config_secret_PRIM_ADMIN_PASS
+  configuration_config_secret_PRIM_JWT_SECRET     = var.configuration_config_secret_PRIM_JWT_SECRET
 
-  cluster_secret_PRIVATE_KEY          = var.cluster_secret_PRIVATE_KEY
-  cluster_secret_CRON_PWD             = var.cluster_secret_CRON_PWD
-  cluster_secret_SESSION_PIPELINE     = var.cluster_secret_SESSION_PIPELINE
-  cluster_secret_TOKEN_PIPELINE       = var.cluster_secret_TOKEN_PIPELINE
+  dataloader_ui_config_NODE_ENV                           = var.dataloader_ui_config_NODE_ENV
+  dataloader_ui_config_PORT                               = var.dataloader_ui_config_PORT
+  dataloader_ui_config_REACT_APP_DATALOADER_URL           = var.dataloader_ui_config_REACT_APP_DATALOADER_URL
+  dataloader_ui_config_REACT_APP_UI_URL_3EDGES            = var.dataloader_ui_config_REACT_APP_UI_URL_3EDGES
+  dataloader_ui_config_REACT_APP_ACCESS_TOKEN_COOKIE_NAME = var.dataloader_ui_config_REACT_APP_ACCESS_TOKEN_COOKIE_NAME
+  dataloader_ui_config_REACT_APP_NONCE_COOKIE_NAME        = var.dataloader_ui_config_REACT_APP_NONCE_COOKIE_NAME
+  dataloader_ui_config_REACT_APP_PKEY_COOKIE_NAME         = var.dataloader_ui_config_REACT_APP_PKEY_COOKIE_NAME
+  dataloader_ui_config_REACT_APP_ID_TOKEN_COOKIE_NAME     = var.dataloader_ui_config_REACT_APP_ID_TOKEN_COOKIE_NAME
+  dataloader_ui_config_REACT_APP_OIDC_CLIENT_ID           = var.dataloader_ui_config_REACT_APP_OIDC_CLIENT_ID
+  dataloader_ui_config_REACT_APP_OIDC_URL                 = var.dataloader_ui_config_REACT_APP_OIDC_URL
+  dataloader_ui_config_REACT_APP_JWKS_URI                 = var.dataloader_ui_config_REACT_APP_JWKS_URI
+  dataloader_ui_config_REACT_APP_DOCUMENTATION_URL        = var.dataloader_ui_config_REACT_APP_DOCUMENTATION_URL
+
+  dataloader_config_NODE_ENV                                = var.dataloader_config_NODE_ENV
+  dataloader_config_CORS_ORIGIN                             = var.dataloader_config_CORS_ORIGIN
+  dataloader_config_PORT                                    = var.dataloader_config_PORT
+  dataloader_config_NEO4J_POOL_SIZE                         = var.dataloader_config_NEO4J_POOL_SIZE
+  dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS = var.dataloader_config_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_MS
+  dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME           = var.dataloader_config_NEO4J_MAX_CONNECTION_LIFETIME
+  dataloader_config_NEO4J_CONNECTION_TIMEOUT                = var.dataloader_config_NEO4J_CONNECTION_TIMEOUT
+  dataloader_config_OIDC_URL                                = var.dataloader_config_OIDC_URL
+  dataloader_config_OIDC_CLIENT_ID                          = var.dataloader_config_OIDC_CLIENT_ID
+  dataloader_config_CONFIGURATION_URL                       = var.dataloader_config_CONFIGURATION_URL
+
+  cluster_config_NODE_ENV          = var.cluster_config_NODE_ENV
+  cluster_config_PORT              = var.cluster_config_PORT
+  cluster_config_UI_URL            = var.cluster_config_UI_URL
+  cluster_config_CLIENT_EMAIL      = var.cluster_config_CLIENT_EMAIL
+  cluster_config_OIDC_URL          = var.cluster_config_OIDC_URL
+  cluster_config_OIDC_CLIENT_ID    = var.cluster_config_OIDC_CLIENT_ID
+  cluster_config_config_CLUSTER    = var.cluster_config_config_CLUSTER
+  cluster_config_config_LOCATION   = var.cluster_config_config_LOCATION
+  cluster_config_NGINX_LB          = var.cluster_config_NGINX_LB
+  cluster_config_CLUSTER_URL       = var.cluster_config_CLUSTER_URL
+  cluster_config_SEND_EMAIL_URL    = var.cluster_config_SEND_EMAIL_URL
+  cluster_config_SEND_EMAIL_SERVER = var.cluster_config_SEND_EMAIL_SERVER
+
+  cluster_secret_PRIVATE_KEY      = var.cluster_secret_PRIVATE_KEY
+  cluster_secret_CRON_PWD         = var.cluster_secret_CRON_PWD
+  cluster_secret_SESSION_PIPELINE = var.cluster_secret_SESSION_PIPELINE
+  cluster_secret_TOKEN_PIPELINE   = var.cluster_secret_TOKEN_PIPELINE
 
   ui_config_NODE_ENV                                     = var.ui_config_NODE_ENV
   ui_config_PORT                                         = var.ui_config_PORT
@@ -333,6 +335,12 @@ module "deployments" {
   idp_secret_CLIENT_SECRET_ENC_KEY    = var.idp_secret_CLIENT_SECRET_ENC_KEY
   idp_secret_NiamSvcAcc_Client_secret = var.idp_secret_NiamSvcAcc_Client_secret
   idp_secret_NiamSvcAcc_pwd           = var.idp_secret_NiamSvcAcc_pwd
+
+  api_name = var.api_name
+  PROM_METRICS_PREFIX = var.PROM_METRICS_PREFIX
+
+  manual_api_deployment = var.manual_api_deployment 
+
 
   providers = {
     kubernetes = kubernetes

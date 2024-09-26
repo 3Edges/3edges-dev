@@ -8,6 +8,8 @@ variable "aws_eks_cluster_auth_endpoint" {}
 
 variable "aws_eks_cluster_auth_certificate" {}
 
+variable "eks_cluster" {}
+
 variable "aws_region" {}
 
 variable "hosted_zone" {}
@@ -252,6 +254,8 @@ variable "cluster_secret_SESSION_PIPELINE" {}
 
 variable "cluster_secret_TOKEN_PIPELINE" {}
 
+# variable "aws_route53_zone_hosted_zone_id" {}
+
 
 variable "idp_config_NODE_ENV" {}
 
@@ -402,3 +406,9 @@ variable "ui_config_REACT_APP_CONTENT_SECURITY_POLICY" {}
 variable "ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE" {}
 
 variable "ui_secret_REACT_APP_CAPTCHA_V2" {}
+
+variable "api_name" {}
+
+variable "PROM_METRICS_PREFIX" {}
+
+variable "manual_api_deployment" {}

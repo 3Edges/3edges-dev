@@ -93,3 +93,38 @@ resource "kubernetes_manifest" "letsencrypt_wildcard" {
   }
   depends_on = [kubernetes_manifest.cert_manager_cluster_issuer]
 }
+
+
+module "client" {
+  count = var.manual_api_deployment ? 1 : 0   # Manual API deployment enabled or disabled
+  source                                               = "./client"
+  cert_manager                                         = var.cert_manager
+  ingress_nginx                                        = var.ingress_nginx
+  hosted_zone                                          = var.hosted_zone
+  aws_region                                           = var.aws_region
+  aws_access_key_id                                    = var.aws_access_key_id
+  aws_secret_access_key                                = var.aws_secret_access_key
+  aws_route53_zone_hosted_zone_id                      = var.aws_route53_zone_hosted_zone_id
+  kubernetes_namespace_namespace                       = var.kubernetes_namespace_namespace
+  aws_eks_cluster_auth_endpoint                        = var.aws_eks_cluster_auth_endpoint
+  exclude_cluster_issuer                               = var.exclude_cluster_issuer
+  exclude_certificate                                  = var.exclude_certificate
+  shared_config_PRIM_ADMIN_EMAIL                       = var.shared_config_PRIM_ADMIN_EMAIL
+  shared_secret_INTERNAL_SECRET                        = var.shared_secret_INTERNAL_SECRET
+  api_name = var.api_name
+  PROM_METRICS_PREFIX = var.PROM_METRICS_PREFIX
+
+  providers = {
+    kubernetes = kubernetes
+  }
+}
+
+# Use the output from the client module
+output "api_name_from_client" {
+  value = var.manual_api_deployment ? module.client[0].api_name : "" 
+}
+
+output "PROM_METRICS_PREFIX_from_client" {
+  value = var.manual_api_deployment ? module.client[0].PROM_METRICS_PREFIX : ""  
+}
+
