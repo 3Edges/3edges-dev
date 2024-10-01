@@ -33,34 +33,9 @@ In the AWS Management Console, navigate to **IAM** \> **Users** \> **Add User.**
 ![](./docs/images/image_1_user_add.png)
 
 
-
-Attach the following AWS managed policies to the user  
-    
-  - AmazonEC2ContainerRegistryReadOnly
-  
-  - AmazonEC2FullAccess
-  
-  - AmazonEKS\_CNI\_Policy  
-  
-  - AmazonEKSClusterPolicy  
-  
-  - AmazonEKSServicePolicy  
-  
-  - AmazonEKSWorkerNodePolicy  
-  
-  - AmazonRoute53FullAccess  
-  
-  - AWSCertificateManagerFullAccess  
-  
-  - IAMFullAccess
-
-  - SecretsManagerReadWrite 
-
-![](./docs/images/image_2_user_policies.png)
-
 Create a custom policy that allows full access to EKS, and attach it to the user
 
-**EKSFullAccess-Custom**
+**EKSFullAccess**
 
 ```
 {
@@ -81,7 +56,7 @@ Create a custom policy that allows full access to EKS, and attach it to the user
 
 ![](./docs/images/image_4_user_creation_review.png)
 
-Create a custom policy that allows access to S3 bucket to store terraform state file, and attach it to the user
+Create another custom policy that allows access to S3 bucket to store terraform state file, and attach it to the user
 
 **three-edges-terraform-s3-policy**
 
@@ -106,7 +81,31 @@ Create a custom policy that allows access to S3 bucket to store terraform state 
 ```
 ![](./docs/images/image_3_three_edges_terraform_s3_policy.png)
 
+Attach the following AWS managed policies to the user  
+    
+  - AmazonEC2ContainerRegistryReadOnly
+  
+  - AmazonEC2FullAccess
+  
+  - AmazonEKS\_CNI\_Policy  
+  
+  - AmazonEKSClusterPolicy  
+  
+  - AmazonEKSServicePolicy  
+  
+  - AmazonEKSWorkerNodePolicy  
+  
+  - AmazonRoute53FullAccess  
+  
+  - AWSCertificateManagerFullAccess  
+  
+  - IAMFullAccess
 
+  - SecretsManagerReadWrite 
+
+  - EKSFullAccess (Customer Managed)
+
+  - three-edges-terraform-s3-policy (Customer Managed)
 
 You should have a total of **12 Permission policies** attached 
 
@@ -122,7 +121,6 @@ Make sure to download and protect the access key for later use.
 
 ![](./docs/images/image_7_access_key_step_2.png)
 
-# 
 
 # On Terraform Host
 
