@@ -106,7 +106,7 @@ Create a custom policy that allows access to S3 bucket to store terraform state 
 
 
 
-You should have a total of **12 Permission policy** attached 
+You should have a total of **12 Permission policies** attached 
 
 ![](./docs/images/final_permission_list.png)
 
@@ -174,3 +174,7 @@ After making the necessary changes, run the deployment script
 1. In AWS Route 53, go to your hosted zone and copy the 4 name servers listed in the NS record.
 
 2. Go to your domain registrar's dashboard and replace the existing name servers with the ones from Route 53.
+
+Once the DNS propagation is successful, open your configured domain in the browser, you will a see Login Page
+
+![](./docs/images/login_page.png)

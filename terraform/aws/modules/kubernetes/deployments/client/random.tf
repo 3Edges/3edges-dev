@@ -29,12 +29,8 @@ resource "random_uuid" "common_uuid" {
 }
 
 # secrets.tf/ENC_KEY
-resource "random_string" "enc_key" {
-  length  = 32    # Length of the random string
-  special = false # Exclude special characters
-  upper   = false # Exclude uppercase letters
-  lower   = true  # Allow lowercase letters
-  numeric = true  # Allow numbers
+resource "random_id" "enc_key" {
+    byte_length = 16 # Generates 16 bytes (32 characters in hex) 
 }
 
 # secrets.tf/AUTHZ_PWD
@@ -85,7 +81,7 @@ resource "random_string" "client_pwd_three_edges" {
 
 # secrets.tf/OIDC_CLIENT_PWD 
 resource "random_string" "oidc_client_pwd" {
-  length  = 8    # Length of the random string
+  length  = 10    # Length of the random string
   special = false # Exclude special characters
   upper   = false # Exclude uppercase letters
   lower   = true  # Allow lowercase letters
@@ -103,9 +99,9 @@ resource "random_string" "prim_jwt_secret" {
 
 # secrets.tf/REACT_APP_OIDC_CLIENT_PWD
 resource "random_string" "react_app_oidc_client_pwd" {
-  length  = 8    # Length of the random string
+  length  = 10    # Length of the random string
   special = false # Exclude special characters
   upper   = false # Exclude uppercase letters
   lower   = true  # Allow lowercase letters
-  numeric = true  # Allow numbers
+  numeric = false  #  exclude numbers
 }

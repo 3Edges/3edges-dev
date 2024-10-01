@@ -42,7 +42,7 @@ resource "kubernetes_deployment" "deployment_configuration" {
     }
   }
 
-  depends_on = [kubernetes_config_map.configuration_config, kubernetes_secret.configuration_secrets, var.kubernetes_namespace_namespace]
+  depends_on = [kubernetes_config_map.configuration_config, kubernetes_secret.configuration_secrets, var.kubernetes_namespace_namespace, kubernetes_stateful_set.redis_headless]
 }
 
 resource "kubernetes_deployment" "deployment_dataloader_ui" {
@@ -83,7 +83,7 @@ resource "kubernetes_deployment" "deployment_dataloader_ui" {
     }
   }
 
-  depends_on = [kubernetes_config_map.dataloader_ui_config, var.kubernetes_namespace_namespace]
+  depends_on = [kubernetes_config_map.dataloader_ui_config, var.kubernetes_namespace_namespace, kubernetes_stateful_set.redis_headless]
 }
 
 resource "kubernetes_deployment" "deployment_dataloader" {
@@ -130,7 +130,7 @@ resource "kubernetes_deployment" "deployment_dataloader" {
     }
   }
 
-  depends_on = [kubernetes_config_map.dataloader_config, kubernetes_secret.dataloader_secrets, var.kubernetes_namespace_namespace]
+  depends_on = [kubernetes_config_map.dataloader_config, kubernetes_secret.dataloader_secrets, var.kubernetes_namespace_namespace, kubernetes_stateful_set.redis_headless]
 }
 
 resource "kubernetes_deployment" "deployment_cluster" {
@@ -177,7 +177,7 @@ resource "kubernetes_deployment" "deployment_cluster" {
     }
   }
 
-  depends_on = [kubernetes_config_map.cluster_config, kubernetes_secret.cluster_secrets, var.kubernetes_namespace_namespace]
+  depends_on = [kubernetes_config_map.cluster_config, kubernetes_secret.cluster_secrets, var.kubernetes_namespace_namespace, kubernetes_stateful_set.redis_headless]
 }
 
 
@@ -225,7 +225,7 @@ resource "kubernetes_deployment" "deployment_idp" {
     }
   }
 
-  depends_on = [kubernetes_config_map.idp_config, kubernetes_secret.idp_secrets, var.kubernetes_namespace_namespace]
+  depends_on = [kubernetes_config_map.idp_config, kubernetes_secret.idp_secrets, var.kubernetes_namespace_namespace, kubernetes_stateful_set.redis_headless]
 }
 
 resource "kubernetes_deployment" "deployment_ui" {
@@ -272,5 +272,5 @@ resource "kubernetes_deployment" "deployment_ui" {
     }
   }
 
-  depends_on = [kubernetes_config_map.ui_config, kubernetes_secret.ui_secrets, var.kubernetes_namespace_namespace]
+  depends_on = [kubernetes_config_map.ui_config, kubernetes_secret.ui_secrets, var.kubernetes_namespace_namespace, kubernetes_stateful_set.redis_headless]
 }

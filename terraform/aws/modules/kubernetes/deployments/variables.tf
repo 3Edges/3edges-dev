@@ -401,7 +401,6 @@ variable "ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE" {}
 
 variable "ui_secret_REACT_APP_CAPTCHA_V2" {}
 
-
 variable "api_name" {}
 
 variable "PROM_METRICS_PREFIX" {}

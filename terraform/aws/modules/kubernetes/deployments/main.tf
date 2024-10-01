@@ -119,13 +119,3 @@ module "client" {
     kubernetes = kubernetes
   }
 }
-
-# Use the output from the client module
-output "api_name_from_client" {
-  value = var.manual_api_deployment ? module.client[0].api_name : "" 
-}
-
-output "PROM_METRICS_PREFIX_from_client" {
-  value = var.manual_api_deployment ? module.client[0].PROM_METRICS_PREFIX : ""  
-}
-

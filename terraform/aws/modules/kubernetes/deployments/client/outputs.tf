@@ -13,14 +13,14 @@ output "dataproxy_url" {
   value = kubernetes_ingress_v1.three_edges_client_ingress.spec[0].rule[0].host
 }
 
-# output "authz_url" {
-#   value = kubernetes_ingress_v1.three_edges_client_ingress.spec[0].rules[1].host
-# }
+output "authz_url" {
+  value = kubernetes_ingress_v1.three_edges_client_ingress.spec[0].rule[1].host
+}
 
-# output "dashboard_url" {
-#   value = kubernetes_ingress_v1.three_edges_client_ingress.spec[0].rules[2].host
-# }
+output "dashboard_url" {
+  value = kubernetes_ingress_v1.three_edges_client_ingress.spec[0].rule[2].host
+}
 
-# output "idp_url" {
-#   value = kubernetes_ingress_v1.three_edges_client_ingress.spec[0].rules[3].host
-# }
+output "idp_url" {
+  value = kubernetes_ingress_v1.three_edges_client_ingress.spec[0].rule[3].host
+}
