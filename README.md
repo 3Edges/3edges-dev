@@ -18,6 +18,6 @@ You can modify various settings, just to name a few:
 
 These can be set in the ```terraform.tfvars file```
 
-## Deployment Document 
+## Deployment Documentation
 
 [AWS](terraform/aws/README.md)
