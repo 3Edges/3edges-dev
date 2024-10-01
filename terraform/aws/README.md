@@ -18,6 +18,8 @@
 
 ## Create an S3 Bucket for Terraform to store the statefile 
 
+NOTE: ca-west-1 (Calgary) region is not supported as S3 Bucket Backend. Try to use ca-central-1 (Canada Central)
+
 ![](./docs/images/s3_bucket_creation_1.png)
 
 ![](./docs/images/s3_bucket_creation_2.png)
