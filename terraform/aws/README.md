@@ -9,7 +9,7 @@
 
 - Git
 
-- Neo4j Datbase access
+- Neo4j Database access
 
 - Domain name and access to domain controller
 
