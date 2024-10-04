@@ -1,6 +1,6 @@
-resource "kubernetes_ingress_v1" "three_edges_ingress" {
+resource "kubernetes_ingress_v1" "three_edges_client_ingress" {
   metadata {
-    name      = "three-edges-ingress"
+    name      = "${local.api_name}-ingress"
     namespace = "3edges"
 
     annotations = {
@@ -17,29 +17,16 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
     }
 
     rule {
-      host = var.hosted_zone
+      host = "${local.api_name}.${var.hosted_zone}"
       http {
         path {
           path      = "/"
           path_type = "Prefix"
           backend {
             service {
-              name = "ui"
+              name = "${local.api_name}-proxy"
               port {
-                number = 3005
-              }
-            }
-          }
-        }
-
-        path {
-          path      = "/graphql"
-          path_type = "Exact"
-          backend {
-            service {
-              name = "configuration"
-              port {
-                number = 4005
+                number = 4044
               }
             }
           }
@@ -48,16 +35,16 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
     }
 
     rule {
-      host = "dataloader.${var.hosted_zone}"
+      host = "${local.api_name}-authz.${var.hosted_zone}"
       http {
         path {
           path      = "/"
           path_type = "Prefix"
           backend {
             service {
-              name = "dataloader"
+              name = "${local.api_name}-authz"
               port {
-                number = 3000
+                number = 5055
               }
             }
           }
@@ -66,16 +53,16 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
     }
 
     rule {
-      host = "idp.${var.hosted_zone}"
+      host = "${local.api_name}-dashboard.${var.hosted_zone}"
       http {
         path {
           path      = "/"
           path_type = "Prefix"
           backend {
             service {
-              name = "idp"
+              name = "${local.api_name}-dashboard"
               port {
-                number = 3007
+                number = 3045
               }
             }
           }
@@ -84,35 +71,16 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
     }
 
     rule {
-      host = "webloader.${var.hosted_zone}"
+      host = "${local.api_name}-idp.${var.hosted_zone}"
       http {
         path {
           path      = "/"
           path_type = "Prefix"
           backend {
             service {
-              name = "dataloader-ui"
+              name = "${local.api_name}-idp"
               port {
-                number = 3002
-              }
-            }
-          }
-        }
-      }
-    }
-
-    rule {
-      host = "cluster.${var.hosted_zone}"
-      http {
-        path {
-          path      = "/"
-          path_type = "Prefix"
-          backend {
-            service {
-              name = "cluster"
-              port {
-                number = 3333
-
+                number = 3001
               }
             }
           }

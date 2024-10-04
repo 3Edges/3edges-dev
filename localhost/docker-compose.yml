@@ -129,3 +129,4 @@ services:
       - ./.env
     environment:
       - NODE_ENV=development
+

@@ -1,30 +1,23 @@
-# 3Edges developer install
+# 3Edges Deployment
 
-1) Make sure your AWS is configured with your user credentials
-    - aws configure
+This repository contains Terraform scripts to deploy the 3Edges software across cloud provider. These scripts automate the infrastructure setup, ensuring a seamless deployment process of 3Edges into your cloud environment. 
 
-2) You must change those properties before start:
+## Features
+- Automated Cloud Infrastructure: Deploys and configures cloud resources for 3Edges, such as VPCs, load balancers, Kubernetes clusters, databases, and more. 
 
-        terraform\terraform.tfvars
+- Scalable and Secure: Includes cloud-native best practices for security, scalability, and reliability.
 
-3) Command lines inside "terraform" directory:
+- Easy Configuration: Customize settings like region, cluster names, and database credentials through a simple configuration file (terraform.tfvars).
 
-    - To start the project
+## Customization
+You can modify various settings, just to name a few:
+- Cluster names
+- Database configurations
+- Networking settings
+- Admin emails and passwords
 
-        ```terraform init```
+These can be set in the ```terraform.tfvars file```
 
-    - To validate the main.tf
+## Deployment Documentation
 
-        ```terraform validate```
-
-    - To generate an action plan
-
-        ```terraform plan -out=plan.bkp```
-
-    - Apply the selected plan
-
-        ```terraform apply plan.bkp```
-
-    - Destroy everything
-
-        ```terraform destroy -auto-approve```
+[AWS](terraform/aws/README.md)

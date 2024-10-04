@@ -21,6 +21,8 @@ resource "kubernetes_secret" "aws_credentials" {
 
 
 resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
+  count = var.exclude_cluster_issuer ? 0 : 1
+
   manifest = {
     apiVersion = "cert-manager.io/v1"
     kind       = "ClusterIssuer"
@@ -38,8 +40,8 @@ resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
           {
             dns01 = {
               route53 = {
-                region       = var.aws_region
-                hostedZoneID = var.aws_route53_zone_hosted_zone_id
+                region       = "${var.aws_region}"
+                hostedZoneID = "${var.aws_route53_zone_hosted_zone_id}"
                 accessKeyIDSecretRef = {
                   name = kubernetes_secret.aws_credentials.metadata[0].name
                   key  = "aws_access_key_id"
@@ -51,18 +53,26 @@ resource "kubernetes_manifest" "cert_manager_cluster_issuer" {
               }
             },
             selector = {
-              dnsZones = [var.hosted_zone, "*.${var.hosted_zone}"]
+              dnsZones = ["${var.hosted_zone}", "*.${var.hosted_zone}"]
             }
           }
         ]
       }
     }
   }
+depends_on = [
+  var.aws_eks_cluster_auth_endpoint, 
+  var.cert_manager, 
+  var.ingress_nginx, 
+  var.kubernetes_namespace_namespace
+  
 
-  depends_on = [var.cert_manager, var.ingress_nginx, var.kubernetes_namespace_namespace]
+  ]
+  
 }
 
 resource "kubernetes_manifest" "letsencrypt_wildcard" {
+  count = var.exclude_certificate ? 0 : 1
   manifest = {
     apiVersion = "cert-manager.io/v1"
     kind       = "Certificate"
@@ -78,9 +88,34 @@ resource "kubernetes_manifest" "letsencrypt_wildcard" {
         name = "cert-manager-cluster-issuer"
       }
       secretName = "letsencrypt-wildcard-secret"
-      dnsNames   = [var.hosted_zone, "*.${var.hosted_zone}"]
+      dnsNames   = ["${var.hosted_zone}", "*.${var.hosted_zone}"]
+
     }
   }
-
   depends_on = [kubernetes_manifest.cert_manager_cluster_issuer]
+}
+
+
+module "client" {
+  count = var.manual_api_deployment ? 1 : 0   # Manual API deployment enabled or disabled
+  source                                               = "./client"
+  cert_manager                                         = var.cert_manager
+  ingress_nginx                                        = var.ingress_nginx
+  hosted_zone                                          = var.hosted_zone
+  aws_region                                           = var.aws_region
+  aws_access_key_id                                    = var.aws_access_key_id
+  aws_secret_access_key                                = var.aws_secret_access_key
+  aws_route53_zone_hosted_zone_id                      = var.aws_route53_zone_hosted_zone_id
+  kubernetes_namespace_namespace                       = var.kubernetes_namespace_namespace
+  aws_eks_cluster_auth_endpoint                        = var.aws_eks_cluster_auth_endpoint
+  exclude_cluster_issuer                               = var.exclude_cluster_issuer
+  exclude_certificate                                  = var.exclude_certificate
+  shared_config_PRIM_ADMIN_EMAIL                       = var.shared_config_PRIM_ADMIN_EMAIL
+  shared_secret_INTERNAL_SECRET                        = var.shared_secret_INTERNAL_SECRET
+  api_name = var.api_name
+  PROM_METRICS_PREFIX = var.PROM_METRICS_PREFIX
+
+  providers = {
+    kubernetes = kubernetes
+  }
 }
