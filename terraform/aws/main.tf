@@ -47,12 +47,19 @@ module "kubernetes" {
   eks_cluster                       = var.eks_cluster
   aws_region                        = var.aws_region
   hosted_zone                       = var.hosted_zone
+  root_domain                       = var.root_domain
+  is_root_domain                    = var.is_root_domain
   eks_node_role                     = var.eks_node_role
   aws_caller_identity_id            = data.aws_caller_identity.current.account_id
   aws_access_key_id                 = var.aws_access_key_id
   aws_secret_access_key             = var.aws_secret_access_key
   exclude_cluster_issuer            = var.exclude_cluster_issuer
   exclude_certificate               = var.exclude_certificate
+  use_client_cert                   = var.use_client_cert
+  client_cert_secret_name           = var.client_cert_secret_name
+  client_cert_file                  = var.client_cert_file
+  client_key_file                   = var.client_key_file
+
 
   shared_secret_OIDC_CLIENT_PWD      = random_password.shared_secret_OIDC_CLIENT_PWD.result
   shared_secret_INTERNAL_SECRET      = random_password.shared_secret_INTERNAL_SECRET.result

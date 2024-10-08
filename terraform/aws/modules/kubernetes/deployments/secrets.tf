@@ -91,3 +91,19 @@ resource "kubernetes_secret" "ui_secrets" {
 
   depends_on = [ var.kubernetes_namespace_namespace ]
 }
+
+# This is the secret for storing client certificate 
+resource "kubernetes_secret" "client_cert_secret" {
+  count = var.use_client_cert ? 1 : 0  # Only create the secret if the client provides a cert
+
+  metadata {
+    name = var.client_cert_secret_name
+  }
+
+  data = {
+    "tls.crt" = file(var.client_cert_file)  # The certificate file provided by the client
+    "tls.key" = file(var.client_key_file)   # The corresponding private key
+  }
+
+  type = "kubernetes.io/tls"
+}

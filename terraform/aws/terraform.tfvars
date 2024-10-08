@@ -88,4 +88,16 @@ ui_secret_REACT_APP_CAPTCHA_V2 = "your_captcha_v2"
 idp_config_SOCIAL_GOOGLE_CLIENT_ID = "your-idp-config-social-google-client-id"
 
 # Manual 3Edges Client API deployment (true or false)
-manual_api_deployment = false 
+manual_api_deployment = false
+
+# Whether the client provides their own cert (true or false)
+use_client_cert = false
+
+# Name of the Kubernetes secret where the cert is stored
+client_cert_secret_name = "your-client-cert-secret"
+
+# Path to the cert file provided by the client
+client_cert_file = "absolute-path/to/client-cert.pem"
+
+# Path to the private key file provided by the client
+client_key_file = "absolute-path/to/client-key.pem"

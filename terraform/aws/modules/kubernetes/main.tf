@@ -82,12 +82,43 @@ resource "helm_release" "ingress_nginx" {
   depends_on = [var.aws_eks_node_group_eks_node_group]
 }
 
-resource "aws_route53_zone" "hosted_zone" {
-  name = "${var.hosted_zone}."
+
+# extracting the root doamin from subdomain
+locals {
+  domain_parts = split(".", var.hosted_zone)
+  root_domain  = length(local.domain_parts) > 2 ? join(".", slice(local.domain_parts, length(local.domain_parts) - 2, length(local.domain_parts))) : var.hosted_zone
+
+  # Condition to determine if the hosted zone is a root domain or not
+  # For example, check if the hosted zone is equal to root_domain
+  is_root_domain = var.hosted_zone == local.root_domain
 }
 
+# Look up the existing hosted zone for the parent domain
+data "aws_route53_zone" "parent_domain" {
+  count        = local.is_root_domain ? 0 : 1
+  name = local.root_domain
+  private_zone = false
+}
+
+# Conditionally create a new hosted zone if the parent domain doesn't exist
+resource "aws_route53_zone" "hosted_zone" {
+  # count = length(data.aws_route53_zone.parent_domain.id != "" ? [] : [1])  # Only create if not found
+  count = length(data.aws_route53_zone.parent_domain) == 0 ? 1 : 0  # Only create if not found
+  name = local.root_domain
+}
+
+# Use the correct zone ID (either existing or newly created)
+# locals {
+#   zone_id = data.aws_route53_zone.parent_domain.id != "" ? data.aws_route53_zone.parent_domain.zone_id : aws_route53_zone.hosted_zone[0].id
+# }
+
+locals {
+  zone_id = length(data.aws_route53_zone.parent_domain) > 0 ? data.aws_route53_zone.parent_domain[0].zone_id : aws_route53_zone.hosted_zone[0].id
+}
+
+# Add wildcard CNAME record (for subdomains)
 resource "aws_route53_record" "route53_wildcard_cname" {
-  zone_id = aws_route53_zone.hosted_zone.id
+  zone_id = local.zone_id
   name    = "*.${var.hosted_zone}."
   type    = "CNAME"
   ttl     = 300
@@ -96,9 +127,10 @@ resource "aws_route53_record" "route53_wildcard_cname" {
   depends_on = [helm_release.ingress_nginx]
 }
 
+# Add an A record for the root domain
 resource "aws_route53_record" "ingress_nginx" {
-  zone_id = aws_route53_zone.hosted_zone.id
-  name    = "${aws_route53_zone.hosted_zone.name}."
+  zone_id = local.zone_id
+  name    = "${var.hosted_zone}."   # Root domain record
   type    = "A"
 
   alias {
@@ -109,6 +141,7 @@ resource "aws_route53_record" "ingress_nginx" {
 
   depends_on = [helm_release.ingress_nginx]
 }
+
 
 resource "helm_release" "cert_manager" {
   name       = "cert-manager"
@@ -134,12 +167,16 @@ module "deployments" {
   aws_region                      = var.aws_region
   aws_access_key_id               = var.aws_access_key_id
   aws_secret_access_key           = var.aws_secret_access_key
-  aws_route53_zone_hosted_zone_id = aws_route53_zone.hosted_zone.id
+  aws_route53_zone_hosted_zone_id = local.zone_id
   kubernetes_namespace_namespace  = kubernetes_namespace.namespace
   aws_eks_cluster_auth_endpoint   = var.aws_eks_cluster_auth_endpoint
   eks_cluster                     = var.eks_cluster
   exclude_cluster_issuer          = var.exclude_cluster_issuer
   exclude_certificate             = var.exclude_certificate
+  use_client_cert = var.use_client_cert
+  client_cert_secret_name = var.client_cert_secret_name
+  client_cert_file = var.client_cert_file
+  client_key_file = var.client_key_file
 
   shared_secret_OIDC_CLIENT_PWD      = var.shared_secret_OIDC_CLIENT_PWD
   shared_secret_INTERNAL_SECRET      = var.shared_secret_INTERNAL_SECRET

@@ -1,6 +1,6 @@
 resource "null_resource" "run_docker_container" {
   provisioner "local-exec" {
-    command = "docker run --rm -e OIDC_CLIENT_PWD=${var.shared_secret_OIDC_CLIENT_PWD} -e INTERNAL_SECRET=${var.shared_secret_INTERNAL_SECRET} iamprajwal007/crypt-encrypt:latest > modules/cypher/n_client_secret.txt"
+    command = "docker run --rm -e OIDC_CLIENT_PWD=${var.shared_secret_OIDC_CLIENT_PWD} -e INTERNAL_SECRET=${var.shared_secret_INTERNAL_SECRET} indykite/3edges-crypt:latest > modules/cypher/n_client_secret.txt"
   }
 
   # Using the timestamp to trigger re-run on every apply

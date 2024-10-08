@@ -23,7 +23,7 @@ resource "kubernetes_deployment" "deployment_dataproxy" {
       spec {
         container {
           name              = "${local.api_name}-proxy"
-          image             = "abotega/prim-dataproxy:hub"
+          image             = "indykite/3edges-dataproxy:latest"
           image_pull_policy = "Always"
 
           volume_mount {
@@ -84,7 +84,7 @@ resource "kubernetes_deployment" "deployment_authorization" {
       spec {
         container {
           name              = "${local.api_name}-authz"
-          image             = "abotega/prim-authorization:hub"
+          image             = "indykite/3edges-authorization:latest"
           image_pull_policy = "Always"
 
           volume_mount {
@@ -146,7 +146,7 @@ resource "kubernetes_deployment" "deployment_dashboard" {
       spec {
         container {
           name              = "${local.api_name}-dashboard"
-          image             = "abotega/prim-client-ui:hub"
+          image             = "indykite/3edges-dashboard:latest"
           image_pull_policy = "Always"
 
           volume_mount {
@@ -209,7 +209,7 @@ resource "kubernetes_deployment" "deployment_client_idp" {
       spec {
         container {
           name              = "${local.api_name}-idp"
-          image             = "abotega/prim-idp:hub"
+          image = "indykite/3edges-idp:latest"
           image_pull_policy = "Always"
 
           volume_mount {
