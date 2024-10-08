@@ -13,7 +13,7 @@ resource "kubernetes_ingress_v1" "three_edges_ingress" {
 
     tls {
       hosts       = [var.hosted_zone, "*.${var.hosted_zone}"]
-      secret_name = "letsencrypt-wildcard-secret"
+      secret_name = var.use_client_cert ? var.client_cert_secret_name : "letsencrypt-wildcard-secret"
     }
 
     rule {

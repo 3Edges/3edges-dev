@@ -406,3 +406,11 @@ variable "api_name" {}
 variable "PROM_METRICS_PREFIX" {}
 
 variable "manual_api_deployment" {}
+
+variable "use_client_cert" {}
+
+variable "client_cert_secret_name" {}
+
+variable "client_cert_file" {}
+
+variable "client_key_file" {}

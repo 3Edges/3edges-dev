@@ -1191,3 +1191,39 @@ variable "manual_api_deployment" {
   default     = false
   type        = bool
 }
+
+variable "root_domain" {
+  description = "This variable is used to extract the  root domain"
+  default     = ""
+  type        = string
+}
+
+variable "is_root_domain" {
+  description = "This variable is used check if its a root domain"
+  default     = ""
+  type        = string
+}
+
+variable "use_client_cert" {
+  description = "Whether the client provides their own cert"
+  default     = false
+  type        = bool
+}
+
+variable "client_cert_secret_name" {
+  description = "Name of the Kubernetes secret where the cert is stored"
+  default     = ""
+  type        = string
+}
+
+variable "client_cert_file" {
+  description = "Path to the cert file provided by the client"
+  default     = ""
+  type        = string
+}
+
+variable "client_key_file" {
+  description = "Path to the private key file provided by the client"
+  default     = ""
+  type        = string
+}

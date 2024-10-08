@@ -22,8 +22,8 @@ resource "kubernetes_deployment" "deployment_configuration" {
 
       spec {
         container {
-          name = "configuration"
-          image             = "abotega/prim-configuration:hub"
+          name              = "configuration"
+          image             = "indykite/3edges-configuration:latest"
           image_pull_policy = "Always"
 
           env_from {
@@ -63,14 +63,14 @@ resource "kubernetes_deployment" "deployment_dataloader_ui" {
     template {
       metadata {
         labels = {
-          app  = "dataloader-ui"
+          app = "dataloader-ui"
         }
       }
 
       spec {
         container {
           name              = "dataloader-ui"
-          image             = "abotega/prim-dataloader-ui:hub"
+          image = "indykite/3edges-webloader:latest"
           image_pull_policy = "Always"
 
           env_from {
@@ -104,14 +104,14 @@ resource "kubernetes_deployment" "deployment_dataloader" {
     template {
       metadata {
         labels = {
-          app  = "dataloader"
+          app = "dataloader"
         }
       }
 
       spec {
         container {
           name              = "dataloader"
-          image             = "abotega/prim-dataloader:hub"
+          image = "indykite/3edges-dataloader:latest"
           image_pull_policy = "Always"
 
           env_from {
@@ -151,14 +151,14 @@ resource "kubernetes_deployment" "deployment_cluster" {
     template {
       metadata {
         labels = {
-          app  = "cluster"
+          app = "cluster"
         }
       }
 
       spec {
         container {
           name              = "cluster"
-          image             = "abotega/prim-cluster:hub"
+          image = "indykite/3edges-cluster:latest"
           image_pull_policy = "Always"
 
           env_from {
@@ -199,14 +199,14 @@ resource "kubernetes_deployment" "deployment_idp" {
     template {
       metadata {
         labels = {
-          app  = "idp"
+          app = "idp"
         }
       }
 
       spec {
         container {
           name              = "idp"
-          image             = "abotega/prim-idp:hub"
+          image = "indykite/3edges-idp:latest"
           image_pull_policy = "Always"
 
           env_from {
@@ -252,8 +252,8 @@ resource "kubernetes_deployment" "deployment_ui" {
 
       spec {
         container {
-          name              = "ui"
-          image             = "abotega/prim-ui:hub"
+          name = "ui"
+          image             = "indykite/3edges-ui:latest"
           image_pull_policy = "Always"
 
           env_from {
