@@ -68,7 +68,7 @@ resource "aws_eks_addon" "kube_proxy" {
   depends_on = [
     aws_eks_addon.vpc_cni,
     aws_eks_cluster.eks_cluster,
-    aws_eks_node_group.eks_node_groupm
+    aws_eks_node_group.eks_node_group
   ]
 }
 
