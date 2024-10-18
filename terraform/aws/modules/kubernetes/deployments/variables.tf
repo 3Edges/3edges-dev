@@ -414,3 +414,7 @@ variable "client_cert_secret_name" {}
 variable "client_cert_file" {}
 
 variable "client_key_file" {}
+
+variable "aws_lb_nginx_load_balancer_zone_id" {}
+  
+variable "aws_lb_nginx_load_balancer_dns_name" {}

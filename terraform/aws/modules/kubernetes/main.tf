@@ -168,6 +168,8 @@ module "deployments" {
   aws_access_key_id               = var.aws_access_key_id
   aws_secret_access_key           = var.aws_secret_access_key
   aws_route53_zone_hosted_zone_id = local.zone_id
+  aws_lb_nginx_load_balancer_zone_id = data.aws_lb.nginx_load_balancer.zone_id
+  aws_lb_nginx_load_balancer_dns_name = data.aws_lb.nginx_load_balancer.dns_name
   kubernetes_namespace_namespace  = kubernetes_namespace.namespace
   aws_eks_cluster_auth_endpoint   = var.aws_eks_cluster_auth_endpoint
   eks_cluster                     = var.eks_cluster

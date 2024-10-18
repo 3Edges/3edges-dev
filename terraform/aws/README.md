@@ -39,7 +39,7 @@ Once the EC2 instance state turns "Running" you can "Connect" to EC2 instance
 ![](./docs/images/ec2_instance_creation_8.png)
 
 After you are connected to EC2 Instance, install the pre-requisites on EC2 instance
-
+---
 Terraform installation on EC2. Follow the official documentation
 
 [Terraform Installation Link](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli#install-terraform)
@@ -67,7 +67,7 @@ sudo apt-get install terraform
 terraform -help
 
 ```
-
+---
 [AWS Cli Installation Link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html#getting-started-install-instructions)
 
 ```
@@ -77,7 +77,7 @@ sudo snap install aws-cli --classic
 
 aws help
 ```
-
+---
 [Docker Installation Link](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
 
 ```
@@ -100,11 +100,10 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 ```
 ```
 sudo usermod -aG docker $USER
-
-docker run hello-world
 ```
+**Make sure to log out and log back in or restart your terminal session for the changes to take effect**
 
-
+---
 Git installation : Usually Ubuntu EC2 instance comes with git installed in the OS. In-case if its not installed run the following command  
 ```
 sudo apt-get install git
@@ -129,7 +128,7 @@ In the AWS Management Console, navigate to **IAM** \> **Users** \> **Add User.**
 
 ![](./docs/images/image_1_user_add.png)
 
-
+---
 Create a custom policy that allows full access to EKS, and attach it to the user
 
 **EKSFullAccess**
@@ -153,6 +152,7 @@ Create a custom policy that allows full access to EKS, and attach it to the user
 
 ![](./docs/images/image_4_user_creation_review.png)
 
+---
 Create another custom policy that allows access to S3 bucket to store terraform state file, and attach it to the user
 
 **three-edges-terraform-s3-policy**

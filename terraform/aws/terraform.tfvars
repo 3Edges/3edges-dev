@@ -39,8 +39,8 @@ eks_route_table = "your-eks-route-table-name"
 # Security group associated with the EKS cluster, controlling inbound and outbound traffic to the EKS control plane
 eks_security_group = "your-eks-security-group-name"
 
-# The Domain name for the 3Edges Deployment (Eg., example.com)
-hosted_zone = "your-domain"
+# The Domain or Subdomain name for the 3Edges Deployment (Eg., example.com)
+hosted_zone = "your-domain-OR-subdomain-name"
 
 # Name of the three edges cluster
 cluster_config_config_CLUSTER = "cluster-name"
@@ -88,7 +88,7 @@ ui_secret_REACT_APP_CAPTCHA_V2 = "your_captcha_v2"
 idp_config_SOCIAL_GOOGLE_CLIENT_ID = "your-idp-config-social-google-client-id"
 
 # Manual 3Edges Client API deployment (true or false)
-manual_api_deployment = false
+manual_api_deployment = false 
 
 # Whether the client provides their own cert (true or false)
 use_client_cert = false

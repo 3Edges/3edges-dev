@@ -1227,3 +1227,15 @@ variable "client_key_file" {
   default     = ""
   type        = string
 }
+
+variable "aws_lb_nginx_load_balancer_zone_id" {
+  description = "Zone ID of the Nginx Loadbalancer"
+  default     = ""
+  type        = string
+}
+
+variable "aws_lb_nginx_load_balancer_dns_name" {
+  description = "DNS Name of the Nginx Loadbalancer"
+  default     = ""
+  type        = string
+}
