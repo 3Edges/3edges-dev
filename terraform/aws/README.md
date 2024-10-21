@@ -256,6 +256,9 @@ Update the `terraform.tfvars` file with your environment details
 ```
 3edges-deployments/terraform/aws/terraform.tfvars
 ```
+If you are deploying 3Edges on a sub-domain
+
+1. Make sure you have Route53 record for your root domain and Nameservers added to your Domain Controller.
 
 ## Deploy 3Edges to AWS
 
@@ -268,9 +271,16 @@ After making the necessary changes, run the deployment script
 
 ## Configuring Domain with Route 53 Name Servers
 
+If you are deploying 3Edges on a Root Domain 
+
 1. In AWS Route 53, go to your hosted zone and copy the 4 name servers listed in the NS record.
 
 2. Go to your domain registrar's dashboard and replace the existing name servers with the ones from Route 53.
+
+
+If you are deploying 3Edges on a sub-domain
+
+1. Make sure you have Route53 record for your root domain and Nameservers added to your Domain Controller.
 
 Once the DNS propagation is successful, open your configured domain in the browser, you will a see Login Page
 

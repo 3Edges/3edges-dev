@@ -160,6 +160,18 @@ variable "configuration_config_OIDC_URL" {}
 
 variable "configuration_config_OIDC_CLIENT_ID" {}
 
+variable "configuration_config_AUTHZ_CSP_SERVER_URL" {
+  description = "AUTHZ_CSP_SERVER_URL"
+  type = string 
+  default = "" 
+}
+
+variable "configuration_config_AUTHZ_CSP_POD_PORT" {
+  description = "AUTHZ_CSP_POD_PORT"
+  type = string
+  default = "5003"
+}
+
 variable "configuration_config_secret_TOKEN_PIPELINE" {}
 
 variable "configuration_config_secret_NEO4J_PASSWORD_TEST" {}
@@ -169,6 +181,7 @@ variable "configuration_config_secret_SESSION_PIPELINE" {}
 variable "configuration_config_secret_PRIM_ADMIN_PASS" {}
 
 variable "configuration_config_secret_PRIM_JWT_SECRET" {}
+
 
 # This section of following variables are for kubernetes/deployments/configmap : dataloader_ui_config
 variable "dataloader_ui_config_NODE_ENV" {}
@@ -194,6 +207,12 @@ variable "dataloader_ui_config_REACT_APP_OIDC_URL" {}
 variable "dataloader_ui_config_REACT_APP_JWKS_URI" {}
 
 variable "dataloader_ui_config_REACT_APP_DOCUMENTATION_URL" {}
+
+variable "dataloader_ui_config_REACT_APP_CONTENT_SECURITY_POLICY"{
+    description = "value"
+    type = string
+    default = ""
+}
 
 # This section of following variables are for kubernetes/deployments/configmap : dataloader_config
 variable "dataloader_config_NODE_ENV" {}
@@ -396,6 +415,24 @@ variable "ui_config_REACT_APP_WEBLOADER_URL" {}
 
 variable "ui_config_REACT_APP_CONTENT_SECURITY_POLICY" {}
 
+variable "ui_config_REACT_APP_HOSTED" {
+  description = "REACT_APP_HOSTED"
+  type = string
+  default = "AWS"
+}
+
+variable "ui_config_REACT_APP_3EDGES_PROXY" {
+ description = "REACT_APP_3EDGES_PROXY"
+ type = string
+ default = "" 
+}
+
+variable "ui_config_REACT_APP_3EDGES_IDP" {
+  description = "REACT_APP_3EDGES_IDP"
+  type = string
+  default = ""
+}
+
 # This section of following variables are for kubernetes/deployments/secrets : ui_secrets
 variable "ui_secret_REACT_APP_CAPTCHA_V2_INVISIBLE" {}
 
@@ -418,3 +455,6 @@ variable "client_key_file" {}
 variable "aws_lb_nginx_load_balancer_zone_id" {}
   
 variable "aws_lb_nginx_load_balancer_dns_name" {}
+
+
+

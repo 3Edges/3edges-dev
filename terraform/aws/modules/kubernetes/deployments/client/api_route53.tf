@@ -36,12 +36,6 @@ resource "aws_route53_record" "api_service_record" {
   ttl     = 300
   records = [var.aws_lb_nginx_load_balancer_dns_name]
 
-  # alias {
-  #   zone_id                = var.aws_lb_nginx_load_balancer_zone_id
-  #   name                   = var.aws_lb_nginx_load_balancer_dns_name
-  #   evaluate_target_health = false
-  # }
-
   depends_on = [kubernetes_ingress_v1.three_edges_client_ingress]
 }
 
@@ -52,12 +46,6 @@ resource "aws_route53_record" "authz_service_record" {
   type    = "CNAME"
   ttl     = 300
   records = [var.aws_lb_nginx_load_balancer_dns_name]
-
-  # alias {
-  #   zone_id                = var.aws_lb_nginx_load_balancer_zone_id
-  #   name                   = var.aws_lb_nginx_load_balancer_dns_name
-  #   evaluate_target_health = false
-  # }
 
   depends_on = [kubernetes_ingress_v1.three_edges_client_ingress]
 }
@@ -70,12 +58,6 @@ resource "aws_route53_record" "oidc_service_record" {
   ttl     = 300
   records = [var.aws_lb_nginx_load_balancer_dns_name]
 
-  # alias {
-  #   zone_id                = var.aws_lb_nginx_load_balancer_zone_id
-  #   name                   = var.aws_lb_nginx_load_balancer_dns_name
-  #   evaluate_target_health = false
-  # }
-
   depends_on = [kubernetes_ingress_v1.three_edges_client_ingress]
 }
 
@@ -86,12 +68,6 @@ resource "aws_route53_record" "dashboard_service_record" {
   type    = "CNAME"
   ttl     = 300
   records = [var.aws_lb_nginx_load_balancer_dns_name]
-
-  # alias {
-  #   zone_id                = var.aws_lb_nginx_load_balancer_zone_id
-  #   name                   = var.aws_lb_nginx_load_balancer_dns_name
-  #   evaluate_target_health = false
-  # }
 
   depends_on = [kubernetes_ingress_v1.three_edges_client_ingress]
 }
