@@ -87,7 +87,7 @@ ui_secret_REACT_APP_CAPTCHA_V2 = "your_captcha_v2"
 # Client ID for Google social authentication
 idp_config_SOCIAL_GOOGLE_CLIENT_ID = "your-idp-config-social-google-client-id"
 
-# Manual 3Edges Client API deployment (true or false)
+# Manual 3Edges Client API deployment (true or false). Enable it to "true" only after DNS Propagation
 manual_api_deployment = false
 
 # Whether the client provides their own cert (true or false)

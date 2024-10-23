@@ -13,6 +13,19 @@
 
 - Domain name and access to domain controller
 
+## Configuring Domain with Route 53 Name Servers
+
+If you are deploying 3Edges on a **Root domain** 
+
+1. In AWS Route 53, go to your hosted zone and copy the 4 name servers listed in the NS record.
+
+2. Go to your domain registrar's dashboard and replace the existing name servers with the ones from Route 53.
+
+
+If you are deploying 3Edges on a **sub-domain**
+
+1. Make sure you have Route53 record for your root domain and Route53 Nameservers added to your Domain Controller's Nameservers section.
+
 
 # On AWS
 
@@ -269,18 +282,6 @@ After making the necessary changes, run the deployment script
 # ./run.sh
 ```
 
-## Configuring Domain with Route 53 Name Servers
-
-If you are deploying 3Edges on a Root Domain 
-
-1. In AWS Route 53, go to your hosted zone and copy the 4 name servers listed in the NS record.
-
-2. Go to your domain registrar's dashboard and replace the existing name servers with the ones from Route 53.
-
-
-If you are deploying 3Edges on a sub-domain
-
-1. Make sure you have Route53 record for your root domain and Nameservers added to your Domain Controller.
 
 Once the DNS propagation is successful, open your configured domain in the browser, you will a see Login Page
 
