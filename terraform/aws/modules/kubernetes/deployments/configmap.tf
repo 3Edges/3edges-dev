@@ -68,6 +68,9 @@ resource "kubernetes_config_map" "configuration_config" {
     UI_URL                                        = var.configuration_config_UI_URL
     OIDC_URL                                      = var.configuration_config_OIDC_URL
     OIDC_CLIENT_ID                                = var.configuration_config_OIDC_CLIENT_ID
+    AUTHZ_CSP_SERVER_URL                          = local.configuration_config_AUTHZ_CSP_SERVER_URL
+    DOMAIN                                        = var.hosted_zone
+    AUTHZ_CSP_POD_PORT                            = var.configuration_config_AUTHZ_CSP_POD_PORT
   }
 
   depends_on = [var.kubernetes_namespace_namespace]
@@ -93,6 +96,7 @@ resource "kubernetes_config_map" "dataloader_ui_config" {
     REACT_APP_OIDC_URL                 = var.dataloader_ui_config_REACT_APP_OIDC_URL
     REACT_APP_JWKS_URI                 = var.dataloader_ui_config_REACT_APP_JWKS_URI
     REACT_APP_DOCUMENTATION_URL        = var.dataloader_ui_config_REACT_APP_DOCUMENTATION_URL
+    REACT_APP_CONTENT_SECURITY_POLICY = local.dataloader_ui_config_REACT_APP_CONTENT_SECURITY_POLICY
   }
 
   depends_on = [var.kubernetes_namespace_namespace]
@@ -157,6 +161,7 @@ resource "kubernetes_config_map" "cluster_config" {
     AWS_DEFAULT_REGION    = var.aws_region
     API_NAME              = local.api_name
     hostedZoneID          = var.aws_route53_zone_hosted_zone_id
+    DOMAIN                = var.hosted_zone
 
   }
 
@@ -223,6 +228,7 @@ resource "kubernetes_config_map" "idp_config" {
     DB_RECORDS_BATCH_SIZE                 = var.idp_config_DB_RECORDS_BATCH_SIZE
     REDIS_HOST                            = var.idp_config_REDIS_HOST
     REDIS_PORT                            = var.idp_config_REDIS_PORT
+    DOMAIN                                = var.hosted_zone
   }
 
 
@@ -261,10 +267,11 @@ resource "kubernetes_config_map" "ui_config" {
     REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME = var.ui_config_REACT_APP_SOCIAL_PROVIDER_LOCAL_STORAGE_NAME
     REACT_APP_WEBLOADER_URL                      = var.ui_config_REACT_APP_WEBLOADER_URL
     REACT_APP_CONTENT_SECURITY_POLICY            = var.ui_config_REACT_APP_CONTENT_SECURITY_POLICY
-    REACT_APP_3EDGES_PROXY                       = "https://tmp-random-url.${var.hosted_zone}"
-    REACT_APP_3EDGES_IDP                         = "https://tmp-random-url.${var.hosted_zone}/oidc"
+    REACT_APP_3EDGES_PROXY                       = local.ui_config_REACT_APP_3EDGES_PROXY 
+    REACT_APP_3EDGES_IDP                         = local.ui_config_REACT_APP_3EDGES_IDP
     REACT_APP_API_NAME                           = local.api_name
     REACT_APP_DOMAIN                             = var.hosted_zone
+    REACT_APP_HOSTED = var.ui_config_REACT_APP_HOSTED
   }
 
   depends_on = [var.kubernetes_namespace_namespace]

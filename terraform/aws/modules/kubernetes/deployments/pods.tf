@@ -23,7 +23,8 @@ resource "kubernetes_deployment" "deployment_configuration" {
       spec {
         container {
           name              = "configuration"
-          image             = "indykite/3edges-configuration:latest"
+          # image             = "indykite/3edges-configuration:latest"
+          image             = "indykite/3edges-configuration:qa"
           image_pull_policy = "Always"
 
           env_from {
@@ -70,7 +71,8 @@ resource "kubernetes_deployment" "deployment_dataloader_ui" {
       spec {
         container {
           name              = "dataloader-ui"
-          image = "indykite/3edges-webloader:latest"
+          # image = "indykite/3edges-webloader:latest"
+          image = "indykite/3edges-webloader:qa"
           image_pull_policy = "Always"
 
           env_from {
@@ -111,7 +113,8 @@ resource "kubernetes_deployment" "deployment_dataloader" {
       spec {
         container {
           name              = "dataloader"
-          image = "indykite/3edges-dataloader:latest"
+          # image = "indykite/3edges-dataloader:latest"
+          image = "indykite/3edges-dataloader:qa"
           image_pull_policy = "Always"
 
           env_from {
@@ -158,7 +161,8 @@ resource "kubernetes_deployment" "deployment_cluster" {
       spec {
         container {
           name              = "cluster"
-          image = "indykite/3edges-cluster:latest"
+          # image = "indykite/3edges-cluster:latest"
+          image = "indykite/3edges-cluster:qa"
           image_pull_policy = "Always"
 
           env_from {
@@ -206,7 +210,8 @@ resource "kubernetes_deployment" "deployment_idp" {
       spec {
         container {
           name              = "idp"
-          image = "indykite/3edges-idp:latest"
+          # image = "indykite/3edges-idp:latest"
+          image = "indykite/3edges-idp:qa"
           image_pull_policy = "Always"
 
           env_from {
@@ -253,7 +258,8 @@ resource "kubernetes_deployment" "deployment_ui" {
       spec {
         container {
           name = "ui"
-          image             = "indykite/3edges-ui:latest"
+          # image             = "indykite/3edges-ui:latest"
+          image             = "indykite/3edges-ui:qa"
           image_pull_policy = "Always"
 
           env_from {

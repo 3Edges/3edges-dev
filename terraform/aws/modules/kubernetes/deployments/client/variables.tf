@@ -27,3 +27,7 @@ variable "shared_secret_INTERNAL_SECRET" {}
 variable "api_name" {}
 
 variable "PROM_METRICS_PREFIX" {}
+
+variable "aws_lb_nginx_load_balancer_zone_id" {}
+  
+variable "aws_lb_nginx_load_balancer_dns_name" {}

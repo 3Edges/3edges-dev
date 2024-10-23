@@ -49,6 +49,20 @@ resource "kubernetes_config_map" "json_config" {
 
     }),
 
+    "authz-csp" = jsonencode({
+      "PORT" : "5003",
+      "prefix" : "authz-csp",
+      "_id" : "${random_uuid.authz_uuid.result}",
+      "NAME" : "${local.api_name}-authz",
+      "lastUpdate" : "2024-05-05",
+      "DB_TYPE": "",
+      "DB_VERSION":"",
+      "DB_HOST": "",
+      "DB_USER": "",
+      "DB_NAME": "",
+      "DB_PASSWORD": ""
+    }),
+
     "dashboard" = jsonencode({
       "REACT_APP_OIDC_CLIENT_ID" : "sac_${local.api_name}",
       "REACT_APP_EXTERNAL_PROVIDER" : false,
