@@ -16,7 +16,8 @@
    - [Modify the Backend Configuration](#modify-the-backend-configuration)
    - [Modify the Terraform Configuration](#modify-the-terraform-configuration)
 5. [Deploy 3Edges to AWS](#deploy-3edges-to-aws)
-6. [Release Notes - Post Release Actions](#release-notes---post-release-actions)
+6. [Decommission the 3Edges deployment](#decommission-the-3edges-deployment)
+7. [Release Notes - Post Release Actions](#release-notes---post-release-actions)
 
 ## Prerequisites
 - Terraform
@@ -283,22 +284,19 @@ Clone the repository containing the Terraform configuration:
 
 ## Modify the Backend Configuration 
 
-Update the `backend.tf` file with your S3 bucket details
+Rename backend.tf.sample to backend.tf. Update the `backend.tf` file with your S3 bucket details
 
 ```
-3edges-deployments/terraform/aws/backend.tf
+cp /path/to/3edges-deployments/terraform/aws/backend.tf.sample /path/to/3edges-deployments/terraform/aws/backend.tf 
 ```
 
 ## Modify the Terraform Configuration
 
-Update the `terraform.tfvars` file with your environment details
+Rename terraform.tfvars.sample to terraform.tfvars. Update the `terraform.tfvars` file with your environment details
 
 ```
-3edges-deployments/terraform/aws/terraform.tfvars
+cp /path/to/3edges-deployments/terraform/aws/terraform.tfvars.sample /path/to/3edges-deployments/terraform/aws/terraform.tfvars
 ```
-If you are deploying 3Edges on a sub-domain
-
-1. Make sure you have Route53 record for your root domain and Nameservers added to your Domain Controller.
 
 ## Deploy 3Edges to AWS
 
@@ -309,11 +307,25 @@ After making the necessary changes, run the deployment script
 # ./run.sh
 ```
 
-
 Once the DNS propagation is successful, open your configured domain in the browser, you will a see Login Page
 
 ![](./docs/images/login_page.png)
 
+## Decommission the 3Edges deployment
+
+Warning: Running terraform destroy is a destructive operation that will permanently delete all resources created by your Terraform configuration. Use this command with caution, and ensure you have backups or snapshots of any critical data before proceeding.
+
+#### Destroy Terraform-managed Resources
+
+Run the following command to remove all resources defined in the Terraform state. Double-check that you are in the correct environment before executing this command.
+
+```bash
+    cd /path/to/3edges-deployments/terraform/aws
+    
+    terraform destroy
+```
+
+When prompted, confirm the destruction process by typing "yes."
 
 ## Release Notes - Post Release Actions
 
@@ -327,21 +339,27 @@ After a new release of 3Edges, follow these steps to update your deployment. Thi
    ```bash
    cd /path/to/3edges-deployments/
    ```
+3. **Pull the latest changes**
+    - Fetch the most recent updates from the Git repository to ensure you have the latest code, configurations, and scripts
+    ```bash
+      git pull origin main
+    ```
 
-3. **Authenticate to EKS Cluster**
+4. **Authenticate to EKS Cluster**
    - Set up the connection to the EKS cluster using the AWS CLI to manage Kubernetes resources.
    ```bash
    aws eks update-kubeconfig --region <your-region> --name <cluster-name>
    ```
 
-4. Update ConfigMaps, Secrets, and Restart Deployments
+5. Update ConfigMaps, Secrets, and Restart Deployments
    - Use ```kubectl``` commands to update ConfigMaps and Secrets with the latest values, and restart any deployments that have been updated.
    ```bash
     kubectl rollout restart deployment/<deployment-name>
    ```
 
-5. Run the Terraform Bash Script
+6. Run the Terraform Bash Script
    - Execute the Terraform script to apply any infrastructure updates required for the release.
    ```bash
-   terraform/aws/run.sh
+   cd /path/to/3edges-deployments/terraform/aws
+   ./run.sh
    ```
