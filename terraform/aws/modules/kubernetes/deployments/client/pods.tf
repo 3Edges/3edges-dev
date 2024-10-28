@@ -23,7 +23,7 @@ resource "kubernetes_deployment" "deployment_dataproxy" {
       spec {
         container {
           name              = "${local.api_name}-proxy"
-          image             = "indykite/3edges-dataproxy:qa"
+          image             = "indykite/3edges-dataproxy:latest"
           image_pull_policy = "Always"
 
           volume_mount {
@@ -84,7 +84,7 @@ resource "kubernetes_deployment" "deployment_authorization" {
       spec {
         container {
           name              = "${local.api_name}-authz"
-          image             = "indykite/3edges-authorization:qa"
+          image             = "indykite/3edges-authorization:latest"
           image_pull_policy = "Always"
 
           volume_mount {
@@ -146,7 +146,7 @@ resource "kubernetes_deployment" "deployment_authorization_csp" {
       spec {
         container {
           name              = "${local.api_name}-authz-csp"
-          image             = "indykite/3edges-authorization-csp:qa"
+          image             = "indykite/3edges-authorization-csp:latest"
           image_pull_policy = "Always"
 
           volume_mount {
@@ -207,7 +207,7 @@ resource "kubernetes_deployment" "deployment_dashboard" {
       spec {
         container {
           name              = "${local.api_name}-dashboard"
-          image             = "indykite/3edges-dashboard:qa"
+          image             = "indykite/3edges-dashboard:latest"
           image_pull_policy = "Always"
 
           volume_mount {
@@ -270,7 +270,7 @@ resource "kubernetes_deployment" "deployment_client_idp" {
       spec {
         container {
           name              = "${local.api_name}-idp"
-          image = "indykite/3edges-idp:qa"
+          image = "indykite/3edges-idp:latest"
           image_pull_policy = "Always"
 
           volume_mount {
