@@ -1,6 +1,6 @@
 .terraform*
 terraform.*
-!terraform.tfvars
+!terraform.tfvars.sample
 plan.bkp
 localhost/.env
 .vscode
@@ -9,3 +9,4 @@ localhost/.env
 tfplan
 values.yaml
 n_client_secret.txt
+backend.tf 
