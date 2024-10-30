@@ -360,7 +360,7 @@ After a new release of 3Edges, follow these steps to update your deployment. Thi
 6. Update ConfigMaps, Secrets, and Restart Deployments
    - Use ```kubectl``` commands to update ConfigMaps and Secrets with the latest values, and restart any deployments that have been updated.
    ```bash
-    kubectl rollout restart deployment/<deployment-name>
+    kubectl rollout restart deployment/<deployment-name> -n 3edges
    ```
 
 7. Monitor if the restart of the deployment, pods was successful
