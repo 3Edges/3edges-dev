@@ -363,7 +363,7 @@ After a new release of 3Edges, follow these steps to update your deployment. Thi
     kubectl rollout restart deployment/<deployment-name> -n 3edges
    ```
 
-7. Monitor if the restart of the deployment, pods was successful
+7. Monitor the deployment to ensure that all pods are successfully running, confirming a stable and operational environment.
     ```bash
      kubectl get all -n 3edges
     ```
