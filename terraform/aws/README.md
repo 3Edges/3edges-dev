@@ -344,22 +344,27 @@ After a new release of 3Edges, follow these steps to update your deployment. Thi
     ```bash
       git pull origin main
     ```
-
-4. **Authenticate to EKS Cluster**
-   - Set up the connection to the EKS cluster using the AWS CLI to manage Kubernetes resources.
-   ```bash
-   aws eks update-kubeconfig --region <your-region> --name <cluster-name>
-   ```
-
-5. Update ConfigMaps, Secrets, and Restart Deployments
-   - Use ```kubectl``` commands to update ConfigMaps and Secrets with the latest values, and restart any deployments that have been updated.
-   ```bash
-    kubectl rollout restart deployment/<deployment-name>
-   ```
-
-6. Run the Terraform Bash Script
+4. Run the Terraform Bash Script
    - Execute the Terraform script to apply any infrastructure updates required for the release.
    ```bash
    cd /path/to/3edges-deployments/terraform/aws
    ./run.sh
    ```
+
+5. **Authenticate to EKS Cluster**
+   - Set up the connection to the EKS cluster using the AWS CLI to manage Kubernetes resources.
+   ```bash
+   aws eks update-kubeconfig --region <your-region> --name <cluster-name>
+   ```
+
+6. Update ConfigMaps, Secrets, and Restart Deployments
+   - Use ```kubectl``` commands to update ConfigMaps and Secrets with the latest values, and restart any deployments that have been updated.
+   ```bash
+    kubectl rollout restart deployment/<deployment-name>
+   ```
+
+7. Monitor if the restart of the deployment, pods was successful
+    ```bash
+     kubectl get all -n 3edges
+    ```
+
