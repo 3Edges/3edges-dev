@@ -4,6 +4,8 @@ variable "eks_subnet" {
   type = list(any)
 }
 
+variable "eks_security_group_id" {}
+
 variable "eks_node_group" {}
 
 variable "iam_role_arn" {}

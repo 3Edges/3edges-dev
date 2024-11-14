@@ -79,6 +79,11 @@ resource "helm_release" "ingress_nginx" {
     value = "LoadBalancer"
   }
 
+  # set {
+  #   name = "alb.ingress.kubernetes.io/security-groups"
+  #   value = var.nlb_security_group_id
+  # }
+
   depends_on = [var.aws_eks_node_group_eks_node_group]
 }
 
@@ -158,6 +163,12 @@ resource "helm_release" "cert_manager" {
 
   depends_on = [helm_release.ingress_nginx, kubernetes_namespace.cert_manager_namespace]
 }
+
+# module "vpc" {
+#   source = "../vpc"
+#   nlb_security_group_id = module.vpc.nlb_sg_id
+# }
+
 
 module "deployments" {
   source                          = "./deployments"

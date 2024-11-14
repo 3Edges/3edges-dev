@@ -4,6 +4,7 @@ resource "aws_eks_cluster" "eks_cluster" {
 
   vpc_config {
     subnet_ids = var.eks_subnet[*].id
+    security_group_ids = [var.eks_security_group_id]
   }
 
   timeouts {
@@ -50,6 +51,7 @@ resource "aws_eks_node_group" "eks_node_group" {
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name  = aws_eks_cluster.eks_cluster.name
   addon_name    = "vpc-cni"
+  # addon_version = data.aws_eks_addon_version.latest.version
   # addon_version = "v1.18.1-eksbuild.3"
   # addon_version = "v1.18.5-eksbuild.1"
 
@@ -62,6 +64,7 @@ resource "aws_eks_addon" "vpc_cni" {
 resource "aws_eks_addon" "kube_proxy" {
   cluster_name  = aws_eks_cluster.eks_cluster.name
   addon_name    = "kube-proxy"
+  # addon_version = data.aws_eks_addon_version.latest.version
   # addon_version = "v1.30.0-eksbuild.3"
   # addon_version = "v1.31.0-eksbuild.5"
 
@@ -75,6 +78,7 @@ resource "aws_eks_addon" "kube_proxy" {
 resource "aws_eks_addon" "eks_pod_identity" {
   cluster_name  = aws_eks_cluster.eks_cluster.name
   addon_name    = "eks-pod-identity-agent"
+  # addon_version = data.aws_eks_addon_version.latest.version
   # addon_version = "v1.3.0-eksbuild.1"
 
   depends_on = [
@@ -87,6 +91,7 @@ resource "aws_eks_addon" "eks_pod_identity" {
 resource "aws_eks_addon" "coredns" {
   cluster_name  = aws_eks_cluster.eks_cluster.name
   addon_name    = "coredns"
+  # addon_version = data.aws_eks_addon_version.latest.version
   # addon_version = "v1.11.1-eksbuild.9"
   # addon_version = "v1.11.3-eksbuild.1"
 

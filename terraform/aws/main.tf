@@ -23,6 +23,7 @@ module "cluster" {
   source                                 = "./modules/cluster"
   eks_cluster                            = var.eks_cluster
   eks_node_group                         = var.eks_node_group
+  eks_security_group_id                  = module.vpc.eks_security_group_id
   eks_subnet                             = module.vpc.eks_subnet
   iam_role_arn                           = module.iam.iam_role_arn
   aws_iam_role                           = module.iam.aws_iam_role
