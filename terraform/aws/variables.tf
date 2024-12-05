@@ -1239,3 +1239,9 @@ variable "aws_lb_nginx_load_balancer_dns_name" {
   default     = ""
   type        = string
 }
+
+# variable "nlb_sg_id" {
+#   description = ""
+#   default     = ""
+#   type        = string
+# }

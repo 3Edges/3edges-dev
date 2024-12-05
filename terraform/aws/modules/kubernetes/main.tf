@@ -79,10 +79,33 @@ resource "helm_release" "ingress_nginx" {
     value = "LoadBalancer"
   }
 
-  # set {
-  #   name = "alb.ingress.kubernetes.io/security-groups"
-  #   value = var.nlb_security_group_id
-  # }
+#   set {
+#     name = "controller.service.ports.http"
+#     value = 80
+#   }
+#   set {
+#     name = "controller.service.ports.https"
+#     value = "443"
+#   }
+#   set {
+#     name = "controller.service.targetPorts.http"
+#     value = "80"
+#   }
+#   set {
+#     name = "controller.service.targetPorts.https"
+#     value = "443"
+#   }
+
+# #SG NLB
+#   set {
+#     name = "service.beta.kubernetes.io/aws-load-balancer-manage-backend-security-group-rules"
+#     value = true
+#   }
+
+#   set {
+#     name = "service.beta.kubernetes.io/aws-load-balancer-security-groups"
+#     value = var.nlb_sg_id
+#   }
 
   depends_on = [var.aws_eks_node_group_eks_node_group]
 }
@@ -166,7 +189,12 @@ resource "helm_release" "cert_manager" {
 
 # module "vpc" {
 #   source = "../vpc"
-#   nlb_security_group_id = module.vpc.nlb_sg_id
+#   # nlb_security_group_id = module.vpc.nlb_sg_id
+#   eks_vpc = ""
+#   eks_internet_gateway = ""
+#   eks_route_table = ""
+#   eks_security_group = ""
+#   nlb_sg_id = var.nlb_sg_id
 # }
 
 

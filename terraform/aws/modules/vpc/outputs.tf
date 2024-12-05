@@ -6,7 +6,7 @@ output "eks_subnet" {
 #   value = aws_vpc.eks_vpc.id
 # }
 
-# # NLB Security Group ID 
+# #NLB Security Group ID SG NLB
 # output "nlb_sg_id" {
 #   value = aws_security_group.nlb_security_group.id
 # }

@@ -70,7 +70,7 @@ resource "aws_security_group_rule" "eks_inbound_rule" {
 }
 
 
-# # This security group is for NLB
+# # This security group is for NLB SG NLB
 # resource "aws_security_group" "nlb_security_group" {
 #   vpc_id = aws_vpc.eks_vpc.id
 

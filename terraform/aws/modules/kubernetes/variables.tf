@@ -429,4 +429,4 @@ variable "aws_lb_nginx_load_balancer_zone_id" {}
   
 variable "aws_lb_nginx_load_balancer_dns_name" {}
 
-# variable "nlb_security_group_id" {}
+# variable "nlb_sg_id" {}  #SG NLB
