@@ -162,6 +162,10 @@ resource "kubernetes_config_map" "cluster_config" {
     API_NAME              = local.api_name
     hostedZoneID          = var.aws_route53_zone_hosted_zone_id
     DOMAIN                = var.hosted_zone
+    REPO_PROD             = "indykite"
+    TAG_PROD              = "latest"
+    REPO_QA               = "us-docker.pkg.dev/edges-305901/gcr.io"
+    TAG_QA                = "qa"
 
   }
 

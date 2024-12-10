@@ -38,13 +38,13 @@ module "cluster" {
 }
 
 module "kubernetes" {
-  source                              = "./modules/kubernetes"
-  aws_eks_cluster_auth_token          = module.cluster.aws_eks_cluster_auth_token
-  aws_eks_cluster_auth_endpoint       = module.cluster.aws_eks_cluster_auth_endpoint
-  aws_eks_node_group_eks_node_group   = module.cluster.aws_eks_node_group_eks_node_group
-  aws_eks_cluster_auth_certificate    = module.cluster.aws_eks_cluster_auth_certificate
-  aws_eks_cluster_eks_cluster_id      = module.cluster.aws_eks_cluster_eks_cluster_id
-  aws_eks_cluster_eks_cluster_name    = module.cluster.aws_eks_cluster_eks_cluster_name
+  source                            = "./modules/kubernetes"
+  aws_eks_cluster_auth_token        = module.cluster.aws_eks_cluster_auth_token
+  aws_eks_cluster_auth_endpoint     = module.cluster.aws_eks_cluster_auth_endpoint
+  aws_eks_node_group_eks_node_group = module.cluster.aws_eks_node_group_eks_node_group
+  aws_eks_cluster_auth_certificate  = module.cluster.aws_eks_cluster_auth_certificate
+  aws_eks_cluster_eks_cluster_id    = module.cluster.aws_eks_cluster_eks_cluster_id
+  aws_eks_cluster_eks_cluster_name  = module.cluster.aws_eks_cluster_eks_cluster_name
   # nlb_sg_id                           = module.vpc.eks_security_group_id   #SG NLB
   eks_cluster                         = var.eks_cluster
   aws_region                          = var.aws_region

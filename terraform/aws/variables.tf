@@ -800,7 +800,7 @@ variable "idp_config_CLAIMS_ARRAY" {
 variable "idp_config_OIDC_ACCESS_TOKEN_EXPIRE" {
   description = "Expiration time of the OIDC access token in hours."
   type        = string
-  default     = "24"
+  default     = "3600"
 }
 
 variable "idp_config_CONTENT_SECURITY_POLICY" {
@@ -962,7 +962,7 @@ variable "idp_config_PRIM_UI_CLIENT_ID" {
 variable "idp_config_OIDC_REFRESH_TOKEN_EXPIRE" {
   description = "Expiration time of the OIDC refresh token in hours."
   type        = string
-  default     = "24"
+  default     = "3600"
 }
 
 variable "idp_config_CONFIG_URL" {

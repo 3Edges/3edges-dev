@@ -2,6 +2,9 @@ resource "kubernetes_deployment" "deployment_configuration" {
   metadata {
     name      = "configuration"
     namespace = "3edges"
+    labels = {
+      type = "3edges_control_plane"
+     }
   }
 
   spec {
@@ -17,6 +20,7 @@ resource "kubernetes_deployment" "deployment_configuration" {
       metadata {
         labels = {
           app = "configuration"
+          type = "3edges_control_plane"
         }
       }
 
@@ -49,6 +53,9 @@ resource "kubernetes_deployment" "deployment_dataloader_ui" {
   metadata {
     name      = "dataloader-ui"
     namespace = "3edges"
+    labels = {
+      type = "3edges_control_plane"
+     }
   }
 
   spec {
@@ -64,6 +71,7 @@ resource "kubernetes_deployment" "deployment_dataloader_ui" {
       metadata {
         labels = {
           app = "dataloader-ui"
+          type = "3edges_control_plane"
         }
       }
 
@@ -90,6 +98,9 @@ resource "kubernetes_deployment" "deployment_dataloader" {
   metadata {
     name      = "dataloader"
     namespace = "3edges"
+    labels = {
+      type = "3edges_control_plane"
+     }
   }
 
   spec {
@@ -105,6 +116,7 @@ resource "kubernetes_deployment" "deployment_dataloader" {
       metadata {
         labels = {
           app = "dataloader"
+          type = "3edges_control_plane"
         }
       }
 
@@ -137,6 +149,9 @@ resource "kubernetes_deployment" "deployment_cluster" {
   metadata {
     name      = "cluster"
     namespace = "3edges"
+    labels = {
+      type = "3edges_control_plane"
+     }
   }
 
   spec {
@@ -152,6 +167,7 @@ resource "kubernetes_deployment" "deployment_cluster" {
       metadata {
         labels = {
           app = "cluster"
+          type = "3edges_control_plane"
         }
       }
 
@@ -185,6 +201,9 @@ resource "kubernetes_deployment" "deployment_idp" {
   metadata {
     name      = "idp"
     namespace = "3edges"
+    labels = {
+      type = "3edges_control_plane"
+     }
   }
 
   spec {
@@ -200,6 +219,7 @@ resource "kubernetes_deployment" "deployment_idp" {
       metadata {
         labels = {
           app = "idp"
+          type = "3edges_control_plane"
         }
       }
 
@@ -232,6 +252,9 @@ resource "kubernetes_deployment" "deployment_ui" {
   metadata {
     name      = "ui"
     namespace = "3edges"
+    labels = {
+      type = "3edges_control_plane"
+     }
   }
 
   spec {
@@ -247,6 +270,7 @@ resource "kubernetes_deployment" "deployment_ui" {
       metadata {
         labels = {
           app = "ui"
+          type = "3edges_control_plane"
         }
       }
 

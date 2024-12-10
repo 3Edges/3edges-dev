@@ -2,6 +2,9 @@ resource "kubernetes_deployment" "deployment_dataproxy" {
   metadata {
     name      = "${local.api_name}-proxy"
     namespace = "3edges"
+    labels = {
+      type = "3edges_client_api"
+     }
   }
 
   spec {
@@ -63,6 +66,9 @@ resource "kubernetes_deployment" "deployment_authorization" {
   metadata {
     name      = "${local.api_name}-authz"
     namespace = "3edges"
+    labels = {
+      type = "3edges_client_api"
+     }
   }
 
   spec {
@@ -125,6 +131,9 @@ resource "kubernetes_deployment" "deployment_authorization_csp" {
   metadata {
     name      = "${local.api_name}-authz-csp"
     namespace = "3edges"
+    labels = {
+      type = "3edges_client_api"
+     }
   }
 
   spec {
@@ -186,6 +195,9 @@ resource "kubernetes_deployment" "deployment_dashboard" {
   metadata {
     name      = "${local.api_name}-dashboard"
     namespace = "3edges"
+    labels = {
+      type = "3edges_client_api"
+     }
   }
 
   spec {
@@ -249,6 +261,9 @@ resource "kubernetes_deployment" "deployment_client_idp" {
   metadata {
     name      = "${local.api_name}-idp"
     namespace = "3edges"
+    labels = {
+      type = "3edges_client_api"
+     }
   }
 
   spec {
