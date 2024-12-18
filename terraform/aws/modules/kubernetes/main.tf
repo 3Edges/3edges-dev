@@ -79,34 +79,6 @@ resource "helm_release" "ingress_nginx" {
     value = "LoadBalancer"
   }
 
-#   set {
-#     name = "controller.service.ports.http"
-#     value = 80
-#   }
-#   set {
-#     name = "controller.service.ports.https"
-#     value = "443"
-#   }
-#   set {
-#     name = "controller.service.targetPorts.http"
-#     value = "80"
-#   }
-#   set {
-#     name = "controller.service.targetPorts.https"
-#     value = "443"
-#   }
-
-# #SG NLB
-#   set {
-#     name = "service.beta.kubernetes.io/aws-load-balancer-manage-backend-security-group-rules"
-#     value = true
-#   }
-
-#   set {
-#     name = "service.beta.kubernetes.io/aws-load-balancer-security-groups"
-#     value = var.nlb_sg_id
-#   }
-
   depends_on = [var.aws_eks_node_group_eks_node_group]
 }
 
@@ -130,15 +102,9 @@ data "aws_route53_zone" "parent_domain" {
 
 # Conditionally create a new hosted zone if the parent domain doesn't exist
 resource "aws_route53_zone" "hosted_zone" {
-  # count = length(data.aws_route53_zone.parent_domain.id != "" ? [] : [1])  # Only create if not found
   count = length(data.aws_route53_zone.parent_domain) == 0 ? 1 : 0  # Only create if not found
   name = local.root_domain
 }
-
-# Use the correct zone ID (either existing or newly created)
-# locals {
-#   zone_id = data.aws_route53_zone.parent_domain.id != "" ? data.aws_route53_zone.parent_domain.zone_id : aws_route53_zone.hosted_zone[0].id
-# }
 
 locals {
   zone_id = length(data.aws_route53_zone.parent_domain) > 0 ? data.aws_route53_zone.parent_domain[0].zone_id : aws_route53_zone.hosted_zone[0].id
@@ -186,16 +152,6 @@ resource "helm_release" "cert_manager" {
 
   depends_on = [helm_release.ingress_nginx, kubernetes_namespace.cert_manager_namespace]
 }
-
-# module "vpc" {
-#   source = "../vpc"
-#   # nlb_security_group_id = module.vpc.nlb_sg_id
-#   eks_vpc = ""
-#   eks_internet_gateway = ""
-#   eks_route_table = ""
-#   eks_security_group = ""
-#   nlb_sg_id = var.nlb_sg_id
-# }
 
 
 module "deployments" {

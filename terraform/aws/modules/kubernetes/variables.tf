@@ -254,9 +254,6 @@ variable "cluster_secret_SESSION_PIPELINE" {}
 
 variable "cluster_secret_TOKEN_PIPELINE" {}
 
-# variable "aws_route53_zone_hosted_zone_id" {}
-
-
 variable "idp_config_NODE_ENV" {}
 
 variable "idp_config_OIDC_PORT" {}
@@ -428,5 +425,3 @@ variable "client_key_file" {}
 variable "aws_lb_nginx_load_balancer_zone_id" {}
   
 variable "aws_lb_nginx_load_balancer_dns_name" {}
-
-# variable "nlb_sg_id" {}  #SG NLB

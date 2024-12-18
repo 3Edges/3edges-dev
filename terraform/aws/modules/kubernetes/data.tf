@@ -15,5 +15,4 @@ locals {
 
 data "aws_lb" "nginx_load_balancer" {
   name = local.split_hostname[0]
-  # count = local.load_balancer_hostname == "" ? 0 : 1
 }
