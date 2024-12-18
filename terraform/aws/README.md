@@ -1,11 +1,32 @@
 # AWS Deployment
 
+## Table of Contents
+1. [Prerequisites](#prerequisites)
+2. [Configuring Domain with Route 53 Name Servers](#configuring-domain-with-route-53-name-servers)
+3. [On AWS](#on-aws)
+   - [EC2 Instance Creation (Terraform Host)](#ec2-instance-creation-terraform-host)
+   - [Install Prerequisites on EC2 Instance](#install-prerequisites-on-ec2-instance)
+   - [Create an S3 Bucket for Terraform Statefile](#create-an-s3-bucket-for-terraform-to-store-the-statefile)
+   - [Create an IAM User for Terraform](#create-an-iam-user-for-terraform)
+   - [Attach Policies to IAM User](#attach-policies-to-iam-user)
+   - [Create Access Keys for IAM User](#create-access-keys-for-the-iam-user)
+4. [On Terraform Host (EC2 instance)](#on-terraform-host-ec2-instance)
+   - [Configure AWS CLI](#configure-aws-cli)
+   - [Clone the GitHub Repository](#clone-the-github-repository)
+   - [Modify the Backend Configuration](#modify-the-backend-configuration)
+   - [Modify the Terraform Configuration](#modify-the-terraform-configuration)
+5. [Deploy 3Edges to AWS](#deploy-3edges-to-aws)
+6. [Decommission the 3Edges deployment](#decommission-the-3edges-deployment)
+7. [Release Notes - Post Release Actions](#release-notes---post-release-actions)
+
 ## Prerequisites
 - Terraform
 
 - AWS CLI (For AWS deployment)
 
 - Docker 
+
+- kubectl
 
 - Git
 
@@ -117,13 +138,20 @@ sudo usermod -aG docker $USER
 **Make sure to log out and log back in or restart your terminal session for the changes to take effect**
 
 ---
+[kubectl Installation Link](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-using-other-package-management)
+
+```
+snap install kubectl --classic
+kubectl version --client
+```
+
+---
 Git installation : Usually Ubuntu EC2 instance comes with git installed in the OS. In-case if its not installed run the following command  
 ```
 sudo apt-get install git
 
 git help
 ```
-
 
 ## Create an S3 Bucket for Terraform to store the statefile 
 
@@ -256,22 +284,19 @@ Clone the repository containing the Terraform configuration:
 
 ## Modify the Backend Configuration 
 
-Update the `backend.tf` file with your S3 bucket details
+Rename backend.tf.sample to backend.tf. Update the `backend.tf` file with your S3 bucket details
 
 ```
-3edges-deployments/terraform/aws/backend.tf
+cp /path/to/3edges-deployments/terraform/aws/backend.tf.sample /path/to/3edges-deployments/terraform/aws/backend.tf 
 ```
 
 ## Modify the Terraform Configuration
 
-Update the `terraform.tfvars` file with your environment details
+Rename terraform.tfvars.sample to terraform.tfvars. Update the `terraform.tfvars` file with your environment details
 
 ```
-3edges-deployments/terraform/aws/terraform.tfvars
+cp /path/to/3edges-deployments/terraform/aws/terraform.tfvars.sample /path/to/3edges-deployments/terraform/aws/terraform.tfvars
 ```
-If you are deploying 3Edges on a sub-domain
-
-1. Make sure you have Route53 record for your root domain and Nameservers added to your Domain Controller.
 
 ## Deploy 3Edges to AWS
 
@@ -282,7 +307,59 @@ After making the necessary changes, run the deployment script
 # ./run.sh
 ```
 
-
 Once the DNS propagation is successful, open your configured domain in the browser, you will a see Login Page
 
 ![](./docs/images/login_page.png)
+
+## Decommission the 3Edges deployment
+
+Warning: Running terraform destroy is a destructive operation that will permanently delete all resources created by your Terraform configuration. Use this command with caution, and ensure you have backups or snapshots of any critical data before proceeding.
+
+#### Destroy Terraform-managed Resources
+
+Run the following command to remove all resources defined in the Terraform state. Double-check that you are in the correct environment before executing this command.
+
+```bash
+    cd /path/to/3edges-deployments/terraform/aws
+    
+    terraform destroy
+```
+
+When prompted, confirm the destruction process by typing "yes."
+
+## Release Notes - Post Release Actions
+
+After a new release of 3Edges, follow these steps to update your deployment. This ensures that any updates to configuration, secrets, or deployments are applied to your environment.
+
+1. **SSH to EC2 Instance**  
+   - Access the EC2 instance that is running as the Terraform host by connecting via SSH.
+
+2. **Navigate to the Repository**  
+   - Once connected, navigate to the directory where the Git repository is located (e.g., `/home/ubuntu/3edges-deployments/`).
+   ```bash
+   cd /path/to/3edges-deployments/
+   ```
+3. **Pull the latest changes**
+    - Fetch the most recent updates from the Git repository to ensure you have the latest code, configurations, and scripts
+    ```bash
+      git pull origin main
+    ```
+4. Run the Terraform Bash Script
+   - Execute the Terraform script to apply any infrastructure updates required for the release.
+   ```bash
+   cd /path/to/3edges-deployments/terraform/aws
+   ./run.sh
+   ```
+
+5. **Authenticate to EKS Cluster**
+   - Set up the connection to the EKS cluster by executing the following script
+   ```bash
+   /path/to/3edges-deployments/terraform/aws/scripts/authn-k8s-cluster.sh
+   ```
+
+6. Restart the Deployments and ensure the pods are running successfully
+    ```bash
+    /path/to/3edges-deployments/terraform/aws/scripts/restart-3edges-controlplane.sh
+    ```
+
+

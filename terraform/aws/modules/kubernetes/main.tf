@@ -102,15 +102,9 @@ data "aws_route53_zone" "parent_domain" {
 
 # Conditionally create a new hosted zone if the parent domain doesn't exist
 resource "aws_route53_zone" "hosted_zone" {
-  # count = length(data.aws_route53_zone.parent_domain.id != "" ? [] : [1])  # Only create if not found
   count = length(data.aws_route53_zone.parent_domain) == 0 ? 1 : 0  # Only create if not found
   name = local.root_domain
 }
-
-# Use the correct zone ID (either existing or newly created)
-# locals {
-#   zone_id = data.aws_route53_zone.parent_domain.id != "" ? data.aws_route53_zone.parent_domain.zone_id : aws_route53_zone.hosted_zone[0].id
-# }
 
 locals {
   zone_id = length(data.aws_route53_zone.parent_domain) > 0 ? data.aws_route53_zone.parent_domain[0].zone_id : aws_route53_zone.hosted_zone[0].id
@@ -158,6 +152,7 @@ resource "helm_release" "cert_manager" {
 
   depends_on = [helm_release.ingress_nginx, kubernetes_namespace.cert_manager_namespace]
 }
+
 
 module "deployments" {
   source                          = "./deployments"

@@ -1,6 +1,6 @@
 .terraform*
 terraform.*
-!terraform.tfvars
+!terraform.tfvars.sample
 plan.bkp
 localhost/.env
 .vscode

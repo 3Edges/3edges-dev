@@ -3,9 +3,6 @@ locals {
   domain_parts = split(".", var.hosted_zone)
   root_domain  = length(local.domain_parts) > 2 ? join(".", slice(local.domain_parts, length(local.domain_parts) - 2, length(local.domain_parts))) : var.hosted_zone
 
-  # Condition to determine if the hosted zone is a root domain or not
-  # For example, check if the hosted zone is equal to root_domain
-#   is_root_domain = var.hosted_zone == local.root_domain
 }
 
 # Look up the existing hosted zone for the parent domain
@@ -14,16 +11,9 @@ data "aws_route53_zone" "parent_domain" {
   private_zone = false
 }
 
-# # Conditionally create a new hosted zone if the parent domain doesn't exist
-# resource "aws_route53_zone" "hosted_zone" {
-#   # count = length(data.aws_route53_zone.parent_domain.id != "" ? [] : [1])  # Only create if not found
-#   count = length(data.aws_route53_zone.parent_domain) == 0 ? 1 : 0  # Only create if not found
-#   name = local.root_domain
-# }
 
 # Use the correct zone ID (either existing or newly created)
 locals {
-  # zone_id = length(data.aws_route53_zone.parent_domain) > 0 ? data.aws_route53_zone.parent_domain[0].zone_id : aws_route53_zone.hosted_zone[0].id
   zone_id = data.aws_route53_zone.parent_domain.zone_id
 }
 
